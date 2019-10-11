@@ -5,6 +5,11 @@
 
 <mapper namespace="com.example.kcdwebservice.dao.CmKcdDao">
     <select id="select" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
-        select * from CM_KCD
+        SELECT K.KCD_CD kcdCd,
+           K.KCD_ENG kcdEng,
+           K.KCD_KOR kcdKor,
+           K.UDT_DT udtDt,
+           M.SCT_ID sctId
+        FROM CM_KCD K LEFT JOIN MAP_KCD_SCT M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset}
     </select>
 </mapper>

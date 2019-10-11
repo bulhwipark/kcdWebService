@@ -8,23 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>KCD Web Service</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css/">
+    <link rel="stylesheet" type="text/css" href="/static/css/headerMenuCss.css">
 </head>
 <body>
-<h2>jsp index</h2>
+<%@ include file="/WEB-INF/jsp/header/headerMenu.jsp" %>
+<%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdList.jsp" %>
 </body>
-<script src="/static/lib/jQuery-3.4.1.min.js"/>
+<script src="/static/lib/jQuery-3.4.1.min.js"></script>
+<script src="/static/lib/bootstrap.min.js"></script>
+<script src="/static/js/headerMenuHandle.js"></script>
+<script src="/static/js/menu_kcdList.js"></script>
 <script type="text/javascript">
     $(function(){
-       $.ajax({
-           url:"/selectTemp",
-           type:'get',
-           data:{},
-           dataType:'json',
-           success:function(data){
-               console.log(data);
-           }
-       })
+        static_function();
+        menu_kcdList_staticFunc();
     });
 </script>
 </html>
+

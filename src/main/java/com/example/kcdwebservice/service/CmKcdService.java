@@ -13,7 +13,7 @@ public class CmKcdService {
     @Autowired
     CmKcdDao cmKcdDao;
 
-    public List<CmKcdVo> select() {
-        return cmKcdDao.select();
+    public List<CmKcdVo> select(CmKcdVo cmKcdVo) {
+        return cmKcdDao.select(cmKcdVo);
     }
 }

@@ -11,6 +11,11 @@ public class CmKcdVo {
     private String kcdCd;
     private String kcdEng;
     private String kcdKor;
+    private String kcdMapStatCd;
+    private String kcdRvStatCd;
     private String dispOdr;
     private String udtDt;
+
+    private String limit;
+    private String offset;
 }
