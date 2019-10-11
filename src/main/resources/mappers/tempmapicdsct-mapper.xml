@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.TempmapicdsctDao">
+    <select id="select" parameterType="com.example.kcdwebservice.vo.TempmapicdsctVo" resultType="com.example.kcdwebservice.vo.TempmapicdsctVo">
+        select
+            ICD10_code icd10Code,
+            ICD10_code_modified icd10CodeModified,
+            SCTID sctId
+        from tempmapicdsct;
+    </select>
+</mapper>

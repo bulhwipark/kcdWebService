@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.TempKcd7Dao">
+    <select id="select" parameterType="com.example.kcdwebservice.vo.TempKcd7Vo" resultType="com.example.kcdwebservice.vo.TempKcd7Vo">
+        select
+            KCD_CODE_MODI kcdCodeModi,
+            KCD_CODE_ORIG kcdCodeOrig,
+            KCD_CODE_2DIGIT kcdCode2digit,
+            KCD_CODE_3RD kcdCode3rd,
+            KCD_KOR kcdKor,
+            KCD_ENG kcdEng,
+            ICD_CODE_MODI icdCodeModi,
+            ICD_CODE_ORIG icdCodeOrig,
+            ICD_ENG icdEng,
+            STDCD stdcd,
+            type type,
+            CORE0 core0,
+            axis0 axis0,
+            code0 code0,
+            Attribute1 attribute1,
+            axis1 axis1,
+            code1 code1,
+            VConcept2 vconcept2,
+            axis2 axis2,
+            code2 code2,
+            Comment comment
+        from tempkcd7;
+    </select>
+</mapper>
