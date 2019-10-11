@@ -3,7 +3,7 @@ function menu_kcdList_staticFunc(){
         url:"/getKcdList",
         type:'get',
         data:{
-            limit:10,
+            limit:100,
             offset:0
         },
         dataType:'json',
@@ -25,7 +25,9 @@ function menu_kcdList_staticFunc(){
                             text:data[i].kcdEng
                         }),
                         $('<td>', {
-                            text:!data[i].sctId?'-':data[i].sctId
+                            class:'sctDetail',
+                            text:!data[i].sctId?'-':data[i].sctId,
+                            'data-sctId':!data[i].sctId?'-':data[i].sctId,
                         }),
                         $('<td>', {
                             text:'-'
