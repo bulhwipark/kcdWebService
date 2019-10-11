@@ -15,6 +15,7 @@ public class CmKcdVo {
     private String kcdRvStatCd;
     private String dispOdr;
     private String udtDt;
+    private String sctId;
 
     private String limit;
     private String offset;

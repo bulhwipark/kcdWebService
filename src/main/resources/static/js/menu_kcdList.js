@@ -21,6 +21,9 @@ function menu_kcdList_staticFunc(){
                         }),
                         $('<td>', {
                             text:data[i].kcdEng
+                        }),
+                        $('<td>', {
+                            text:data[i].sctId
                         })
                     );
                     $('#kcdListTable tbody').append($tr);
