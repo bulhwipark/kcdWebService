@@ -33,4 +33,11 @@ public class MainController {
         List<CmKcdVo> list = cmKcdService.select(cmKcdVo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @RequestMapping(value="/kcdDetailPage")
+    public String kcdDetail(){
+        return "/DiagnosisNamePage/kcdDetail";
+    }
+
+
 }

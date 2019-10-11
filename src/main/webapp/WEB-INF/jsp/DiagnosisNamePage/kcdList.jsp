@@ -7,8 +7,24 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="container-fluid content" id="kcdListPage">
-    <div class="kcdListTableDiv" style="margin-top: 20px;">
-        <table class="table" id="kcdListTable">
+    <div class="wall">
+        <div class="pull-left">
+            <h2>
+                KCD 목록
+            </h2>
+        </div>
+        <div>
+            <div class="form-group">
+                <select class="form-control" id="listOption">
+                    <option value="">전체</option>
+                    <option value="">매핑</option>
+                    <option value="">미매핑</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="kcdListTableDiv">
+        <table class="table table-striped" id="kcdListTable">
             <thead>
             <tr>
                 <th scope="col">KCD코드</th>
