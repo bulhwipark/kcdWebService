@@ -72,8 +72,9 @@
                 <label>unspecified :</label> <input type="checkbox" value="unspecified" name="searchMenu"> |
                 <label>alone :</label> <input type="checkbox" value="alone" name="searchMenu"> |
                 <label>without complication :</label> <input type="checkbox" value="without complication" name="searchMenu"> |
-                <label>single :</label> <input type="checkbox" value="single" name="searchMenu">
+                <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
             </div>
+            <button class="btn btn-lg btn-warning">Clean</button>
             <button class="btn btn-lg btn-info">Search</button>
         </div>
     </div>
