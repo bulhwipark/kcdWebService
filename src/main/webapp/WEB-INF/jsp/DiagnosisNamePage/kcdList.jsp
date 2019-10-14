@@ -17,9 +17,9 @@
         <div>
             <div class="form-group">
                 <select class="form-control" id="listOption">
-                    <option value="">전체</option>
-                    <option value="">매핑</option>
-                    <option value="">미매핑</option>
+                    <option value="/selectAll">전체</option>
+                    <option value="/selectMapping">매핑</option>
+                    <option value="/selectNotMapping">미매핑</option>
                 </select>
             </div>
         </div>

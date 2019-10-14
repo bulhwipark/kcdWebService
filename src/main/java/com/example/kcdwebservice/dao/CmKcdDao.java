@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CmKcdDao {
-    List<CmKcdVo> select(CmKcdVo cmKcdVo);
+    List<CmKcdVo> selectAll(CmKcdVo cmKcdVo);
+    List<CmKcdVo> select_mapping(CmKcdVo cmKcdVo);
+    List<CmKcdVo> select_not_mapping(CmKcdVo cmKcdVo);
 }

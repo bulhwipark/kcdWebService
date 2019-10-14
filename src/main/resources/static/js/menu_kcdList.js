@@ -1,6 +1,29 @@
 function menu_kcdList_staticFunc(){
+    kcdList_req("/selectAll");
+
+    $('#listOption').on('change', function(){
+        kcdList_req($(this).val());
+    });
+}
+
+function dynamic_event_func(){
+    $('.kcdDetail').on('click', function(){
+        location.href = '/kcdDetailPage';
+    });
+
+    $('.sctIdDetail').on('click', function(){
+      window.open(
+           '/sctIdDetail',
+           'Detail',
+           'width=1200,height=800,left=200,'
+       );
+      $('#sctId').val($(this).text());
+    });
+}
+
+function kcdList_req(url){
     $.ajax({
-        url:"/getKcdList",
+        url: url,
         type:'get',
         data:{
             limit:100,
@@ -43,22 +66,4 @@ function menu_kcdList_staticFunc(){
             }
         }
     });
-}
-
-function dynamic_event_func(){
-
-    $('.kcdDetail').on('click', function(){
-        location.href = '/kcdDetailPage';
-    });
-
-    $('.sctIdDetail').on('click', function(){
-      window.open(
-           '/sctIdDetail',
-           'Detail',
-           'width=1200,height=800,left=200,'
-       );
-      $('#sctId').val($(this).text());
-    });
-
-
 }

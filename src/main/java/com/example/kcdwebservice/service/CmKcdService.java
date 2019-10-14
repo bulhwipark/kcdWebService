@@ -13,7 +13,15 @@ public class CmKcdService {
     @Autowired
     CmKcdDao cmKcdDao;
 
-    public List<CmKcdVo> select(CmKcdVo cmKcdVo) {
-        return cmKcdDao.select(cmKcdVo);
+    public List<CmKcdVo> selectAll(CmKcdVo cmKcdVo) {
+        return cmKcdDao.selectAll(cmKcdVo);
+    }
+
+    public List<CmKcdVo> selectMapping(CmKcdVo cmKcdVo) {
+        return cmKcdDao.select_mapping(cmKcdVo);
+    }
+
+    public List<CmKcdVo> selectNotMapping(CmKcdVo cmKcdVo) {
+        return cmKcdDao.select_not_mapping(cmKcdVo);
     }
 }

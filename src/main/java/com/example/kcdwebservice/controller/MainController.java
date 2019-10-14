@@ -37,24 +37,54 @@ public class MainController {
     }
 
     /**
-     * KCD목록
+     * KCD 전체 목록
      * @param cmKcdVo
      * @return
      */
-    @RequestMapping(value="/getKcdList")
+    @RequestMapping(value="/selectAll")
     @ResponseBody
-    public ResponseEntity<List<CmKcdVo>> kcdList(CmKcdVo cmKcdVo){
-        List<CmKcdVo> list = cmKcdService.select(cmKcdVo);
+    public ResponseEntity<List<CmKcdVo>> kcdSelectAll(CmKcdVo cmKcdVo){
+        List<CmKcdVo> list = cmKcdService.selectAll(cmKcdVo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    /**
+     *  kcd 매핑 목록
+     * @param cmKcdVo
+     * @return
+     */
+    @RequestMapping(value="/selectMapping")
+    @ResponseBody
+    public ResponseEntity<List<CmKcdVo>> kcdSelectMapping(CmKcdVo cmKcdVo){
+        List<CmKcdVo> list = cmKcdService.selectMapping(cmKcdVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * kcd 미매핑 목록
+     * @param cmKcdVo
+     * @return
+     */
+    @RequestMapping(value="/selectNotMapping")
+    @ResponseBody
+    public ResponseEntity<List<CmKcdVo>> kcdSelectNotMapping(CmKcdVo cmKcdVo){
+        List<CmKcdVo> list = cmKcdService.selectNotMapping(cmKcdVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 
     /**
      * kcd코드 상세화면
      * @return
      */
     @RequestMapping(value="/kcdDetailPage")
-    public String kcdDetail(){
+    public String kcdDetailPage(){
         return "/DiagnosisNamePage/kcdDetail";
+    }
+
+    @RequestMapping(value="/kcdDetail")
+    public String kcdDetail(){
+        return "";
     }
 
     /**
@@ -67,11 +97,18 @@ public class MainController {
         return "/detailPage/sctIdDetail";
     }
 
+    /**
+     * sctId detailList
+     * @param sctId
+     * @return
+     */
     @GetMapping(value="/detailList")
     @ResponseBody
     public ResponseEntity<List<DescriptionVo>> sctIdDetailList(@RequestParam("sctId")String sctId){
         List<DescriptionVo> descriptionList = descriptionService.getDescriptionList(sctId);
         return new ResponseEntity<>(descriptionList, HttpStatus.OK);
     }
+
+
 
 }
