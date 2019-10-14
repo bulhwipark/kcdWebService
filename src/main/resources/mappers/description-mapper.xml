@@ -16,5 +16,7 @@
             term as term,
             casesignificanceid as caseSignificanceId
         FROM description_s WHERE conceptid =#{value}
+        and active = 1
+        and typeid='900000000000003001' 
     </select>
 </mapper>
