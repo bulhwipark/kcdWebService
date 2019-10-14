@@ -11,6 +11,7 @@
     <title>KCD Web Service</title>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css/">
     <link rel="stylesheet" type="text/css" href="/static/css/headerMenuCss.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/kcdWebService_style.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/jsp/header/headerMenu.jsp" %>

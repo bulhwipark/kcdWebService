@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.DescriptionDao">
+    <select id="getDescriptionList" parameterType="String" resultType="hashMap">
+        SELECT
+            id as id,
+            effectivetime as effectiveTime,
+            active as active,
+            moduleid as moduleId,
+            conceptid as conceptId,
+            languagecode as languageCode,
+            typeid as typeId,
+            term as term,
+            casesignificanceid as caseSignificanceId
+        FROM description_s WHERE conceptid =#{value}
+    </select>
+</mapper>

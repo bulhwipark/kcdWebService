@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="wall">
         <div class="pull-left">
@@ -35,28 +36,7 @@
                 <th scope="col">Flag</th>
             </tr>
             </thead>
-            <tbody>
-            <%--
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            --%>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>

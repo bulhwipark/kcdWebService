@@ -8,7 +8,6 @@ function menu_kcdList_staticFunc(){
         },
         dataType:'json',
         success:function(data){
-            console.log(data);
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
                 for(var i = 0; i<data.length; i++){
@@ -25,7 +24,7 @@ function menu_kcdList_staticFunc(){
                             text:data[i].kcdEng
                         }),
                         $('<td>', {
-                            class:'sctDetail',
+                            class:'sctIdDetail',
                             text:!data[i].sctId?'-':data[i].sctId,
                             'data-sctId':!data[i].sctId?'-':data[i].sctId,
                         }),
@@ -49,8 +48,17 @@ function menu_kcdList_staticFunc(){
 function dynamic_event_func(){
 
     $('.kcdDetail').on('click', function(){
-        console.log($(this));
         location.href = '/kcdDetailPage';
     });
+
+    $('.sctIdDetail').on('click', function(){
+      window.open(
+           '/sctIdDetail',
+           'Detail',
+           'width=1200,height=800,left=200,'
+       );
+      $('#sctId').val($(this).text());
+    });
+
 
 }

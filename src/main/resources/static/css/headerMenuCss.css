@@ -1,11 +1,4 @@
 .headerMenu{
     cursor:pointer;
 }
-.displayNone{
-    display: none !important;
-}
-.kcdDetail:hover{
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-}
+
