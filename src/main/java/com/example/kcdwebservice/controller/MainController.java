@@ -1,6 +1,7 @@
 package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.*;
+import com.example.kcdwebservice.util.HttpClientSearch;
 import com.example.kcdwebservice.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -118,6 +120,20 @@ public class MainController {
     public ResponseEntity<List<DescriptionVo>> sctIdDetailList(@RequestParam("sctId")String sctId){
         List<DescriptionVo> descriptionList = descriptionService.getDescriptionList(sctId);
         return new ResponseEntity<>(descriptionList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/search")
+    @ResponseBody
+    public void search(SearchVo searchVo) {
+        System.out.println(searchVo.getEcl());
+        System.out.println(searchVo.getTerm());
+        HttpClientSearch httpClientSearch = new HttpClientSearch();
+        try {
+            String result = httpClientSearch.httpClientRequest(searchVo);
+            System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

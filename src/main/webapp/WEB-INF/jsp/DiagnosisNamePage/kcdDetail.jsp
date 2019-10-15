@@ -58,7 +58,7 @@
                 <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
             </div>
             <button class="btn btn-lg btn-warning">Clean</button>
-            <button class="btn btn-lg btn-info">Search</button>
+            <button class="btn btn-lg btn-info" onclick="search_req()">Search</button>
         </div>
     </div>
     <div class="row">
