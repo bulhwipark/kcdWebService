@@ -68,6 +68,18 @@ public class MainController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * kcd 매핑상태별 total count
+     * @param mappingStatus
+     * @return
+     */
+    @RequestMapping(value="/getTotalCount")
+    @ResponseBody
+    public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, @RequestParam("mapVer")String mapVer){
+        String totalCnt = cmKcdService.mappingStatTotalCnt(mappingStatus, mapVer);
+        return new ResponseEntity<>(totalCnt, HttpStatus.OK);
+    }
+
 
     /**
      * kcd코드 상세화면

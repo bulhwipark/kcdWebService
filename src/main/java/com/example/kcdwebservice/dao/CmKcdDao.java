@@ -14,4 +14,10 @@ public interface CmKcdDao {
     List<CmKcdVo> select_not_mapping(CmKcdVo cmKcdVo);
 
     CmKcdVo selectKcdCdInfo(String kcdCd);
+
+    String totalAllCnt(String mapVer);
+
+    String totalMappingCnt(String mapVer);
+
+    String totalNotMappingCnt(String mapVer);
 }

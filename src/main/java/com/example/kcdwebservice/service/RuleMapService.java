@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.example.kcdwebservice.util.ParameterStringBuilder;
 
+import com.example.kcdwebservice.vo.CmKcdVo;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -32,6 +33,7 @@ public class RuleMapService {
     hm.put("term", term);
 
     try {
+      CmKcdVo ck =new CmKcdVo();
 
       JSONObject jobj = new JSONObject(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl, hm));
 
