@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.kcdwebservice.dao.MapKcdSctDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
+import com.example.kcdwebservice.vo.MapKcdSctVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -16,11 +18,25 @@ public class RuleMapService {
   @Autowired
   private CmKcdService cmKcdService;
 
+  @Autowired
+  MapKcdSctDao mapKcdSctDao;
+
   public void automap(){
 
   List<CmKcdVo> lck= selectKcdList();
+  MapKcdSctVo mvo =null;
   for(CmKcdVo ck : lck){
-    System.out.println(searchTerm(ck.getKcdEng()).toString());
+
+    List <String> lsctcd = searchTerm(ck.getKcdEng());
+
+    for(String sctcd : lsctcd){
+      mvo =new MapKcdSctVo();
+      mvo.setOriCd(ck.getKcdCd());
+      mvo.setSctId(sctcd);
+      mvo.setMapVer("0");
+      mapKcdSctDao.insertAutoMap1(mvo);
+    }
+    
   }
 
 
@@ -63,7 +79,7 @@ public class RuleMapService {
   public List<CmKcdVo> selectKcdList(){
     
     CmKcdVo ck = new CmKcdVo();
-    ck.setLimit("50");
+    ck.setLimit("100000");
     ck.setMapVer("0");
     ck.setOffset("0");
 
@@ -81,7 +97,6 @@ public class RuleMapService {
 
     RuleMapService rs = new RuleMapService();
     
-    System.out.println("test"+rs.selectKcdList().toString());
 
     System.out.println(rs.searchTerm("Heart Attack").toString());
 
