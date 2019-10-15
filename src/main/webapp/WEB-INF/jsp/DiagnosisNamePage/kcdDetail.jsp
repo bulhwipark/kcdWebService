@@ -16,42 +16,22 @@
 <%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
-        <span>KCD코드 : <span></span></span>
+        <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
         <div>
-            <span>한글명 : <span></span></span>
-            <span>영문명 : <span></span></span>
+            <div><b>한글명 : </b><span id="kcdKor"></span></div>
+            <div><b>영문명 : </b><span id="kcdEng"></span></div>
         </div>
     </div>
     <div class="row">
-        <table class="table table-striped" style="margin-left: 10px; margin-right: 10px;">
+        <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
             <thead>
                 <tr>
-                    <th scope="col">KCD코드</th>
                     <th scope="col">SCT_ID</th>
                     <th scope="col">STAT_ID</th>
                     <th scope="col">UDT_DT</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                </tr>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                </tr>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
     <div class="alert alert-primary" role="alert">
@@ -63,7 +43,7 @@
             </div>
             <div>
                 <label for="term"><b>term : </b></label>
-                <input type="text" id="term">
+                <input type="text" id="term" style="width: 500px;">
             </div>
             <div>
                 <label>and :</label> <input type="checkbox" value="and" name="searchMenu"> |
@@ -84,4 +64,10 @@
 </body>
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
 <script src="/static/lib/bootstrap.min.js"></script>
+<script src="/static/js/kcd_detail.js"></script>
+<script type="text/javascript">
+    $(function(){
+        kcd_detail_static_func();
+    })
+</script>
 </html>

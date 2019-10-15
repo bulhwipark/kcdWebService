@@ -1,22 +1,15 @@
 package com.example.kcdwebservice.controller;
 
-import com.example.kcdwebservice.service.CmKcdService;
-import com.example.kcdwebservice.service.DescriptionService;
-import com.example.kcdwebservice.service.TempKcd7Service;
-import com.example.kcdwebservice.service.TempmapicdsctService;
-import com.example.kcdwebservice.vo.CmKcdVo;
-import com.example.kcdwebservice.vo.DescriptionVo;
-import com.example.kcdwebservice.vo.TempKcd7Vo;
-import com.example.kcdwebservice.vo.TempmapicdsctVo;
+import com.example.kcdwebservice.service.*;
+import com.example.kcdwebservice.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import sun.security.krb5.internal.crypto.Des;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @Controller
@@ -26,6 +19,8 @@ public class MainController {
     private CmKcdService cmKcdService;
     @Autowired
     private DescriptionService descriptionService;
+    @Autowired
+    private MapKcdSctService mapKcdSctService;
 
     /**
      * 메인화면.
@@ -78,13 +73,30 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/kcdDetailPage")
-    public String kcdDetailPage(){
-        return "/DiagnosisNamePage/kcdDetail";
+    public ModelAndView kcdDetailPage(@RequestParam("kcdCd")String kcdCd){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("kcdCd", kcdCd);
+        mav.setViewName("/DiagnosisNamePage/kcdDetail");
+        return mav;
     }
 
-    @RequestMapping(value="/kcdDetail")
-    public String kcdDetail(){
-        return "";
+    /**
+     * kcdCd 정보
+     * @param kcdCd
+     * @return
+     */
+    @RequestMapping(value="/getKcdCdInfo")
+    @ResponseBody
+    public ResponseEntity<CmKcdVo> kcdCdInfo(@RequestParam("kcdCd")String kcdCd){
+        CmKcdVo kcdInfo = cmKcdService.selectKcdCdInfo(kcdCd);
+        return new ResponseEntity<>(kcdInfo, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/getkcdDetailList")
+    @ResponseBody
+    public ResponseEntity<List<MapKcdSctVo>> getKcdDetailList(@RequestParam("kcdCd")String kcdCd){
+        List<MapKcdSctVo> list = mapKcdSctService.selectKcdCdList(kcdCd);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     /**
@@ -108,7 +120,5 @@ public class MainController {
         List<DescriptionVo> descriptionList = descriptionService.getDescriptionList(sctId);
         return new ResponseEntity<>(descriptionList, HttpStatus.OK);
     }
-
-
 
 }

@@ -30,4 +30,16 @@
            null sctId
         from CM_KCD where KCD_CD not in (select distinct KCD_CD from MAP_KCD_SCT) limit ${limit} offset ${offset};
     </select>
+
+    <select id="selectKcdCdInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKcdVo">
+        SELECT
+            KCD_CD kcdCd,
+            KCD_ENG kcdEng,
+            KCD_KOR kcdKor,
+            KCD_MAP_STAT_CD kcdMapStatCd,
+            KCD_RV_STAT_CD kcdRvStatCd,
+            DISP_ODR dispOdr,
+            UDT_DT udtDt
+        FROM CM_KCD WHERE KCD_CD = #{value}
+    </select>
 </mapper>

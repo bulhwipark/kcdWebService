@@ -24,4 +24,8 @@ public class CmKcdService {
     public List<CmKcdVo> selectNotMapping(CmKcdVo cmKcdVo) {
         return cmKcdDao.select_not_mapping(cmKcdVo);
     }
+
+    public CmKcdVo selectKcdCdInfo(String kcdCd) {
+        return cmKcdDao.selectKcdCdInfo(kcdCd);
+    }
 }

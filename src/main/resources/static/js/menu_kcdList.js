@@ -8,7 +8,7 @@ function menu_kcdList_staticFunc(){
 
 function dynamic_event_func(){
     $('.kcdDetail').on('click', function(){
-        location.href = '/kcdDetailPage';
+        location.href = '/kcdDetailPage?kcdCd=' + $(this).text();
     });
 
     $('.sctIdDetail').on('click', function(){
@@ -33,6 +33,7 @@ function kcdList_req(url){
         success:function(data){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
+
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {
