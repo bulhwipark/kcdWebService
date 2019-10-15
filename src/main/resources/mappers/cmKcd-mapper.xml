@@ -12,7 +12,7 @@
            M.SCT_ID sctId
         FROM CM_KCD K LEFT JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
-        ) M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
+        ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
     <select id="select_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -23,7 +23,7 @@
            M.SCT_ID sctId
         FROM CM_KCD K INNER JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
-        ) M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
+        ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -48,4 +48,26 @@
             UDT_DT udtDt
         FROM CM_KCD WHERE KCD_CD = #{value}
     </select>
+
+    <select id="totalAllCnt" parameterType="String" resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K LEFT JOIN (
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+        ) M ON K.KCD_CD = M.ORI_CD;
+    </select>
+
+    <select id="totalMappingCnt" parameterType="String" resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K INNER JOIN (
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+        ) M ON K.KCD_CD = M.ORI_CD;
+    </select>
+
+    <select id="totalNotMappingCnt" parameterType="String" resultType="String">
+        select count(*)
+        from CM_KCD where KCD_CD not in (
+            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = #{value}
+        );
+    </select>
+
 </mapper>

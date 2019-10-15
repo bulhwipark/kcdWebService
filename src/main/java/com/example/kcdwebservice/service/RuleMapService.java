@@ -40,6 +40,7 @@ public class RuleMapService {
     hm.put("term", term);
 
     try {
+      CmKcdVo ck =new CmKcdVo();
 
       JSONObject jobj = new JSONObject(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl, hm));
 

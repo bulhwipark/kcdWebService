@@ -25,9 +25,9 @@
             <div class="form-inline col-xl-3">
                 <label for="listOption">매핑상태 : </label>
                 <select class="form-control kcdSearchOption" id="listOption" style="width: 300px;">
-                    <option value="/selectAll">전체</option>
-                    <option value="/selectMapping">매핑</option>
-                    <option value="/selectNotMapping">비매핑</option>
+                    <option value="All">전체</option>
+                    <option value="Mapping">매핑</option>
+                    <option value="NotMapping">비매핑</option>
                 </select>
             </div>
             <div class="col-xl-6" style="text-align: right; font-size: 25px;">

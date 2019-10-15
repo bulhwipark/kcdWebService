@@ -28,4 +28,16 @@ public class CmKcdService {
     public CmKcdVo selectKcdCdInfo(String kcdCd) {
         return cmKcdDao.selectKcdCdInfo(kcdCd);
     }
+
+    public String mappingStatTotalCnt(String mappingStatus, String mapVer) {
+        String totalCnt = null;
+        if(mappingStatus.equals("All")){
+            totalCnt = cmKcdDao.totalAllCnt(mapVer);
+        }else if(mappingStatus.equals("Mapping")){
+            totalCnt = cmKcdDao.totalMappingCnt(mapVer);
+        }else{
+            totalCnt = cmKcdDao.totalNotMappingCnt(mapVer);
+        }
+        return totalCnt;
+    }
 }

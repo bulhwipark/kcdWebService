@@ -1,8 +1,12 @@
 function menu_kcdList_staticFunc(){
-    kcdList_req("/selectAll");
+    //초기 실행
+    kcdList_req();
+    kcdList_totalCount_req();
 
+    //이벤트바인딩.
     $('.kcdSearchOption').on('change', function(){
         kcdList_req();
+        kcdList_totalCount_req();
     });
 }
 
@@ -23,7 +27,7 @@ function dynamic_event_func(){
 
 function kcdList_req(){
     $.ajax({
-        url: $('#listOption option:selected').val(),
+        url: "/select"+$('#listOption option:selected').val(),
         type:'get',
         data:{
             mapVer:$('#version option:selected').val(),
@@ -34,7 +38,6 @@ function kcdList_req(){
         success:function(data){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
-                $('#totalCnt').text(data.length?data.length:'-');
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {
@@ -70,4 +73,21 @@ function kcdList_req(){
             }
         }
     });
+}
+
+
+function kcdList_totalCount_req(){
+    $.ajax({
+        url:'/getTotalCount',
+        type:'post',
+        data:{
+            mappingStatus:$('#listOption option:selected').val(),
+            mapVer:$('#version option:selected').val(),
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            $('#totalCnt').text(data?data:'-');
+        }
+    })
 }
