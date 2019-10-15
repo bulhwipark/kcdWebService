@@ -16,7 +16,17 @@ public class RuleMapService {
   @Autowired
   private CmKcdService cmKcdService;
 
-@Autowired
+  public void automap(){
+
+  List<CmKcdVo> lck= selectKcdList();
+  for(CmKcdVo ck : lck){
+    System.out.println(searchTerm(ck.getKcdEng()).toString());
+  }
+
+
+}
+
+
   public List<String> searchTerm(String term) {
     ArrayList<String> arrSctid = new ArrayList<String>();
 

@@ -33,7 +33,7 @@
            UDT_DT udtDt,
            null sctId
         from CM_KCD where KCD_CD not in (
-            select distinct KCD_CD from MAP_KCD_SCT where MAP_VER = ${mapVer}
+            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer}
         ) limit ${limit} offset ${offset};
     </select>
 

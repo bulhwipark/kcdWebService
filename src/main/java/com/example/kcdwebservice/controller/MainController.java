@@ -131,7 +131,8 @@ public class MainController {
     @GetMapping(value="/kcdRule1")
     @ResponseBody
     public String autoMapKcdRule1(){
-        ruleMapService.searchTerm("Heart Attack");
+        ruleMapService.automap();
+        
        return "/index";
     }
 
