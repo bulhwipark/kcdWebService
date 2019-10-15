@@ -6,10 +6,13 @@
 <mapper namespace="com.example.kcdwebservice.dao.MapKcdSctDao">
     <select id="selectKcdCdList" parameterType="String" resultType="com.example.kcdwebservice.vo.MapKcdSctVo">
         select
-               KCD_CD kcdCd,
-               SCT_ID sctId,
-               STAT_CD statCd,
-               UDT_DT udtDt
+            KCD_CD kcdCd,
+            SCT_ID sctId,
+            MAP_VER mapVer,
+            MAP_STAT_CD mapStatCd,
+            RV_STAT_CD rvStatCd,
+            DISP_ODR dispOdr,
+            UDT_DT udtDt
         from MAP_KCD_SCT where KCD_CD = #{value}
     </select>
 </mapper>

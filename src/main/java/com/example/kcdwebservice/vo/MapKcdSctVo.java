@@ -11,7 +11,10 @@ public class MapKcdSctVo {
 
     private String kcdCd;
     private String sctId;
-    private String statCd;
+    private String mapVer;
+    private String mapStatCd;
+    private String rvStatCd;
+    private String dispOdr;
     private String udtDt;
 
 }

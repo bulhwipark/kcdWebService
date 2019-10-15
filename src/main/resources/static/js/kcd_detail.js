@@ -38,7 +38,16 @@ function get_kcdDetail_list(){
                             text:data[i].sctId
                         }),
                         $('<td>',{
-                            text:data[i].statCd
+                            text:data[i].mapVer
+                        }),
+                        $('<td>',{
+                            text:data[i].mapStatCd
+                        }),
+                        $('<td>',{
+                            text:data[i].rvStatCd
+                        }),
+                        $('<td>',{
+                            text:data[i].dispOdr
                         }),
                         $('<td>',{
                             text:data[i].udtDt
