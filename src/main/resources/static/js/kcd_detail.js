@@ -15,6 +15,7 @@ function get_kcdCdObject_req(){
             if(data){
                 $('#kcdKor').text(data.kcdKor);
                 $('#kcdEng').text(data.kcdEng);
+                $('#term').val(data.kcdEng);
             }
         }
     });
@@ -58,6 +59,21 @@ function get_kcdDetail_list(){
             }else{
                 console.log('자료 없음 처리.');
             }
+        }
+    })
+}
+
+function search_req(){
+    $.ajax({
+        url:'/search',
+        type:'post',
+        data:{
+            ecl:$('#ecl').val(),
+            term:$('#term').val()
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data)
         }
     })
 }

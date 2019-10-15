@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class MapKcdSctVo {
 
-    private String kcdCd;
+    private String oriCd;
     private String sctId;
     private String mapVer;
     private String mapStatCd;
