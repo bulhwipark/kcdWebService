@@ -136,7 +136,6 @@ public class MainController {
         return new ResponseEntity<>(descriptionList, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
 
     /**
      * sctId detailList
@@ -152,7 +151,6 @@ public class MainController {
     }
 
 
-=======
     @RequestMapping(value="/search")
     @ResponseBody
     public void search(SearchVo searchVo) {
@@ -167,5 +165,4 @@ public class MainController {
         }
     }
 
->>>>>>> 32f18133d1ff69656f888ff71a1c788381317008
 }
