@@ -10,7 +10,9 @@
            K.KCD_KOR kcdKor,
            K.UDT_DT udtDt,
            M.SCT_ID sctId
-        FROM CM_KCD K LEFT JOIN MAP_KCD_SCT M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
+        FROM CM_KCD K LEFT JOIN (
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
+        ) M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
     </select>
 
     <select id="select_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -19,7 +21,9 @@
            K.KCD_KOR kcdKor,
            K.UDT_DT udtDt,
            M.SCT_ID sctId
-        FROM CM_KCD K INNER JOIN MAP_KCD_SCT M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
+        FROM CM_KCD K INNER JOIN (
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
+        ) M ON K.KCD_CD = M.KCD_CD limit ${limit} offset ${offset};
     </select>
 
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -28,7 +32,9 @@
            KCD_KOR kcdKor,
            UDT_DT udtDt,
            null sctId
-        from CM_KCD where KCD_CD not in (select distinct KCD_CD from MAP_KCD_SCT) limit ${limit} offset ${offset};
+        from CM_KCD where KCD_CD not in (
+            select distinct KCD_CD from MAP_KCD_SCT where MAP_VER = ${mapVer}
+        ) limit ${limit} offset ${offset};
     </select>
 
     <select id="selectKcdCdInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKcdVo">

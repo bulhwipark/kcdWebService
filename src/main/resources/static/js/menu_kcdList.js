@@ -1,8 +1,8 @@
 function menu_kcdList_staticFunc(){
     kcdList_req("/selectAll");
 
-    $('#listOption').on('change', function(){
-        kcdList_req($(this).val());
+    $('.kcdSearchOption').on('change', function(){
+        kcdList_req();
     });
 }
 
@@ -21,11 +21,12 @@ function dynamic_event_func(){
     });
 }
 
-function kcdList_req(url){
+function kcdList_req(){
     $.ajax({
-        url: url,
+        url: $('#listOption option:selected').val(),
         type:'get',
         data:{
+            mapVer:$('#version option:selected').val(),
             limit:100,
             offset:0
         },
@@ -33,7 +34,7 @@ function kcdList_req(url){
         success:function(data){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
-
+                $('#totalCnt').text(data.length?data.length:'-');
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {
@@ -41,12 +42,14 @@ function kcdList_req(url){
                             text:data[i].kcdCd,
                             'data-kcdCd':data[i].kcdCd
                         }),
-                        $('<td>', {
-                            text:data[i].kcdKor
-                        }),
-                        $('<td>', {
-                            text:data[i].kcdEng
-                        }),
+                        $('<td>').append(
+                            $('<div>',{
+                                text:'ko : ' + data[i].kcdKor
+                            }),
+                            $('<div>',{
+                                text:'en : ' + data[i].kcdEng
+                            }),
+                        ),
                         $('<td>', {
                             class:'sctIdDetail',
                             text:!data[i].sctId?'-':data[i].sctId,
