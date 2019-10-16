@@ -49,7 +49,29 @@
         FROM CM_KCD WHERE KCD_CD = #{value}
     </select>
 
-    <select id="totalAllCnt" parameterType="String" resultType="String">
+    <select id="totalAllCnt"  resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K ;
+    </select>
+
+    <select id="totalMappingCnt" parameterType="String" resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K 
+        WHERE KCD_CD IN (
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+        );
+    </select>
+
+    <select id="totalNotMappingCnt" parameterType="String" resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K 
+        WHERE KCD_CD NOT IN (
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+        );
+    </select>
+
+
+    <!--select id="totalAllCnt" parameterType="String" resultType="String">
         SELECT count(*)
         FROM CM_KCD K LEFT JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
@@ -68,6 +90,6 @@
         from CM_KCD where KCD_CD not in (
             select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = #{value}
         );
-    </select>
+    </select-->
 
 </mapper>
