@@ -6,10 +6,58 @@ function kcd_detail_static_func(){
     $('#ecl').on('click',function(){
         $('#disorder').prop('checked', false);
         $('#clinicalFinding').prop('checked', false);
-    })
+    });
 
+    //kcd 상세리스트 쪽 전체 선택.
+    $('#allSelect').on('click',function(){
+        if($(this).prop('checked')){
+            $('input[name="sctListCheck"]').prop("checked", true);
+        }else{
+            $('input[name="sctListCheck"]').prop("checked", false);
+        }
+
+        if($('input[name="sctListCheck"]:checked').length > 0){
+            $('#removeBtn').prop('disabled', false);
+        }else{
+            $('#removeBtn').prop('disabled', true);
+        }
+    });
+
+    //검색목록 쪽 전체선택
+    $('#searchResultAllSelect').on('click', function(){
+        if($(this).prop('checked')){
+            $('input[name="searchResultSaveCheckbox"]').prop('checked', true);
+        }else{
+            $('input[name="searchResultSaveCheckbox"]').prop('checked', false);
+        }
+
+        if($('input[name="searchResultSaveCheckbox"]:checked').length > 0){
+            $('#saveBtn').prop('disabled', false);
+        }else{
+            $('#saveBtn').prop('disabled', true);
+        }
+    });
 
 }
+
+function kcd_detail_dynamic_func(){
+    $('input[name="sctListCheck"]').on('change', function(e){
+        if($('input[name="sctListCheck"]:checked').length > 0){
+            $('#removeBtn').prop('disabled', false);
+        }else{
+            $('#removeBtn').prop('disabled', true);
+        }
+    });
+
+    $('input[name="searchResultSaveCheckbox"]').on('change', function(e){
+        if($('input[name="searchResultSaveCheckbox"]:checked').length > 0){
+            $('#saveBtn').prop('disabled', false);
+        }else{
+            $('#saveBtn').prop('disabled', true);
+        }
+    });
+}
+
 
 function get_kcdCdObject_req(){
     $.ajax({
@@ -41,6 +89,7 @@ function get_kcdDetail_list(){
             console.log(data);
             if(data.length > 0){
                 $('#kcdDetailTable tbody').empty();
+                $('#allSelect').prop("checked", false);
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>',{
@@ -71,6 +120,7 @@ function get_kcdDetail_list(){
                     );
                     $('#kcdDetailTable tbody').append($tr);
                 }
+                kcd_detail_dynamic_func();
             }else{
                 console.log('자료 없음 처리.');
             }
@@ -111,6 +161,7 @@ function search_req(){
             if(data['items'].length > 0){
                 var items = data['items'];
                 $('#searchResultTable tbody').empty();
+                $('#searchResultAllSelect').prop("checked", false);
                 for(var i = 0; i<items.length; i++){
                     var $tr = $('<tr>').append(
                         //conceptId
@@ -133,7 +184,7 @@ function search_req(){
                         $('<td>').append(
                             $('<input>',{
                                 type:'checkbox',
-                                name:'saveCheckbox',
+                                name:'searchResultSaveCheckbox',
                                 value:JSON.stringify(items[i])
                             })
                         )
@@ -141,6 +192,7 @@ function search_req(){
                     $('#searchResultTable tbody').append($tr);
                 }
                 $('#saveBtnDiv').removeClass('displayNone');
+                kcd_detail_dynamic_func();
             }else{
                 console.log("자료 없음 처리.");
             }

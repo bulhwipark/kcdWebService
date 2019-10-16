@@ -41,6 +41,9 @@
             </thead>
             <tbody></tbody>
         </table>
+        <div id="removeBtnDiv" class="save-btn-div">
+            <button id="removeBtn" class="btn btn-lg btn-danger" disabled>삭제</button>
+        </div>
     </div>
     <div class="alert alert-primary" role="alert">
         <h4>search menu</h4>
@@ -97,7 +100,7 @@
             <tbody></tbody>
         </table>
         <div id="saveBtnDiv" class="save-btn-div displayNone">
-            <button class="btn btn-lg btn-info" disabled>저장</button>
+            <button id="saveBtn" class="btn btn-lg btn-info" disabled>저장</button>
         </div>
     </div>
 </div>

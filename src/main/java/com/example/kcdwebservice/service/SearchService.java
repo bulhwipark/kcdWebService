@@ -18,8 +18,8 @@ public class SearchService {
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("activeFilter", "true");
         paramMap.put("termActive", "true");
-        paramMap.put("limit", "50");
-        paramMap.put("offset", "0");
+       // paramMap.put("limit", "50");
+       // paramMap.put("offset", "0");
         paramMap.put("term", searchVo.getTerm());
 
         //disorder, clinical finding, 사용자ECL 순으로 req를 보내고 items에 length가 0 이상이면 종료.
