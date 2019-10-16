@@ -5,6 +5,7 @@ import com.example.kcdwebservice.util.HttpClientSearch;
 import com.example.kcdwebservice.util.HttpRestCall;
 import com.example.kcdwebservice.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -181,7 +182,12 @@ public class MainController {
     @RequestMapping(value="/search")
     @ResponseBody
     public ResponseEntity<String> search(SearchVo searchVo) {
-        String result = searchService.searchReqeust(searchVo);
+        String result = null;
+        try {
+            result = searchService.searchReqeust(searchVo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
