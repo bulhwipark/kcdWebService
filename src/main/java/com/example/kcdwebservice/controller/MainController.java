@@ -142,11 +142,18 @@ public class MainController {
      * @param sctId
      * @return
      */
+ 
     @GetMapping(value="/kcdRule1")
     @ResponseBody
     public String autoMapKcdRule1(){
-        ruleMapService.automap1();
-        
+        ruleMapService.automap1("<64572001"); //disease (discorder)
+       return "/index";
+    }
+
+    @GetMapping(value="/kcdRule2")
+    @ResponseBody
+    public String autoMapKcdRule2(){
+        ruleMapService.automap1("<404684003"); //Clinical finding (finding)
        return "/index";
     }
 

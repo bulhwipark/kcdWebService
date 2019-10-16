@@ -22,13 +22,13 @@ public class RuleMapService {
   @Autowired
   MapKcdSctDao mapKcdSctDao;
 
-  public void automap1() {
+  public void automap1(String ecl) {
 
     List<CmKcdVo> lck = selectKcdList();
     MapKcdSctVo mvo = null;
     for (CmKcdVo ck : lck) {
 
-      List<String> lsctcd = searchTerm(ck.getKcdEng());
+      List<String> lsctcd = searchTerm(ck.getKcdEng(),ecl);
 
       for (String sctcd : lsctcd) {
         mvo = new MapKcdSctVo();
@@ -41,8 +41,13 @@ public class RuleMapService {
     }
 
   }
-
   public List<String> searchTerm(String term) {
+    String ecl="<64572001"; //Disease (disorder)
+    return searchTerm(term,ecl);
+    //String ecl="<404684003"; //clinical finding(finding)
+  }
+
+  public List<String> searchTerm(String term,String ecl) {
     ArrayList<String> arrSctid = new ArrayList<String>();
 
     String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
@@ -51,7 +56,7 @@ public class RuleMapService {
 
     hm.put("activeFilter", "true");
     hm.put("termActive", "true");
-    hm.put("statedEcl", "<64572001");
+    hm.put("statedEcl", ecl);
     hm.put("term", term);
 
     try {
