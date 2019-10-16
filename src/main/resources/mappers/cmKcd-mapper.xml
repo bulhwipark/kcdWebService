@@ -15,6 +15,34 @@
         ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
+    <select id="selectAll2" parameterType="com.example.kcdwebservice.vo.MapMetaVo" resultType="com.example.kcdwebservice.vo.MapMetaVo">
+        SELECT K.KCD_CD kcdCd,
+           K.KCD_ENG kcdEng,
+           K.KCD_KOR kcdKor,
+           K.UDT_DT udtDt,
+           M.SCT_ID sctId,
+           T.term term,
+           M.MAP_STAT_CD mapStatCd,
+           C1.CD_DSCRT cdDscrt
+        FROM CM_KCD K 
+		LEFT JOIN MAP_KCD_SCT M
+			ON K.KCD_CD = M.ORI_CD
+			AND M.MAP_VER = ${mapVer}
+			AND M.MAP_STAT_CD=${mapStatCd}
+		LEFT JOIN description_s T
+			ON M.SCT_ID=T.conceptid
+			AND T.active='1'
+			AND T.typeid='900000000000003001'
+		LEFT JOIN MCODE C1
+			ON C1.CD_GRP='MAP_STAT_CD'
+			AND C1.CD_ID=M.MAP_STAT_CD
+            AND C1.CD_STAT_CD='0'
+        limit ${limit} offset ${offset};
+		
+    </select>
+
+    
+
     <select id="select_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
         SELECT K.KCD_CD kcdCd,
            K.KCD_ENG kcdEng,
