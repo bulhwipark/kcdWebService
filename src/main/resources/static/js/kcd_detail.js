@@ -73,7 +73,42 @@ function search_req(){
         },
         dataType:'json',
         success:function(data){
-            console.log(data)
+            console.log(data);
+            if(data['items'].length > 0){
+                var items = data['items'];
+                $('#searchResultTable tbody').empty();
+                for(var i = 0; i<items.length; i++){
+                    var $tr = $('<tr>').append(
+                        //conceptId
+                        $('<td>',{
+                            text:items[i].conceptId
+                        }),
+                        //active
+                        $('<td>',{
+                            text:items[i].active
+                        }),
+                        //term
+                        $('<td>',{
+                            text:items[i]['fsn']['term']
+                        }),
+                        //moduleId
+                        $('<td>',{
+                            text:items[i].moduleId
+                        }),
+                        //checkBox
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'testing'
+                            })
+                        )
+                    );
+                    $('#searchResultTable tbody').append($tr);
+                }
+                $('#saveBtnDiv').removeClass('displayNone');
+            }else{
+                console.log("자료 없음 처리.");
+            }
         }
     })
 }

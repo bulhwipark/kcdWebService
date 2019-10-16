@@ -25,13 +25,16 @@ function dynamic_event_func(){
     });
 }
 
+/**
+ * kcd 목록
+ */
 function kcdList_req(){
     $.ajax({
         url: "/select"+$('#listOption option:selected').val(),
         type:'get',
         data:{
             mapVer:$('#version option:selected').val(),
-            limit:100,
+            limit:300,
             offset:0
         },
         dataType:'json',
@@ -75,7 +78,9 @@ function kcdList_req(){
     });
 }
 
-
+/**
+ * 토탈카운트
+ */
 function kcdList_totalCount_req(){
     $.ajax({
         url:'/getTotalCount',

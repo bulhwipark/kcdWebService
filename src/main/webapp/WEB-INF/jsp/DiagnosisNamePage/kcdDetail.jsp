@@ -11,6 +11,7 @@
     <title>KCD Web Service</title>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css/">
     <link rel="stylesheet" type="text/css" href="/static/css/headerMenuCss.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/kcdWebService_style.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>
@@ -22,7 +23,7 @@
             <div><b>영문명 : </b><span id="kcdEng"></span></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="overflow: auto; height:500px;">
         <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
             <thead>
                 <tr>
@@ -62,6 +63,20 @@
         </div>
     </div>
     <div class="row">
+        <table class="table table-striped" id="searchResultTable">
+            <thead>
+                <tr>
+                    <th>conceptId</th>
+                    <th>active</th>
+                    <th>term</th>
+                    <th>moduleId</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="saveBtnDiv" class="save-btn-div displayNone">
+            <button class="btn btn-lg btn-info" disabled>저장</button>
+        </div>
     </div>
 </div>
 </body>

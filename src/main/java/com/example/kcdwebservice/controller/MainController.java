@@ -136,16 +136,18 @@ public class MainController {
 
     @RequestMapping(value="/search")
     @ResponseBody
-    public void search(SearchVo searchVo) {
+    public ResponseEntity<String> search(SearchVo searchVo) {
+        String result = null;
         System.out.println(searchVo.getEcl());
         System.out.println(searchVo.getTerm());
         HttpClientSearch httpClientSearch = new HttpClientSearch();
         try {
-            String result = httpClientSearch.httpClientRequest(searchVo);
+            result = httpClientSearch.httpClientRequest(searchVo);
             System.out.println(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
