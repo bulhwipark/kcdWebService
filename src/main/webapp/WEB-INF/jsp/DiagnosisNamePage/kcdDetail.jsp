@@ -23,7 +23,7 @@
             <div><b>영문명 : </b><span id="kcdEng"></span></div>
         </div>
     </div>
-    <div class="row" style="overflow: auto; height:500px;">
+    <div class="row">
         <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
             <thead>
                 <tr>
