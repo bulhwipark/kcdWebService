@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 public class HttpClientSearch{
     public String httpClientRequest(SearchVo searchVo) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
-        String URL = "http://1.224.169.78:8080/MAIN/concepts";
+        String URL = "http://1.224.169.78:8095/MAIN/concepts";
         String parameter = "?activeFilter=true&term=" +
                 URLEncoder.encode(searchVo.getTerm(), "UTF-8") +
                 "&termActive=true&ecl=" + URLEncoder.encode(searchVo.getEcl(), "UTF-8") +
