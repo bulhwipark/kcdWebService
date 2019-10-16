@@ -82,22 +82,23 @@ function search_req(){
     var param = new Object();
     param.term = $('#term').val();
 
+    param.ecl = [];
 
     if($('#disorder').prop('checked')){
-        param.disorder = $('#disorder').val();
+        param.ecl.push($('#disorder').val());
     }
 
     if($('#clinicalFinding').prop('checked')){
-        param.clinicalFinding = $('#clinicalFinding').val();
+        param.ecl.push($('#clinicalFinding').val());
     }
 
     //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
     if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
         if($('#ecl').val().length > 0){
-            param.ecl = $('#ecl').val();
+            param.ecl.push($('#ecl').val());
         }
     }
-
+    param.ecl = param.ecl.join(",");
     console.log(param);
 
     $.ajax({

@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class HttpClientSearch{
-    public String httpClientRequest(SearchVo searchVo) throws IOException {
+   /* public String httpClientRequest(SearchVo searchVo) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         String URL = "http://1.224.169.78:8095/MAIN/concepts";
         String parameter = "?activeFilter=true&term=" +
@@ -29,5 +29,5 @@ public class HttpClientSearch{
         String result = EntityUtils.toString(entity);
         System.out.println(result);
         return result;
-    }
+    }*/
 }
