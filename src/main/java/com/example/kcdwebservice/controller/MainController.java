@@ -22,6 +22,8 @@ public class MainController {
     private DescriptionService descriptionService;
     @Autowired
     private MapKcdSctService mapKcdSctService;
+    @Autowired
+    private RuleMapService ruleMapService;
 
     /**
      * 메인화면.
@@ -133,6 +135,28 @@ public class MainController {
         List<DescriptionVo> descriptionList = descriptionService.getDescriptionList(sctId);
         return new ResponseEntity<>(descriptionList, HttpStatus.OK);
     }
+
+
+    /**
+     * sctId detailList
+     * @param sctId
+     * @return
+     */
+ 
+    @GetMapping(value="/kcdRule1")
+    @ResponseBody
+    public String autoMapKcdRule1(){
+        ruleMapService.automap1("<64572001"); //disease (discorder)
+       return "/index";
+    }
+
+    @GetMapping(value="/kcdRule2")
+    @ResponseBody
+    public String autoMapKcdRule2(){
+        ruleMapService.automap1("<404684003"); //Clinical finding (finding)
+       return "/index";
+    }
+
 
     @RequestMapping(value="/search")
     @ResponseBody

@@ -15,4 +15,12 @@
             UDT_DT udtDt
         from MAP_KCD_SCT where ORI_CD = #{value}
     </select>
+
+    <insert id="insertAutoMap1" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
+        INSERT into MAP_KCD_SCT(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values(#{oriCd},#{sctId},#{mapVer},'1','0','1',sysdate())
+    </insert>
+
+    
+
 </mapper>

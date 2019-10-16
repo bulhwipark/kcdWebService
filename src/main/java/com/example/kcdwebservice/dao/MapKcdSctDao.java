@@ -10,4 +10,9 @@ import java.util.List;
 @Mapper
 public interface MapKcdSctDao {
     List<MapKcdSctVo> selectKcdCdList(String kcdCd);
+    void  insertAutoMap1(MapKcdSctVo mvo);
 }
+
+
+
+
