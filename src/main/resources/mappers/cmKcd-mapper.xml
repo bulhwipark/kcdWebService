@@ -15,7 +15,7 @@
         ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
-    <select id="selectAll2" parameterType="com.example.kcdwebservice.vo.MapMetaVo" resultType="com.example.kcdwebservice.vo.MapMetaVo">
+    <select id="selectAll2" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
         SELECT K.KCD_CD kcdCd,
            K.KCD_ENG kcdEng,
            K.KCD_KOR kcdKor,
