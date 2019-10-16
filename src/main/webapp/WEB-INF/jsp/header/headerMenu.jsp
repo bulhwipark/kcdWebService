@@ -12,10 +12,10 @@
             <a class="nav-link headerMenu" data-menu="kcdListPage">진단명</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link headerMenu" data-menu="default"> - </a>
+            <a class="nav-link headerMenu" data-menu="default1"> - </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link headerMenu" data-menu="default"> - </a>
+            <a class="nav-link headerMenu" data-menu="default2"> - </a>
         </li>
     </ul>
 </nav>

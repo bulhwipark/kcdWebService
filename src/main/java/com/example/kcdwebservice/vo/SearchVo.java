@@ -9,5 +9,7 @@ import lombok.ToString;
 @ToString
 public class SearchVo {
     private String ecl;
+    private String disorder;
+    private String clinicalFinding;
     private String term;
 }

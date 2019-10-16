@@ -1,6 +1,14 @@
 function kcd_detail_static_func(){
     get_kcdCdObject_req();
     get_kcdDetail_list();
+
+    //ecl 클릭시 disorder, clinicalFinding 체크해제.
+    $('#ecl').on('click',function(){
+        $('#disorder').prop('checked', false);
+        $('#clinicalFinding').prop('checked', false);
+    })
+
+
 }
 
 function get_kcdCdObject_req(){
@@ -52,7 +60,14 @@ function get_kcdDetail_list(){
                         }),
                         $('<td>',{
                             text:data[i].udtDt
-                        })
+                        }),
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'sctListCheck',
+                                value:data[i].sctId
+                            })
+                        ),
                     );
                     $('#kcdDetailTable tbody').append($tr);
                 }
@@ -64,13 +79,31 @@ function get_kcdDetail_list(){
 }
 
 function search_req(){
+    var param = new Object();
+    param.term = $('#term').val();
+
+
+    if($('#disorder').prop('checked')){
+        param.disorder = $('#disorder').val();
+    }
+
+    if($('#clinicalFinding').prop('checked')){
+        param.clinicalFinding = $('#clinicalFinding').val();
+    }
+
+    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
+    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
+        if($('#ecl').val().length > 0){
+            param.ecl = $('#ecl').val();
+        }
+    }
+
+    console.log(param);
+
     $.ajax({
         url:'/search',
         type:'post',
-        data:{
-            ecl:$('#ecl').val(),
-            term:$('#term').val()
-        },
+        data:param,
         dataType:'json',
         success:function(data){
             console.log(data);
@@ -99,7 +132,8 @@ function search_req(){
                         $('<td>').append(
                             $('<input>',{
                                 type:'checkbox',
-                                name:'testing'
+                                name:'saveCheckbox',
+                                value:JSON.stringify(items[i])
                             })
                         )
                     );

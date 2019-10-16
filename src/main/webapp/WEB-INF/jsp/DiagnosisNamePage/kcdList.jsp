@@ -52,6 +52,10 @@
     </div>
 </div>
 
-<div class="container-fluid content displayNone" id="default">
-    <h2>default</h2>
+<div class="container-fluid content displayNone" id="default1">
+    <h2>Default1</h2>
+</div>
+
+<div class="container-fluid content displayNone" id="default2">
+    <h2>Default2</h2>
 </div>

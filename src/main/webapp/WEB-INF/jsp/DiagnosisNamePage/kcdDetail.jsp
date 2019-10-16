@@ -33,6 +33,10 @@
                     <th scope="col">RV_STAT_CD</th>
                     <th scope="col">DISP_ODR</th>
                     <th scope="col">UDT_DT</th>
+                    <th>
+                        전체선택&nbsp;&nbsp;
+                        <input type="checkbox" id="allSelect">
+                    </th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -42,13 +46,26 @@
         <h4>search menu</h4>
         <div>
             <div>
-                <label for="ecl"><b>ecl : </b></label>
-                <input type="text" id="ecl" readonly value="<64572001">
+                <span>
+                    <label for="ecl"><b>ecl : </b></label>
+                    <input type="text" id="ecl">
+                </span>
+
+                <span class="margin-left-20">
+                    <label for="disorder">disorder : </label>
+                    <input type="checkbox" id="disorder" value="<64572001" checked>
+                </span>
+
+                <span class="margin-left-20">
+                    <label for="clinicalFinding">clinical finding : </label>
+                    <input type="checkbox" id="clinicalFinding" value="<404684003" checked>
+                </span>
             </div>
             <div>
                 <label for="term"><b>term : </b></label>
                 <input type="text" id="term" style="width: 500px;">
             </div>
+            <%--
             <div>
                 <label>and :</label> <input type="checkbox" value="and" name="searchMenu"> |
                 <label>with :</label> <input type="checkbox" value="with" name="searchMenu"> |
@@ -58,6 +75,7 @@
                 <label>without complication :</label> <input type="checkbox" value="without complication" name="searchMenu"> |
                 <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
             </div>
+            --%>
             <button class="btn btn-lg btn-warning">Clean</button>
             <button class="btn btn-lg btn-info" onclick="search_req()">Search</button>
         </div>
@@ -70,6 +88,10 @@
                     <th>active</th>
                     <th>term</th>
                     <th>moduleId</th>
+                    <th>
+                        전체선택&nbsp;&nbsp;
+                        <input type="checkbox" id="searchResultAllSelect">
+                    </th>
                 </tr>
             </thead>
             <tbody></tbody>

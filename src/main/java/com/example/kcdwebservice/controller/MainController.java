@@ -2,6 +2,7 @@ package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.*;
 import com.example.kcdwebservice.util.HttpClientSearch;
+import com.example.kcdwebservice.util.HttpRestCall;
 import com.example.kcdwebservice.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,8 @@ public class MainController {
     private MapKcdSctService mapKcdSctService;
     @Autowired
     private RuleMapService ruleMapService;
-
+    @Autowired
+    private SearchService searchService;
     /**
      * 메인화면.
      * @return
@@ -158,6 +160,7 @@ public class MainController {
     }
 
 
+    /*
     @RequestMapping(value="/search")
     @ResponseBody
     public ResponseEntity<String> search(SearchVo searchVo) {
@@ -171,6 +174,15 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    */
+
+    @RequestMapping(value="/search")
+    @ResponseBody
+    public ResponseEntity<String> search(SearchVo searchVo) {
+        String result = searchService.searchReqeust(searchVo);
+        System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
