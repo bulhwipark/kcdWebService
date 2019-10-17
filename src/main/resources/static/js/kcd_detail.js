@@ -244,7 +244,7 @@ function saveBtn_req(){
         data:{
             oriCd : $('#kcdCd').text(),
             mapVer : mapVer,
-            mapStatCd:2,
+            mapStatCd:5,
             oriTpCd:'kcd',
             sctId:sctIdArr.join(",")
         },

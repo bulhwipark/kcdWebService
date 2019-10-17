@@ -1,5 +1,6 @@
 function menu_kcdList_staticFunc(){
     //초기 실행
+    kcdList_getMappingStatusCd();
     kcdList_totalCount_req();
     kcdList_req();
 
@@ -11,6 +12,13 @@ function menu_kcdList_staticFunc(){
         kcdList_req();
     });
 
+    /*
+    $('#mapStatCd').on('change', function(){
+
+    });
+    */
+
+    //다음 버튼
     $('#next').on('click', function(){
         if((currentOffset+limit) >= totalCnt ){
             currentOffset = (totalCnt-1);
@@ -21,6 +29,7 @@ function menu_kcdList_staticFunc(){
         kcdList_req();
     });
 
+    //이전 버튼
     $('#prev').on('click', function(){
         if(currentOffset !== 0){
             currentOffset = currentOffset-limit
@@ -53,6 +62,7 @@ function kcdList_req(){
         type:'get',
         data:{
             mapVer:$('#version option:selected').val(),
+            mapStatCd:$('#mapStatCd option:selected').val(),
             limit:limit,
             offset:currentOffset
         },
@@ -122,6 +132,7 @@ function kcdList_totalCount_req(){
         data:{
             mappingStatus:$('#listOption option:selected').val(),
             mapVer:$('#version option:selected').val(),
+            mapStatCd: $('#mapStatCd option:selected').val()
         },
         dataType:'json',
         success:function(data){
@@ -130,6 +141,33 @@ function kcdList_totalCount_req(){
             totalCnt = data.totalCnt;
             $('#kcdTotalCnt').text(data.kcdTotalCnt?data.kcdTotalCnt:'-');
             $('#totalCnt').text(data.totalCnt?data.totalCnt:'-');
+        }
+    })
+}
+
+/**
+ * 매핑상태코드.
+ */
+function kcdList_getMappingStatusCd(){
+    $.ajax({
+        url:'/getMappingStatusCd',
+        type:'post',
+        async:false,
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            $('#mapStatCd').empty();
+            if(data.length > 0){
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                       text:data[i].cdId + ' : ' + data[i].cdDscrt,
+                       value: data[i].cdId
+                    });
+                    $('#mapStatCd').append($option);
+                }
+            }else{
+                console.log('데이터 없음 처리');
+            }
         }
     })
 }

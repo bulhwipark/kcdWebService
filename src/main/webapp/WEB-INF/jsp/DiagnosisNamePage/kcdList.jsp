@@ -30,11 +30,8 @@
                     <option value="NotMapping">비매핑</option>
                 </select>
                 <label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
-                <select class="form-control kcdSearchOption" id="mapStatCd" style="width: 90px;">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="80">80</option>
-                    <option value="90">90</option>
+                <select class="form-control kcdSearchOption" id="mapStatCd" style="width: 170px;">
+
                 </select>
             </div>
             <div class="totalCnt-css col-xl-3">

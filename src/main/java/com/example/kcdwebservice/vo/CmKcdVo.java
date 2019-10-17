@@ -18,6 +18,7 @@ public class CmKcdVo {
     private String sctId;
 
     private String mapVer;
+    private String mapStatCd;
     private String limit;
     private String offset;
 }

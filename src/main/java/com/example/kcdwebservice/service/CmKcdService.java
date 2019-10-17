@@ -2,6 +2,7 @@ package com.example.kcdwebservice.service;
 
 import com.example.kcdwebservice.dao.CmKcdDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
+import com.example.kcdwebservice.vo.MapKcdSctVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +30,14 @@ public class CmKcdService {
         return cmKcdDao.selectKcdCdInfo(kcdCd);
     }
 
-    public String mappingStatTotalCnt(String mappingStatus, String mapVer) {
+    public String mappingStatTotalCnt(String mappingStatus, MapKcdSctVo mapKcdSctVo) {
         String totalCnt = null;
         if(mappingStatus.equals("All")){
-            totalCnt = cmKcdDao.totalAllCnt(mapVer);
+            totalCnt = cmKcdDao.totalAllCnt(mapKcdSctVo);
         }else if(mappingStatus.equals("Mapping")){
-            totalCnt = cmKcdDao.totalMappingCnt(mapVer);
+            totalCnt = cmKcdDao.totalMappingCnt(mapKcdSctVo);
         }else{
-            totalCnt = cmKcdDao.totalNotMappingCnt(mapVer);
+            totalCnt = cmKcdDao.totalNotMappingCnt(mapKcdSctVo);
         }
         return totalCnt;
     }
