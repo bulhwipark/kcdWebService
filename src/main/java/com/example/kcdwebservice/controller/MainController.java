@@ -28,6 +28,8 @@ public class MainController {
     private CmSnomedCtService cmSnomedCtService;
     @Autowired
     private DicKcdSynonymService dicKcdSynonymService;
+    @Autowired
+    private MCodeService mCodeService;
     /**
      * 메인화면.
      * @return
@@ -80,10 +82,10 @@ public class MainController {
      */
     @RequestMapping(value="/getTotalCount")
     @ResponseBody
-    public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, @RequestParam("mapVer")String mapVer){
+    public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, MapKcdSctVo mapKcdSctVo){
         JSONObject jsonObject = new JSONObject();
         String kcdTotalCnt = cmKcdService.kcdTotalCnt();
-        String totalCnt = cmKcdService.mappingStatTotalCnt(mappingStatus, mapVer);
+        String totalCnt = cmKcdService.mappingStatTotalCnt(mappingStatus, mapKcdSctVo);
         try {
             jsonObject.put("kcdTotalCnt", kcdTotalCnt);
             jsonObject.put("totalCnt", totalCnt);
@@ -92,7 +94,6 @@ public class MainController {
         }
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
-
 
     /**
      * kcd코드 상세화면
@@ -179,23 +180,46 @@ public class MainController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * kcd 저장.
+     * @param mapKcdSctVo
+     */
     @RequestMapping(value="/insertSearchList")
     @ResponseBody
     public void insertSearchObject(MapKcdSctVo mapKcdSctVo){
         mapKcdSctService.insertMapKcdSctInfo(mapKcdSctVo);
     }
 
+    /**
+     * kcd 삭제
+     * @param mapKcdSctVo
+     */
     @RequestMapping(value="/deleteKcdList")
     @ResponseBody
     public void deleteKcdList(MapKcdSctVo mapKcdSctVo){
         mapKcdSctService.deleteMapKcdSctInfo(mapKcdSctVo);
     }
 
+    /**
+     * 유사동의어
+     * @param dicKcdSynonymVo
+     * @return
+     */
     @RequestMapping(value="/getTermSynonymList")
     @ResponseBody
     public ResponseEntity<List<DicKcdSynonymVo>> getTermSynonymList(DicKcdSynonymVo dicKcdSynonymVo){
-        System.out.println(dicKcdSynonymVo.getKcdCd());
         List<DicKcdSynonymVo> list = dicKcdSynonymService.getList(dicKcdSynonymVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * 매핑상태코드
+     * @return
+     */
+    @RequestMapping(value="/getMappingStatusCd")
+    @ResponseBody
+    public ResponseEntity<List<MCodeVo>> getMappingStatusCd(){
+        List<MCodeVo> list = mCodeService.getMappingTypeList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

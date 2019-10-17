@@ -11,7 +11,7 @@
            K.UDT_DT udtDt,
            M.SCT_ID sctId
         FROM CM_KCD K LEFT JOIN (
-                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
@@ -22,7 +22,7 @@
            K.UDT_DT udtDt,
            M.SCT_ID sctId
         FROM CM_KCD K INNER JOIN (
-                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer}
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
     </select>
 
@@ -33,7 +33,7 @@
            UDT_DT udtDt,
            null sctId
         from CM_KCD where KCD_CD not in (
-            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer}
+            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) limit ${limit} offset ${offset};
     </select>
 
@@ -54,27 +54,27 @@
         FROM CM_KCD K ;
     </select>
 
-    <select id="totalMappingCnt" parameterType="String" resultType="String">
+    <select id="totalMappingCnt" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" resultType="String">
         SELECT count(*)
         FROM CM_KCD K 
         WHERE KCD_CD IN (
-                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
         );
     </select>
 
-    <select id="totalNotMappingCnt" parameterType="String" resultType="String">
+    <select id="totalNotMappingCnt" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" resultType="String">
         SELECT count(*)
         FROM CM_KCD K 
         WHERE KCD_CD NOT IN (
-                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
         );
     </select>
 
 
-    <select id="totalAllCnt" parameterType="String" resultType="String">
+    <select id="totalAllCnt" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" resultType="String">
         SELECT count(*)
         FROM CM_KCD K LEFT JOIN (
-                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{value}
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) M ON K.KCD_CD = M.ORI_CD;
     </select>
         <!--

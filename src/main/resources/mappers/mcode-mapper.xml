@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.MCodeDao">
+    <select id="getMappingTypeList" resultType="com.example.kcdwebservice.vo.MCodeVo">
+        select
+            CD_ID cdId,
+            CD_GRP cdGrp,
+            CD_DSCRT cdDscrt,
+            CD_OPT cdOpt,
+            DISP_ODR dispOdr,
+            CD_STAT_CD cdStatCd,
+            UDT_DT udtDt
+        from EMR.MCODE
+        where CD_GRP='MAP_STAT_CD'
+        and length(CD_ID)=1
+    </select>
+</mapper>
