@@ -33,6 +33,7 @@
                 <tr>
                     <th scope="col">sctId</th>
                     <th scope="col">term</th>
+                    <th scope="col">udtDt</th>
                 </tr>
             </thead>
             <tbody></tbody>

@@ -1,6 +1,10 @@
 .displayNone{
     display: none !important;
 }
+.totalCnt-css{
+    text-align: right;
+    font-size: 25px;
+}
 .kcdDetail:hover{
     cursor: pointer;
     background-color: #007bff;

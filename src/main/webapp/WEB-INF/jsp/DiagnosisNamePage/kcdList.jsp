@@ -24,15 +24,34 @@
             </div>
             <div class="form-inline col-xl-3">
                 <label for="listOption">매핑상태 : </label>
-                <select class="form-control kcdSearchOption" id="listOption" style="width: 300px;">
+                <select class="form-control kcdSearchOption" id="listOption" style="width: 90px;">
                     <option value="All">전체</option>
                     <option value="Mapping">매핑</option>
                     <option value="NotMapping">비매핑</option>
                 </select>
+                <label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
+                <select class="form-control kcdSearchOption" id="mapStatCd" style="width: 90px;">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="80">80</option>
+                    <option value="90">90</option>
+                </select>
             </div>
-            <div class="col-xl-6" style="text-align: right; font-size: 25px;">
-                <span><b>Total : </b></span>
-                <span id="totalCnt"></span>
+            <div class="totalCnt-css col-xl-3">
+                <div>
+                    <span><b>KCD_CD Total : </b></span>
+                    <span id="kcdTotalCnt"></span>
+                </div>
+                <div>
+                    <span><b>Total : </b></span>
+                    <span id="totalCnt"></span>
+                </div>
+            </div>
+
+            <div class="col-xl-3">
+                <button id="prev"><<</button>
+                <span id="currentPage"></span>
+                <button id="next">>></button>
             </div>
         </div>
     </div>

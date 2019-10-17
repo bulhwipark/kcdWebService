@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.DicKcdSynonymDao">
+    <select id="getList" parameterType="com.example.kcdwebservice.vo.DicKcdSynonymVo" resultType="com.example.kcdwebservice.vo.DicKcdSynonymVo">
+        SELECT
+            KCD_CD kcdCd,
+            KCD_ENG_SYN kcdEngSyn,
+            KCD_KOR_SYN kcdKorSyn
+        FROM DIC_KCD_SYNONYM WHERE KCD_CD = #{kcdCd};
+    </select>
+</mapper>

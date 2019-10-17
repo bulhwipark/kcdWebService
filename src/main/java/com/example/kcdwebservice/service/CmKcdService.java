@@ -40,4 +40,8 @@ public class CmKcdService {
         }
         return totalCnt;
     }
+
+    public String kcdTotalCnt() {
+        return cmKcdDao.kcdTotalAllCnt();
+    }
 }
