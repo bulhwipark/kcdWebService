@@ -1,18 +1,16 @@
 package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.*;
-import com.example.kcdwebservice.util.HttpClientSearch;
-import com.example.kcdwebservice.util.HttpRestCall;
 import com.example.kcdwebservice.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -21,13 +19,15 @@ public class MainController {
     @Autowired
     private CmKcdService cmKcdService;
     @Autowired
-    private DescriptionService descriptionService;
-    @Autowired
     private MapKcdSctService mapKcdSctService;
     @Autowired
     private RuleMapService ruleMapService;
     @Autowired
     private SearchService searchService;
+    @Autowired
+    private CmSnomedCtService cmSnomedCtService;
+    @Autowired
+    private DicKcdSynonymService dicKcdSynonymService;
     /**
      * 메인화면.
      * @return
@@ -81,8 +81,16 @@ public class MainController {
     @RequestMapping(value="/getTotalCount")
     @ResponseBody
     public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, @RequestParam("mapVer")String mapVer){
+        JSONObject jsonObject = new JSONObject();
+        String kcdTotalCnt = cmKcdService.kcdTotalCnt();
         String totalCnt = cmKcdService.mappingStatTotalCnt(mappingStatus, mapVer);
-        return new ResponseEntity<>(totalCnt, HttpStatus.OK);
+        try {
+            jsonObject.put("kcdTotalCnt", kcdTotalCnt);
+            jsonObject.put("totalCnt", totalCnt);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
 
@@ -135,18 +143,15 @@ public class MainController {
      */
     @GetMapping(value="/detailList")
     @ResponseBody
-    public ResponseEntity<List<DescriptionVo>> sctIdDetailList(@RequestParam("sctId")String sctId){
-        List<DescriptionVo> descriptionList = descriptionService.getDescriptionList(sctId);
-        return new ResponseEntity<>(descriptionList, HttpStatus.OK);
+    public ResponseEntity<List<CmSnomedCtVo>> sctIdDetailList(@RequestParam("sctId")String sctId){
+        List<CmSnomedCtVo> cmSnomedCtVoList = cmSnomedCtService.getList(sctId);
+        return new ResponseEntity<>(cmSnomedCtVoList, HttpStatus.OK);
     }
 
-
     /**
-     * sctId detailList
-     * @param sctId
+     *
      * @return
      */
- 
     @GetMapping(value="/kcdRule1")
     @ResponseBody
     public String autoMapKcdRule1(){
@@ -184,6 +189,14 @@ public class MainController {
     @ResponseBody
     public void deleteKcdList(MapKcdSctVo mapKcdSctVo){
         mapKcdSctService.deleteMapKcdSctInfo(mapKcdSctVo);
+    }
+
+    @RequestMapping(value="/getTermSynonymList")
+    @ResponseBody
+    public ResponseEntity<List<DicKcdSynonymVo>> getTermSynonymList(DicKcdSynonymVo dicKcdSynonymVo){
+        System.out.println(dicKcdSynonymVo.getKcdCd());
+        List<DicKcdSynonymVo> list = dicKcdSynonymService.getList(dicKcdSynonymVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 }

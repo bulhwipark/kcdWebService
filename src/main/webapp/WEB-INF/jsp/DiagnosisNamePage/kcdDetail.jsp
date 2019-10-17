@@ -67,6 +67,9 @@
             <div>
                 <label for="term"><b>term : </b></label>
                 <input type="text" id="term" style="width: 500px;">
+                <label for="synonym" style="margin-left: 20px;"><b>동의어 : </b></label>
+                <select class="form-control" name="" id="synonym" style="display: inline-block; width: 700px;">
+                </select>
             </div>
             <%--
             <div>

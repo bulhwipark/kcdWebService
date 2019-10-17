@@ -17,11 +17,14 @@ function detailList_req(sctId){
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>',{
-                            text:data[i].conceptId
+                            text:data[i].sctId
                         }),
                         $('<td>',{
-                            text:data[i].term
+                            text:data[i].sctTerm
                         }),
+                        $('<td>',{
+                            text:data[i].udtDt
+                        })
                     );
                     $('#detailListTable').append($tr);
                 }

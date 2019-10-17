@@ -1,6 +1,7 @@
 function kcd_detail_static_func(){
     get_kcdCdObject_req();
     get_kcdDetail_list();
+    termSynonym();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#ecl').on('click',function(){
@@ -36,6 +37,11 @@ function kcd_detail_static_func(){
         }else{
             $('#saveBtn').prop('disabled', true);
         }
+    });
+
+    //동의어 이벤트트
+   $('#synonym').on('change', function(){
+        $('#term').val($('#synonym option:selected').val());
     });
 
 }
@@ -281,6 +287,35 @@ function deleteKcdList_req(){
     });
 }
 
+/**
+ * 유사동의어리스트 req
+ */
+function termSynonym(){
+    $.ajax({
+        url:'/getTermSynonymList',
+        type:'post',
+        data:{
+            kcdCd: $('#kcdCd').text()
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            if(data.length > 0){
+                $('#synonym').empty();
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                       text:data[i].kcdEngSyn,
+                       title:data[i].kcdKorSyn
+                    });
+                    $('#synonym').append($option);
+                }
+            }else{
+                $('#synonym').empty();
+                console.log('데이터 없음 처리.');
+            }
+        }
+    })
+}
 
 function alert_timeout(){
     $('#saveAlert').removeClass('displayNone');

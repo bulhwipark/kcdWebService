@@ -17,8 +17,10 @@
 <%@ include file="/WEB-INF/jsp/header/headerMenu.jsp" %>
 <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdList.jsp" %>
 </body>
+
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
 <script src="/static/lib/bootstrap.min.js"></script>
+<script src="/static/js/global-variable.js"></script>
 <script src="/static/js/headerMenuHandle.js"></script>
 <script src="/static/js/menu_kcdList.js"></script>
 <script type="text/javascript">

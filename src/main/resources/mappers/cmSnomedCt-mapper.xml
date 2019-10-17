@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.CmSnomedCtDao">
+    <select id="getList" parameterType="String" resultType="com.example.kcdwebservice.vo.CmSnomedCtVo">
+        select
+            SCT_ID sctId,
+            SCT_TERM sctTerm,
+            DISP_ODR dispOdr,
+            UDT_DT udtDt
+        from CM_SNOMEDCT where SCT_ID = #{value}
+    </select>
+</mapper>

@@ -15,6 +15,8 @@ public interface CmKcdDao {
 
     CmKcdVo selectKcdCdInfo(String kcdCd);
 
+    String kcdTotalAllCnt();
+
     String totalAllCnt(String mapVer);
 
     String totalMappingCnt(String mapVer);
