@@ -11,6 +11,10 @@ import java.util.List;
 public interface MapKcdSctDao {
     List<MapKcdSctVo> selectKcdCdList(String kcdCd);
     void  insertAutoMap1(MapKcdSctVo mvo);
+
+    void insertMapKcdSctInfo(MapKcdSctVo mapKcdSctVo);
+
+    void deleteMapKcdSctInfo(MapKcdSctVo mapKcdSctVo);
 }
 
 

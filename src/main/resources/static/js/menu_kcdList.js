@@ -12,7 +12,7 @@ function menu_kcdList_staticFunc(){
 
 function dynamic_event_func(){
     $('.kcdDetail').on('click', function(){
-        location.href = '/kcdDetailPage?kcdCd=' + $(this).text();
+        location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version option:selected').val();
     });
 
     $('.sctIdDetail').on('click', function(){

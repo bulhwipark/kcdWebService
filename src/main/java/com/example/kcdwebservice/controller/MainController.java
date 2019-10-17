@@ -91,9 +91,10 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/kcdDetailPage")
-    public ModelAndView kcdDetailPage(@RequestParam("kcdCd")String kcdCd){
+    public ModelAndView kcdDetailPage(@RequestParam("kcdCd")String kcdCd, @RequestParam("mapVer")String mapVer){
         ModelAndView mav = new ModelAndView();
         mav.addObject("kcdCd", kcdCd);
+        mav.addObject("mapVer", mapVer);
         mav.setViewName("/DiagnosisNamePage/kcdDetail");
         return mav;
     }
@@ -160,25 +161,6 @@ public class MainController {
        return "/index";
     }
 
-
-    /*
-    @RequestMapping(value="/search")
-    @ResponseBody
-    public ResponseEntity<String> search(SearchVo searchVo) {
-        String result = null;
-        System.out.println(searchVo.getEcl());
-        System.out.println(searchVo.getTerm());
-        HttpClientSearch httpClientSearch = new HttpClientSearch();
-        try {
-            result = httpClientSearch.httpClientRequest(searchVo);
-            System.out.println(result);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-    */
-
     @RequestMapping(value="/search")
     @ResponseBody
     public ResponseEntity<String> search(SearchVo searchVo) {
@@ -190,6 +172,18 @@ public class MainController {
         }
         System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/insertSearchList")
+    @ResponseBody
+    public void insertSearchObject(MapKcdSctVo mapKcdSctVo){
+        mapKcdSctService.insertMapKcdSctInfo(mapKcdSctVo);
+    }
+
+    @RequestMapping(value="/deleteKcdList")
+    @ResponseBody
+    public void deleteKcdList(MapKcdSctVo mapKcdSctVo){
+        mapKcdSctService.deleteMapKcdSctInfo(mapKcdSctVo);
     }
 
 }

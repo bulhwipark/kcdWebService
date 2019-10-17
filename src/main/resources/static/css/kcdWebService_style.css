@@ -22,3 +22,9 @@
 .margin-left-20{
     margin-left: 20px;
 }
+.alertCss{
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    display: block;
+}

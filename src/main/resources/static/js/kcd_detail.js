@@ -58,7 +58,9 @@ function kcd_detail_dynamic_func(){
     });
 }
 
-
+/**
+ * kcd info
+ */
 function get_kcdCdObject_req(){
     $.ajax({
         url:'getKcdCdInfo',
@@ -77,6 +79,9 @@ function get_kcdCdObject_req(){
     });
 }
 
+/**
+ * kcd 목록 이벤트
+ */
 function get_kcdDetail_list(){
     $.ajax({
         url:'getkcdDetailList',
@@ -86,8 +91,8 @@ function get_kcdDetail_list(){
         },
         dataType:'json',
         success:function(data){
-            console.log(data);
             if(data.length > 0){
+                kcdDetailList = JSON.parse(JSON.stringify(data));
                 $('#kcdDetailTable tbody').empty();
                 $('#allSelect').prop("checked", false);
                 for(var i = 0; i<data.length; i++){
@@ -128,6 +133,9 @@ function get_kcdDetail_list(){
     })
 }
 
+/**
+ * 검색 이벤트
+ */
 function search_req(){
     var param = new Object();
     param.term = $('#term').val();
@@ -149,7 +157,6 @@ function search_req(){
         }
     }
     param.ecl = param.ecl.join(",");
-    console.log(param);
 
     $.ajax({
         url:'/search',
@@ -160,10 +167,20 @@ function search_req(){
             console.log(data);
             if(data['items'].length > 0){
                 var items = data['items'];
+
+                //중복제거.
+                for(var i = 0; i<kcdDetailList.length; i++){
+                    items = items.filter(function(item, idx, arr){
+                        if(item.conceptId != kcdDetailList[i].sctId){
+                            return item;
+                        }
+                    });
+                }
+                searchList = JSON.parse(JSON.stringify(items));
                 $('#searchResultTable tbody').empty();
                 $('#searchResultAllSelect').prop("checked", false);
                 for(var i = 0; i<items.length; i++){
-                    var $tr = $('<tr>').append(
+                    var $tr = $('<tr>',{id:items[i].conceptId}).append(
                         //conceptId
                         $('<td>',{
                             text:items[i].conceptId
@@ -185,7 +202,7 @@ function search_req(){
                             $('<input>',{
                                 type:'checkbox',
                                 name:'searchResultSaveCheckbox',
-                                value:JSON.stringify(items[i])
+                                value:items[i].conceptId
                             })
                         )
                     );
@@ -198,4 +215,78 @@ function search_req(){
             }
         }
     })
+}
+
+/**
+ * 저장 버튼 이벤트
+ */
+function saveBtn_req(){
+    var currentSelected = $('input[name="searchResultSaveCheckbox"]:checked');
+    var sctIdArr = [];
+
+    //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
+    for(var i  = 0; i<currentSelected.length; i++){
+        for(var j = 0; j<searchList.length; j++){
+            if(searchList[j].conceptId == currentSelected[i].value){
+                sctIdArr.push(searchList[j].conceptId);
+            }
+        }
+    }
+    $.ajax({
+        url:'/insertSearchList',
+        type:'post',
+        data:{
+            oriCd : $('#kcdCd').text(),
+            mapVer : mapVer,
+            mapStatCd:2,
+            oriTpCd:'kcd',
+            sctId:sctIdArr.join(",")
+        },
+        success:function(){
+            get_kcdDetail_list();
+            for(var i = 0; i<sctIdArr.length; i++){
+                var sctId = sctIdArr[i];
+                searchList = searchList.filter(function(item, idx, arr){
+                    if(item.conceptId != sctId){
+                        return item;
+                    }
+                });
+                $('#' + sctId).remove();
+            }
+            alert_timeout();
+        }
+    })
+}
+
+/**
+ * kcd 목록 삭제 이벤트.
+ */
+function deleteKcdList_req(){
+    var currentSelected = $('input[name="sctListCheck"]:checked');
+    var sctIdArr = [];
+    for(var i = 0; i<currentSelected.length; i++){
+        sctIdArr.push(currentSelected[0].value);
+    }
+   $.ajax({
+        url:'/deleteKcdList',
+        type:'post',
+        data:{
+            oriCd: $('#kcdCd').text(),
+            sctId: sctIdArr.join(',')
+        },
+        success:function(){
+            get_kcdDetail_list();
+            search_req();
+        }
+    });
+}
+
+
+function alert_timeout(){
+    $('#saveAlert').removeClass('displayNone');
+    var timer = setTimeout(function(){
+        if(!$('#saveAlert').hasClass('displayNone')){
+            $('#saveAlert').addClass('displayNone');
+        }
+    }, 500);
 }
