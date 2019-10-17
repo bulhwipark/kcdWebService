@@ -42,7 +42,7 @@
             <tbody></tbody>
         </table>
         <div id="removeBtnDiv" class="save-btn-div">
-            <button id="removeBtn" class="btn btn-lg btn-danger" disabled>삭제</button>
+            <button id="removeBtn" class="btn btn-lg btn-danger" disabled onclick="deleteKcdList_req()">삭제</button>
         </div>
     </div>
     <div class="alert alert-primary" role="alert">
@@ -100,16 +100,19 @@
             <tbody></tbody>
         </table>
         <div id="saveBtnDiv" class="save-btn-div displayNone">
-            <button id="saveBtn" class="btn btn-lg btn-info" disabled>저장</button>
+            <span id="saveAlert" class="alertCss displayNone">선택 목록이 저장되었습니다.</span>
+            <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
         </div>
     </div>
 </div>
 </body>
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
 <script src="/static/lib/bootstrap.min.js"></script>
+<script src="/static/js/global-variable.js"></script>
 <script src="/static/js/kcd_detail.js"></script>
 <script type="text/javascript">
     $(function(){
+        mapVer = '${mapVer}';
         kcd_detail_static_func();
     })
 </script>
