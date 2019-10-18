@@ -326,6 +326,45 @@ function termSynonym(){
     })
 }
 
+
+/**
+ * 자동룰 반영
+ */
+function autoRuleSet(){
+    var param = new Object();
+    param.term = $('#term').val();
+
+    param.ecl = [];
+
+    if($('#disorder').prop('checked')){
+        param.ecl.push($('#disorder').val());
+    }
+
+    if($('#clinicalFinding').prop('checked')){
+        param.ecl.push($('#clinicalFinding').val());
+    }
+
+    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
+    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
+        if($('#ecl').val().length > 0){
+            param.ecl.push($('#ecl').val());
+        }
+    }
+    param.ecl = param.ecl.join(",");
+
+    $.ajax({
+        url:'/autoRuleSet',
+        type:'post',
+        data:{
+            param:param
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+        }
+    })
+}
+
 function alert_timeout(){
     $('#saveAlert').removeClass('displayNone');
     var timer = setTimeout(function(){

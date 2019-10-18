@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @Controller
@@ -30,6 +31,7 @@ public class MainController {
     private DicKcdSynonymService dicKcdSynonymService;
     @Autowired
     private MCodeService mCodeService;
+
     /**
      * 메인화면.
      * @return
@@ -72,6 +74,17 @@ public class MainController {
     @ResponseBody
     public ResponseEntity<List<CmKcdVo>> kcdSelectNotMapping(CmKcdVo cmKcdVo){
         List<CmKcdVo> list = cmKcdService.selectNotMapping(cmKcdVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * kcd - Icd 비매핑 목록
+     * @param cmKcdVo
+     */
+    @RequestMapping(value="/selectIcdNotMapping")
+    @ResponseBody
+    public ResponseEntity<List<CmKcdVo>> kcdSelectIcdNotMapping(CmKcdVo cmKcdVo){
+        List<CmKcdVo> list = cmKcdService.selectIcdNotMapping(cmKcdVo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -221,6 +234,13 @@ public class MainController {
     public ResponseEntity<List<MCodeVo>> getMappingStatusCd(){
         List<MCodeVo> list = mCodeService.getMappingTypeList();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/autoRuleSet")
+    @ResponseBody
+    public void ruleSet(SearchVo searchVo){
+        System.out.println(searchVo.getEcl());
+        System.out.println(searchVo.getTerm());
     }
 
 }

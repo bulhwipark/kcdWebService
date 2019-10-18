@@ -12,11 +12,12 @@ function menu_kcdList_staticFunc(){
         kcdList_req();
     });
 
-    /*
-    $('#mapStatCd').on('change', function(){
-
+    $('#searchToKcdCd').on('keyup', function(){
+        currentOffset = 0;
+        totalCnt = 0;
+        kcdList_totalCount_req();
+        kcdList_req();
     });
-    */
 
     //다음 버튼
     $('#next').on('click', function(){
@@ -25,7 +26,6 @@ function menu_kcdList_staticFunc(){
         }else{
             currentOffset = currentOffset+limit;
         }
-
         kcdList_req();
     });
 
@@ -63,6 +63,7 @@ function kcdList_req(){
         data:{
             mapVer:$('#version option:selected').val(),
             mapStatCd:$('#mapStatCd option:selected').val(),
+            kcdCd:$('#searchToKcdCd').val().toUpperCase(),
             limit:limit,
             offset:currentOffset
         },
@@ -133,6 +134,7 @@ function kcdList_totalCount_req(){
             mappingStatus:$('#listOption option:selected').val(),
             mapVer:$('#version option:selected').val(),
             mapStatCd: $('#mapStatCd option:selected').val()
+
         },
         dataType:'json',
         success:function(data){
@@ -158,6 +160,13 @@ function kcdList_getMappingStatusCd(){
             console.log(data);
             $('#mapStatCd').empty();
             if(data.length > 0){
+                $('#mapStatCd').append(
+                    $('<option>',{
+                        text:'전체',
+                        value:'All'
+                    })
+                );
+
                 for(var i = 0; i<data.length; i++){
                     var $option = $('<option>',{
                        text:data[i].cdId + ' : ' + data[i].cdDscrt,

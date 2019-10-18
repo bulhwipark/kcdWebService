@@ -45,4 +45,8 @@ public class CmKcdService {
     public String kcdTotalCnt() {
         return cmKcdDao.kcdTotalAllCnt();
     }
+
+    public List<CmKcdVo> selectIcdNotMapping(CmKcdVo cmKcdVo) {
+        return cmKcdDao.select_icdNotMapping(cmKcdVo);
+    }
 }

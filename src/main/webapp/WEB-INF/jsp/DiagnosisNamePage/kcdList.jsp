@@ -28,11 +28,10 @@
                     <option value="All">전체</option>
                     <option value="Mapping">매핑</option>
                     <option value="NotMapping">비매핑</option>
+                    <option value="IcdNotMapping">ICD 비매핑</option>
                 </select>
                 <label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
-                <select class="form-control kcdSearchOption" id="mapStatCd" style="width: 170px;">
-
-                </select>
+                <select class="form-control kcdSearchOption" id="mapStatCd" style="width: 170px;"></select>
             </div>
             <div class="totalCnt-css col-xl-3">
                 <div>
@@ -59,6 +58,16 @@
                     <button class="btn btn-outline-danger" onclick="excelDownload()">Excel Download</button>
                 </div>
 
+            </div>
+        </div>
+        <div class="row">
+            <%--<div style="padding-left: 15px; margin-bottom: 10px;">
+                <b>검색</b>
+                <input class="form-control" type="text" placeholder="KCD 코드 검색"/>
+            </div>--%>
+            <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
+                <label for="searchToKcdCd">검색: </label>
+                <input id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
             </div>
         </div>
     </div>
