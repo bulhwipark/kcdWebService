@@ -46,9 +46,19 @@
             </div>
 
             <div class="col-xl-3">
-                <button id="prev"><<</button>
-                <span id="currentPage"></span>
-                <button id="next">>></button>
+                <div style="display: inline-block; margin-top: 20px;">
+                    <span style="width: 50px; display: inherit;">
+                        <button class="btn btn-light" id="prev"><<</button>
+                    </span>
+                    <span id="currentPage"></span>
+                    <span style="width: 50px; display: inherit;">
+                        <button class="btn btn-light" id="next">>></button>
+                    </span>
+                </div>
+                <div style="display: inline-block; margin-top: 20px;">
+                    <button class="btn btn-outline-danger" onclick="excelDownload()">Excel Download</button>
+                </div>
+
             </div>
         </div>
     </div>

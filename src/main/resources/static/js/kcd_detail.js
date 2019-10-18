@@ -128,6 +128,15 @@ function get_kcdDetail_list(){
                                 value:data[i].sctId
                             })
                         ),
+                        $('<td>').append(
+                            $('<button>',{
+                                value:data[i].sctId,
+                                class:'btn btn-sm btn-info',
+                                text:'속성추가',
+                                'data-toggle':'modal',
+                                'data-target':'#attrValSetting_modal'
+                            })
+                        )
                     );
                     $('#kcdDetailTable tbody').append($tr);
                 }

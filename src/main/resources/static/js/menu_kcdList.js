@@ -171,3 +171,18 @@ function kcdList_getMappingStatusCd(){
         }
     })
 }
+
+/**
+ * Excel Download
+ */
+function excelDownload(){
+    /*$.ajax({
+        url:'',
+        type:'',
+        data:'',
+        dataType:'',
+        success:function(){
+
+        }
+    })*/
+}

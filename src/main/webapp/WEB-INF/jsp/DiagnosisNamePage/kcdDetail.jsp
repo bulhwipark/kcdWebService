@@ -37,6 +37,9 @@
                         전체선택&nbsp;&nbsp;
                         <input type="checkbox" id="allSelect">
                     </th>
+                    <th>
+                        속성 추가
+                    </th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -107,6 +110,7 @@
             <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
         </div>
     </div>
+    <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdDetail_modal.jsp" %>
 </div>
 </body>
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
