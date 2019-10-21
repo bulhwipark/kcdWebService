@@ -31,7 +31,8 @@ function menu_kcdList_staticFunc(){
     });
 
     //이전 버튼
-    $('#prev').on('click', function(){
+    $('#prev').on('click', function(e){
+        e.preventDefault();
         if(currentOffset !== 0){
             currentOffset = currentOffset-limit
         }

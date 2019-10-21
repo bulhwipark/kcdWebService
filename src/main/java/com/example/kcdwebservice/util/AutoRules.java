@@ -39,6 +39,7 @@ public class AutoRules {
             "and",
             "with",
             "other",
+            "Other",
             "unspecified",
             "alone",
             "without complication",

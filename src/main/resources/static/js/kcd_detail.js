@@ -361,7 +361,55 @@ function autoRuleSet(){
         data:param,
         dataType:'json',
         success:function(data){
-            console.log(data);
+            var res = JSON.parse(data.result);
+            if(res['items'].length > 0){
+                var items = res['items'];
+
+                //중복제거.
+                for(var i = 0; i<kcdDetailList.length; i++){
+                    items = items.filter(function(item, idx, arr){
+                        if(item.conceptId != kcdDetailList[i].sctId){
+                            return item;
+                        }
+                    });
+                }
+                searchList = JSON.parse(JSON.stringify(items));
+                $('#searchResultTable tbody').empty();
+                $('#searchResultAllSelect').prop("checked", false);
+                for(var i = 0; i<items.length; i++){
+                    var $tr = $('<tr>',{id:items[i].conceptId}).append(
+                        //conceptId
+                        $('<td>',{
+                            text:items[i].conceptId
+                        }),
+                        //active
+                        $('<td>',{
+                            text:items[i].active
+                        }),
+                        //term
+                        $('<td>',{
+                            text:items[i]['fsn']['term']
+                        }),
+                        //moduleId
+                        $('<td>',{
+                            text:items[i].moduleId
+                        }),
+                        //checkBox
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'searchResultSaveCheckbox',
+                                value:items[i].conceptId
+                            })
+                        )
+                    );
+                    $('#searchResultTable tbody').append($tr);
+                }
+                $('#saveBtnDiv').removeClass('displayNone');
+                kcd_detail_dynamic_func();
+            }else{
+                console.log("자료 없음 처리.");
+            }
         }
     });
 }
