@@ -56,7 +56,7 @@
                     </span>
                     </div>
                     <div style="display: inline-block; margin-top: 20px;">
-                        <button class="btn btn-outline-danger" onclick="excelDownload();">Excel Download</button>
+                        <button class="btn btn-outline-danger" id="excelDownloadBtn">Excel Download</button>
                     </div>
 
                 </div>

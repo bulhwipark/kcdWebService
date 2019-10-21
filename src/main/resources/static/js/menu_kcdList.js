@@ -20,7 +20,8 @@ function menu_kcdList_staticFunc(){
     });
 
     //다음 버튼
-    $('#next').on('click', function(){
+    $('#next').on('click', function(e){
+        e.preventDefault();
         if((currentOffset+limit) >= totalCnt ){
             currentOffset = (totalCnt-1);
         }else{
@@ -35,6 +36,14 @@ function menu_kcdList_staticFunc(){
             currentOffset = currentOffset-limit
         }
         kcdList_req();
+    });
+
+    //excel download
+    $('#excelDownloadBtn').on('click', function(e){
+        e.preventDefault();
+        $('#limit').val(limit);
+        $('#offset').val(currentOffset);
+        $('#searchForm')[0].submit();
     });
 }
 
@@ -179,13 +188,4 @@ function kcdList_getMappingStatusCd(){
             }
         }
     })
-}
-
-/**
- * Excel Download
- */
-function excelDownload(){
-    $('#limit').val(limit);
-    $('#offset').val(currentOffset);
-    $('#searchForm')[0].submit();
 }
