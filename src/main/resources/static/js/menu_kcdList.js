@@ -185,13 +185,7 @@ function kcdList_getMappingStatusCd(){
  * Excel Download
  */
 function excelDownload(){
-    /*$.ajax({
-        url:'',
-        type:'',
-        data:'',
-        dataType:'',
-        success:function(){
-
-        }
-    })*/
+    $('#limit').val(limit);
+    $('#offset').val(currentOffset);
+    $('#searchForm')[0].submit();
 }

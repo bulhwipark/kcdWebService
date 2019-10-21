@@ -21,8 +21,9 @@
                 and K.KCD_CD=#{kcdCd}
             </if>
         </where>
-        limit ${limit} offset ${offset};
-
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+           limit ${limit} offset ${offset};
+        </if>
     </select>
 
     <select id="selectAll2" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -59,7 +60,10 @@
            M.SCT_ID sctId
         FROM CM_KCD K INNER JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
-        ) M ON K.KCD_CD = M.ORI_CD limit ${limit} offset ${offset};
+        ) M ON K.KCD_CD = M.ORI_CD
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset};
+        </if>
     </select>
 
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -70,7 +74,10 @@
            null sctId
         from CM_KCD where KCD_CD not in (
             select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
-        ) limit ${limit} offset ${offset};
+        )
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset};
+        </if>
     </select>
 
     <select id="select_icdNotMapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">

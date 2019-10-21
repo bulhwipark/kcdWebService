@@ -8,10 +8,10 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 @Controller
@@ -236,11 +236,37 @@ public class MainController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * 자동룰
+     * @param searchVo
+     * @return
+     */
     @RequestMapping(value="/autoRuleSet")
     @ResponseBody
-    public void ruleSet(SearchVo searchVo){
-        System.out.println(searchVo.getEcl());
-        System.out.println(searchVo.getTerm());
+    public ResponseEntity<String> ruleSet(SearchVo searchVo){
+        String result = searchService.autoRuleRequest(searchVo);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Excel 다운로드
+     * @param cmKcdVo
+     * @param model
+     * @return
+     */
+    @PostMapping("/excelDownload.xlsx")
+    public String excelDownload(CmKcdVo cmKcdVo, Model model){
+        List<CmKcdVo> list = null;
+        if(cmKcdVo.getListOption().equals("All")){
+            list = cmKcdService.selectAll(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("Mapping")){
+            list = cmKcdService.selectMapping(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("NotMapping")){
+            list = cmKcdService.selectNotMapping(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("IcdNotMapping")){
+            list = cmKcdService.selectIcdNotMapping(cmKcdVo);
+        }
+        model.addAttribute("list", list);
+        return "ExcelDownload";
+    }
 }

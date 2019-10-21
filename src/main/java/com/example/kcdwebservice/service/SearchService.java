@@ -1,5 +1,6 @@
 package com.example.kcdwebservice.service;
 
+import com.example.kcdwebservice.util.AutoRules;
 import com.example.kcdwebservice.util.HttpRestCall;
 import com.example.kcdwebservice.vo.SearchVo;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -31,25 +32,17 @@ public class SearchService {
                 break;
             }
         }
+        return result;
+    }
 
-
-        // 위에 루프 종료 후에도 null일때
-//        JSONObject jsonObject = new JSONObject(result);
-//        if(jsonObject.getJSONArray("items").length() > 0){
-//           while(result == null){
-//               paramMap.put("term", paramMap.get("term").replace("and ", ""));
-//               result = HttpRestCall.callGet(URL, paramMap);
-//               if(result != null){
-//                   break;
-//               }
-//               paramMap.put("term", paramMap.get("term").replace("with ", ""));
-//               result = HttpRestCall.callGet(URL, paramMap);
-//               if(result != null){
-//                   break;
-//               }
-//           }
-//        }
-
+    public String autoRuleRequest(SearchVo searchVo) {
+        AutoRules autoRules = new AutoRules();
+        String result = null;
+        try {
+           result = autoRules.autoRule_1(searchVo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 }

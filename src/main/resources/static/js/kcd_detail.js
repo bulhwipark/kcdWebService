@@ -2,6 +2,7 @@ function kcd_detail_static_func(){
     get_kcdCdObject_req();
     get_kcdDetail_list();
     termSynonym();
+    autoRuleSet();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#ecl').on('click',function(){
@@ -71,6 +72,7 @@ function get_kcdCdObject_req(){
     $.ajax({
         url:'getKcdCdInfo',
         type:'post',
+        async:false,
         data:{
             kcdCd:$('#kcdCd').text()
         },
@@ -92,6 +94,7 @@ function get_kcdDetail_list(){
     $.ajax({
         url:'getkcdDetailList',
         type:'post',
+        async:false,
         data:{
             kcdCd:$('#kcdCd').text()
         },
@@ -326,7 +329,6 @@ function termSynonym(){
     })
 }
 
-
 /**
  * 자동룰 반영
  */
@@ -351,18 +353,17 @@ function autoRuleSet(){
         }
     }
     param.ecl = param.ecl.join(",");
-
+    console.log(param.ecl);
     $.ajax({
         url:'/autoRuleSet',
         type:'post',
-        data:{
-            param:param
-        },
+        async:false,
+        data:param,
         dataType:'json',
         success:function(data){
             console.log(data);
         }
-    })
+    });
 }
 
 function alert_timeout(){
