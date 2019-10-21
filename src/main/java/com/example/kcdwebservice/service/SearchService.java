@@ -23,7 +23,6 @@ public class SearchService {
        // paramMap.put("offset", "0");
         paramMap.put("term", searchVo.getTerm());
 
-        //disorder, clinical finding, 사용자ECL 순으로 req를 보내고 items에 length가 0 이상이면 종료.
         for(int i = 0; i<searchVo.getEcl().size(); i++){
             paramMap.put("ecl", searchVo.getEcl().get(i));
             result = HttpRestCall.callGet(URL, paramMap);
@@ -35,11 +34,23 @@ public class SearchService {
         return result;
     }
 
-    public String autoRuleRequest(SearchVo searchVo) {
+    public JSONObject autoRuleRequest(SearchVo searchVo) {
         AutoRules autoRules = new AutoRules();
-        String result = null;
+        JSONObject result = null;
         try {
            result = autoRules.autoRule_1(searchVo);
+           if(result.get("status").equals("false")) {
+               result = autoRules.autoRule_2(searchVo);
+               if(result.get("status").equals("false")){
+                   result = autoRules.autoRule_3(searchVo);
+                   if(result.get("status").equals("false")){
+                       result = autoRules.autoRule_4(searchVo);
+                       if(result.get("status").equals("false")){
+                           result = autoRules.autoRule_6(searchVo);
+                       }
+                   }
+               }
+           }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -244,8 +244,8 @@ public class MainController {
     @RequestMapping(value="/autoRuleSet")
     @ResponseBody
     public ResponseEntity<String> ruleSet(SearchVo searchVo){
-        String result = searchService.autoRuleRequest(searchVo);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        JSONObject result = searchService.autoRuleRequest(searchVo);
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
     /**
