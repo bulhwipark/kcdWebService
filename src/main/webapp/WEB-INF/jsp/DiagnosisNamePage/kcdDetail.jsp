@@ -89,7 +89,7 @@
             <button class="btn btn-lg btn-info" onclick="search_req()">Search</button>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="searchResultTableDiv">
         <table class="table table-striped" id="searchResultTable">
             <thead>
                 <tr>
@@ -97,6 +97,7 @@
                     <th>active</th>
                     <th>term</th>
                     <th>moduleId</th>
+                    <th class="autoRuleCol">Rule Code</th>
                     <th>
                         전체선택&nbsp;&nbsp;
                         <input type="checkbox" id="searchResultAllSelect">

@@ -13,7 +13,11 @@ function kcd_detail_static_func(){
     //kcd 상세리스트 쪽 전체 선택.
     $('#allSelect').on('click',function(){
         if($(this).prop('checked')){
-            $('input[name="sctListCheck"]').prop("checked", true);
+            for(var i = 0; i<$('input[name="sctListCheck"]').length; i++){
+                if(!$('input[name="sctListCheck"]')[i].disabled){
+                    $($('input[name="sctListCheck"]')[i]).prop("checked", true);
+                }
+            }
         }else{
             $('input[name="sctListCheck"]').prop("checked", false);
         }
@@ -128,7 +132,9 @@ function get_kcdDetail_list(){
                             $('<input>',{
                                 type:'checkbox',
                                 name:'sctListCheck',
-                                value:data[i].sctId
+                                id:"delCheckbox_"+ data[i].sctId,
+                                value:data[i].sctId,
+                                disabled:data[i].mapStatCd==='0'||data[i].mapStatCd==='1'?true:false
                             })
                         ),
                         $('<td>').append(
@@ -142,6 +148,11 @@ function get_kcdDetail_list(){
                         )
                     );
                     $('#kcdDetailTable tbody').append($tr);
+                    /*
+                    if(data[i].mapStatCd === '0' || data[i].mapStatCd === '1'){
+                        $('#delCheckbox_' + data[i].sctId).addClass('displayNone');
+                    }
+                    */
                 }
                 kcd_detail_dynamic_func();
             }else{
@@ -227,6 +238,7 @@ function search_req(){
                     $('#searchResultTable tbody').append($tr);
                 }
                 $('#saveBtnDiv').removeClass('displayNone');
+                $('.autoRuleCol').addClass('displayNone');
                 kcd_detail_dynamic_func();
             }else{
                 console.log("자료 없음 처리.");
@@ -397,6 +409,10 @@ function autoRuleSet(){
                             $('<td>',{
                                 text:items[i].moduleId
                             }),
+                            $('<td>',{
+                                class:'autoRuleCol',
+                                text:data.ruleCode
+                            }),
                             //checkBox
                             $('<td>').append(
                                 $('<input>',{
@@ -409,6 +425,7 @@ function autoRuleSet(){
                         $('#searchResultTable tbody').append($tr);
                     }
                     $('#saveBtnDiv').removeClass('displayNone');
+                    $('.autoRuleCol').removeClass('displayNone');
                     kcd_detail_dynamic_func();
               }else{
                     //status false;

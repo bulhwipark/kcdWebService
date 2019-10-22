@@ -6,11 +6,12 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.util.HashMap;
 
-/**
- *
- */
 public class AutoRules {
-
+    /**
+     * snowstrom api 호출.
+      * @param searchVo
+     * @return
+     */
     public String autoRuleRequest(SearchVo searchVo) {
         String result = null;
         String URL = "http://1.224.169.78:8095/MAIN/concepts?";
@@ -73,8 +74,8 @@ public class AutoRules {
             returnJSON.put("ruleCode", "91");
         }
 
-        System.out.println("-------------------------------------------");
-        System.out.println("rule_1 : " + result);
+        System.out.println("-------------rule_1-------------------");
+        System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
         System.out.println("-------------------------------------------");
@@ -113,6 +114,12 @@ public class AutoRules {
             returnJSON.put("status", "false");
             returnJSON.put("ruleCode", "92");
         }
+        System.out.println("-------------rule_2-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
         return returnJSON;
     }
 
@@ -131,7 +138,8 @@ public class AutoRules {
     }
 
     /**
-     * s, ',' , '-' 제거     * @param searchVo
+     * s, ',' , '-' 제거
+     * * @param searchVo
      * @return
      * @throws JSONException
      */
@@ -149,6 +157,11 @@ public class AutoRules {
             returnJSON.put("status", "false");
             returnJSON.put("ruleCode", "94");
         }
+        System.out.println("-------------rule_4-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
         return returnJSON;
     }
 
@@ -173,6 +186,11 @@ public class AutoRules {
             returnJSON.put("status", "false");
             returnJSON.put("ruleCode", "96");
         }
+        System.out.println("-------------rule_6-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
         return returnJSON;
     }
 
@@ -183,10 +201,23 @@ public class AutoRules {
      * @throws JSONException
      */
     public JSONObject autoRule_7(SearchVo searchVo) throws JSONException {
-        System.out.println(searchVo.getTerm());
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("status", "false");
         returnJSON.put("ruleCode", "97");
         return returnJSON;
+    }
+
+    /**
+     * Elasticsearch api 호출.
+     * @param searchVo
+     * @return
+     */
+    public JSONObject autoRule_8(SearchVo searchVo){
+        String result = null;
+        String URL = "http://localhost:9200/description/_search?";
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("q=", "{\"query\": {\"query_string\" : {\"query\" : \"Benign neoplasm of breast, unspecifiedt\"}},\"_source\": [\"conceptId\",\"term\"]}");
+        result = HttpRestCall.callGet(URL, paramMap);
+        return null;
     }
 }
