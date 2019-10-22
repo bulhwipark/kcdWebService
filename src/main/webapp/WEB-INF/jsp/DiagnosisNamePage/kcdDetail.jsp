@@ -15,6 +15,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>
+<input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
         <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
@@ -85,8 +86,10 @@
                 <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
             </div>
             --%>
+            <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary">자동룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary">유사도 기준조회</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-warning">Clean</button>
-            <button class="btn btn-lg btn-info" onclick="search_req()">Search</button>
         </div>
     </div>
     <div class="row" id="searchResultTableDiv">

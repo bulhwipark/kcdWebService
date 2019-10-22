@@ -67,6 +67,15 @@ function kcd_detail_dynamic_func(){
             $('#saveBtn').prop('disabled', true);
         }
     });
+
+    $('.sctIdDetail').on('click', function(){
+        window.open(
+            '/sctIdDetail',
+            'Detail',
+            'width=1200,height=800,left=200,'
+        );
+        $('#sctId').val($(this).text());
+    });
 }
 
 /**
@@ -111,7 +120,9 @@ function get_kcdDetail_list(){
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>',{
-                            text:data[i].sctId
+                            class:'sctIdDetail',
+                            text:data[i].sctId,
+                            'data-sctid':data[i].sctId
                         }),
                         $('<td>',{
                             text:data[i].mapVer
