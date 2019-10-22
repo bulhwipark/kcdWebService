@@ -42,8 +42,11 @@ public class AutoRules {
             "Other",
             "unspecified",
             "alone",
+            "alone",
             "without complication",
-            "single"
+            "single",
+            "side",
+            "Side"
         };
 
         for(int i = 0; i<strSet.length; i++){
