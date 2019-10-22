@@ -82,8 +82,8 @@ function kcdList_req(){
         url: "/select"+$('#listOption option:selected').val(),
         type:'get',
         data:{
-            mapVer:$('#version option:selected').val(),
-            mapStatCd:$('#mapStatCd option:selected').val(),
+            mapVer:$('#version').val(),
+            mapStatCd:$('#mapStatCd').val(),
             kcdCd:$('#searchToKcdCd').val().toUpperCase(),
             limit:limit,
             offset:currentOffset
@@ -117,6 +117,9 @@ function kcdList_req(){
                         }),
                         $('<td>', {
                             text: data[i].mapStatNm +"("+data[i].mapStatCd+")"
+                        }),
+                        $('<td>', {
+                            text: data[i].udtDt
                         })
                     );
                     $('#kcdListTable tbody').append($tr);

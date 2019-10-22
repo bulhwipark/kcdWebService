@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class HttpRestCall {
 
-    public static String callGet(String strUrl, Map param) {
+    public static String callGet(String strUrl, Map<String,String> param) {
         StringBuffer sb = new StringBuffer();
         HttpURLConnection conn = null;
         try {

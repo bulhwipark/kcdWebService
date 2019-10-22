@@ -8,7 +8,7 @@
         SELECT K.KCD_CD kcdCd,
            K.KCD_ENG kcdEng,
            K.KCD_KOR kcdKor,
-           K.UDT_DT udtDt,
+           M.UDT_DT udtDt,
            M.SCT_ID sctId
         FROM CM_KCD K LEFT JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer}
