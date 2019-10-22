@@ -227,6 +227,7 @@ function search_req(){
                     var $tr = $('<tr>',{id:items[i].conceptId}).append(
                         //conceptId
                         $('<td>',{
+                            class:'sctIdDetail',
                             text:items[i].conceptId
                         }),
                         //active
