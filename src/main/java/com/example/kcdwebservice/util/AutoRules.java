@@ -1,10 +1,19 @@
 package com.example.kcdwebservice.util;
 
 import com.example.kcdwebservice.vo.SearchVo;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.nio.entity.NStringEntity;
+import org.apache.http.util.EntityUtils;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.*;
 
 public class AutoRules {
     /**
@@ -19,6 +28,18 @@ public class AutoRules {
         paramMap.put("activeFilter", "true");
         paramMap.put("termActive", "true");
         paramMap.put("term", searchVo.getTerm());
+        result = HttpRestCall.callGet(URL, paramMap);
+        return result;
+    }
+
+    public String autoRuleRequest(SearchVo searchVo, String conceptIds){
+        String result = null;
+        String URL = "http://1.224.169.78:8095/MAIN/concepts?";
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("activeFilter", "true");
+        paramMap.put("termActive", "true");
+        paramMap.put("term", searchVo.getTerm());
+        paramMap.put("conceptIds", conceptIds);
         result = HttpRestCall.callGet(URL, paramMap);
         return result;
     }
@@ -212,12 +233,52 @@ public class AutoRules {
      * @param searchVo
      * @return
      */
-    public JSONObject autoRule_8(SearchVo searchVo){
-        String result = null;
-        String URL = "http://localhost:9200/description/_search?";
-        HashMap<String, String> paramMap = new HashMap<>();
-        paramMap.put("q=", "{\"query\": {\"query_string\" : {\"query\" : \"Benign neoplasm of breast, unspecifiedt\"}},\"_source\": [\"conceptId\",\"term\"]}");
-        result = HttpRestCall.callGet(URL, paramMap);
-        return null;
+    public JSONObject autoRule_8(SearchVo searchVo) throws JSONException {
+        List<String> conceptIdList = new ArrayList<>();
+        JSONObject returnJSON = new JSONObject();
+        try{
+            String jsonStr = "{\n" +
+                    "    \"query\": {\n" +
+                    "       \"query_string\" : {\n" +
+                    "            \"query\" : \"Benign neoplasm of breast, unspecifiedt\"\n" +
+                    "        }\n" +
+                    "\n" +
+                    "    },\n" +
+                    "    \"_source\": [\"conceptId\",\"term\"]\n" +
+                    "}";
+            RestClient restClient = RestClient.builder(
+                    new HttpHost("localhost", 9200, "http")
+            ).build();
+            Map<String, String> params = Collections.emptyMap();
+            HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
+            Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity);
+            String result = EntityUtils.toString(response.getEntity());
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject jsonObject1 = new JSONObject(String.valueOf(jsonObject.get("hits")));
+
+            JSONArray jsonArray = jsonObject1.getJSONArray("hits");
+            for(int i = 0; i<jsonArray.length(); i++){
+                JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
+                obj = new JSONObject(String.valueOf(obj.get("_source")));
+                conceptIdList.add(String.valueOf(obj.get("conceptId")));
+            }
+            System.out.println(conceptIdList.toString());
+            result = autoRuleRequest(searchVo, String.join(",", conceptIdList));
+            JSONObject checkJSON = new JSONObject(result);
+            if(checkJSON.getJSONArray("items").length() > 0){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", result);
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "98");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("ruleCode", "98");
+            }
+
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return returnJSON;
     }
 }

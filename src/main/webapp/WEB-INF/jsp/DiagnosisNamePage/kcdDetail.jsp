@@ -87,7 +87,7 @@
             </div>
             --%>
             <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary">자동룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">자동룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary">유사도 기준조회</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-warning">Clean</button>
         </div>

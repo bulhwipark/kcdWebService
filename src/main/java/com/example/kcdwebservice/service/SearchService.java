@@ -47,6 +47,9 @@ public class SearchService {
                        result = autoRules.autoRule_4(searchVo);
                        if(result.get("status").equals("false")){
                            result = autoRules.autoRule_6(searchVo);
+                           if(result.get("status").equals("false")){
+                               result = autoRules.autoRule_8(searchVo);
+                           }
                        }
                    }
                }

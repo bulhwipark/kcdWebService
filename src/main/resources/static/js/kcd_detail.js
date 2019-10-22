@@ -159,15 +159,21 @@ function get_kcdDetail_list(){
                         )
                     );
                     $('#kcdDetailTable tbody').append($tr);
-                    /*
-                    if(data[i].mapStatCd === '0' || data[i].mapStatCd === '1'){
-                        $('#delCheckbox_' + data[i].sctId).addClass('displayNone');
-                    }
-                    */
                 }
                 kcd_detail_dynamic_func();
             }else{
                 console.log('자료 없음 처리.');
+                kcdDetailList = JSON.parse(JSON.stringify(data));
+                $('#kcdDetailTable tbody').empty();
+                $('#allSelect').prop("checked", false);
+                var $tr = $('<tr>').append(
+                    $('<td>',{
+                        colspan:8,
+                        text:'조회 결과가 없습니다.',
+                        style:'text-align:center;'
+                    })
+                );
+                $('#kcdDetailTable tbody').append($tr);
             }
         }
     })
@@ -267,10 +273,14 @@ function saveBtn_req(){
 
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for(var i  = 0; i<currentSelected.length; i++){
-        for(var j = 0; j<searchList.length; j++){
-            if(searchList[j].conceptId == currentSelected[i].value){
-                sctIdArr.push(searchList[j].conceptId);
+        if(searchList){
+            for(var j = 0; j<searchList.length; j++){
+                if(searchList[j].conceptId == currentSelected[i].value){
+                    sctIdArr.push(searchList[j].conceptId);
+                }
             }
+        }else{
+            sctIdArr.push(currentSelected[i].value);
         }
     }
     $.ajax({
@@ -318,6 +328,7 @@ function deleteKcdList_req(){
         success:function(){
             get_kcdDetail_list();
             search_req();
+            autoRuleSet();
         }
     });
 }
@@ -398,8 +409,8 @@ function autoRuleSet(){
                                 }
                             });
                         }
-                        searchList = JSON.parse(JSON.stringify(items));
                     }
+                    searchList = JSON.parse(JSON.stringify(items));
                     $('#searchResultTable tbody').empty();
                     $('#searchResultAllSelect').prop("checked", false);
                     for(var i = 0; i<items.length; i++){
