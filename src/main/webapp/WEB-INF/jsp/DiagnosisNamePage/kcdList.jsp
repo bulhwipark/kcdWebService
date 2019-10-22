@@ -80,6 +80,7 @@
                 <th scope="col">SCTID</th>
                 <th scope="col">Description</th>
                 <th scope="col">Flag</th>
+                <th scope="col">Update</th>
             </tr>
             </thead>
             <tbody></tbody>

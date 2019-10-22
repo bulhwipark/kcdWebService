@@ -102,10 +102,10 @@ function kcdList_req(){
                             'data-sctId':!data[i].sctId?'-':data[i].sctId,
                         }),
                         $('<td>', {
-                            text:'-'
+                            text: data[i].sctTerm
                         }),
                         $('<td>', {
-                            text:'-'
+                            text: data[i].mapStatNm +"("+data[i].mapStatCd+")"
                         })
                     );
                     $('#kcdListTable tbody').append($tr);
