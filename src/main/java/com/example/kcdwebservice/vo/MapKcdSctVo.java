@@ -17,4 +17,7 @@ public class MapKcdSctVo {
     private String dispOdr;
     private String udtDt;
 
+    private String sctTerm;
+    private String mapStatNm;
+
 }

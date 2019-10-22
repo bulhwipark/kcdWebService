@@ -125,16 +125,10 @@ function get_kcdDetail_list(){
                             'data-sctid':data[i].sctId
                         }),
                         $('<td>',{
-                            text:data[i].mapVer
+                            text:data[i].sctTerm
                         }),
                         $('<td>',{
-                            text:data[i].mapStatCd
-                        }),
-                        $('<td>',{
-                            text:data[i].rvStatCd
-                        }),
-                        $('<td>',{
-                            text:data[i].dispOdr
+                            text:data[i].mapStatNm +"("+data[i].mapStatCd+")"
                         }),
                         $('<td>',{
                             text:data[i].udtDt

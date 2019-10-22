@@ -29,10 +29,8 @@
             <thead>
                 <tr>
                     <th scope="col">SCT_ID</th>
-                    <th scope="col">MAP_VER</th>
+                    <th scope="col">SCT_TERM</th>
                     <th scope="col">MAP_STAT_CD</th>
-                    <th scope="col">RV_STAT_CD</th>
-                    <th scope="col">DISP_ODR</th>
                     <th scope="col">UDT_DT</th>
                     <th>
                         전체선택&nbsp;&nbsp;

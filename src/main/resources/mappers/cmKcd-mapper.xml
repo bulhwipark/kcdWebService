@@ -97,7 +97,7 @@
             left outer join EMR.CM_SNOMEDCT S
             on M.SCT_ID=S.SCT_ID
             left outer join EMR.MCODE CD
-            ON M.MAP_STAT_CD=CD.CD_ID
+            ON left(M.MAP_STAT_CD,1)=CD.CD_ID
             AND CD.CD_GRP='MAP_STAT_CD'
             AND CD.CD_STAT_CD='0'
         where icd_cd is null;              

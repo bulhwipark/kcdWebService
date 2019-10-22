@@ -6,14 +6,23 @@
 <mapper namespace="com.example.kcdwebservice.dao.MapKcdSctDao">
     <select id="selectKcdCdList" parameterType="String" resultType="com.example.kcdwebservice.vo.MapKcdSctVo">
         select
-            ORI_CD oriCd,
-            SCT_ID sctId,
-            MAP_VER mapVer,
-            MAP_STAT_CD mapStatCd,
-            RV_STAT_CD rvStatCd,
-            DISP_ODR dispOdr,
-            UDT_DT udtDt
-        from MAP_KCD_SCT where ORI_CD = #{value}
+            M.ORI_CD oriCd,
+            M.SCT_ID sctId,
+            M.MAP_VER mapVer,
+            M.MAP_STAT_CD mapStatCd,
+            M.RV_STAT_CD rvStatCd,
+            M.DISP_ODR dispOdr,
+            M.UDT_DT udtDt,
+            S.SCT_TERM sctTerm,
+            CD.CD_DSCRT mapStatNm
+        from EMR.MAP_KCD_SCT M
+            left outer join EMR.CM_SNOMEDCT S
+            ON M.SCT_ID=S.SCT_ID
+            left outer join EMR.MCODE CD
+            ON left(M.MAP_STAT_CD,1)=CD.CD_ID
+            AND CD.CD_GRP='MAP_STAT_CD'
+            AND CD.CD_STAT_CD='0'
+        where M.ORI_CD = #{value}
     </select>
 
     <insert id="insertAutoMap1" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
