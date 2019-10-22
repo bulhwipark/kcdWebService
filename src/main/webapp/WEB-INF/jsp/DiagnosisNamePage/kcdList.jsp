@@ -16,13 +16,14 @@
         </div>
         <form id="searchForm" method="post" action="/excelDownload.xlsx">
             <div class="row" style="margin-bottom: 10px;">
-                <div class="form-inline col-xl-3">
+                <input type="hidden" name="mapVer" id="version" value="0">
+                <!--div class="form-inline col-xl-3">
                     <label for="version">ver : </label>
                     <select class="form-control kcdSearchOption" name="mapVer" id="version" style="width: 300px;">
                         <option value="0">0 : 최초매핑버전</option>
                         <option value="1">1 : 추가임시버전</option>
                     </select>
-                </div>
+                </div-->
                 <div class="form-inline col-xl-3">
                     <label for="listOption">매핑상태 : </label>
                     <select class="form-control kcdSearchOption" name="listOption" id="listOption" style="width: 90px;">
@@ -31,8 +32,10 @@
                         <option value="NotMapping">비매핑</option>
                         <option value="IcdNotMapping">ICD 비매핑</option>
                     </select>
-                    <label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
-                    <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select>
+                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
+                    <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
+                    <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
+
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
@@ -76,10 +79,11 @@
             <thead>
             <tr>
                 <th scope="col">KCD코드</th>
-                <th scope="col">한글명/영문명</th>
-                <th scope="col">SCTID</th>
-                <th scope="col">Description</th>
-                <th scope="col">Flag</th>
+                <th scope="col">KCD 한글명/영문명</th>
+                <th scope="col">Snomed ID</th>
+                <th scope="col">Snomed CT Term</th>
+                <th scope="col">매핑상태</th>
+                <th scope="col">매핑일자</th>
             </tr>
             </thead>
             <tbody></tbody>

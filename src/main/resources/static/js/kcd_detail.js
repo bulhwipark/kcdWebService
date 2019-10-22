@@ -67,10 +67,20 @@ function kcd_detail_dynamic_func(){
             $('#saveBtn').prop('disabled', true);
         }
     });
-
+/*
     $('.sctIdDetail').on('click', function(){
         window.open(
             '/sctIdDetail',
+            'Detail',
+            'width=1200,height=800,left=200,'
+        );
+        $('#sctId').val($(this).text());
+    });
+    */
+   
+    $('.sctIdDetail').on('click', function(){
+        window.open(
+            'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
             'Detail',
             'width=1200,height=800,left=200,'
         );
@@ -125,16 +135,10 @@ function get_kcdDetail_list(){
                             'data-sctid':data[i].sctId
                         }),
                         $('<td>',{
-                            text:data[i].mapVer
+                            text:data[i].sctTerm
                         }),
                         $('<td>',{
-                            text:data[i].mapStatCd
-                        }),
-                        $('<td>',{
-                            text:data[i].rvStatCd
-                        }),
-                        $('<td>',{
-                            text:data[i].dispOdr
+                            text:data[i].mapStatNm +"("+data[i].mapStatCd+")"
                         }),
                         $('<td>',{
                             text:data[i].udtDt
@@ -229,6 +233,7 @@ function search_req(){
                     var $tr = $('<tr>',{id:items[i].conceptId}).append(
                         //conceptId
                         $('<td>',{
+                            class:'sctIdDetail',
                             text:items[i].conceptId
                         }),
                         //active

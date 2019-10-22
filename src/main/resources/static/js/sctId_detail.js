@@ -5,6 +5,9 @@ function sctId_detail_static_func(){
 
 function detailList_req(sctId){
     $('#sctIdSpan').text("'"+sctId+"'");
+    var linkurl="https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1="+window.opener.document.getElementById('sctId').value;
+    $('#link1').attr('href',linkurl);
+    
     $.ajax({
         url:'/detailList',
         type:'get',

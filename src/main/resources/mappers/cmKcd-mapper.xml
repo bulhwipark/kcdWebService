@@ -8,14 +8,23 @@
         SELECT K.KCD_CD kcdCd,
            K.KCD_ENG kcdEng,
            K.KCD_KOR kcdKor,
-           K.UDT_DT udtDt,
-           M.SCT_ID sctId
+           M.UDT_DT udtDt,
+           M.SCT_ID sctId,
+           M.MAP_STAT_CD mapStatCd,
+           S.SCT_TERM sctTerm,
+           CD.CD_DSCRT mapStatNm
         FROM CM_KCD K LEFT JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer}
                 <if test="mapStatCd != 'All'">
                     and MAP_STAT_CD = #{mapStatCd}
                 </if>
         ) M ON K.KCD_CD = M.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S
+        ON M.SCT_ID=S.SCT_ID
+        left outer join EMR.MCODE CD
+        ON left(M.MAP_STAT_CD,1)=CD.CD_ID
+        AND CD.CD_GRP='MAP_STAT_CD'
+        AND CD.CD_STAT_CD='0'
         <where>
             <if test="kcdCd != null and kcdCd != ''">
                 and K.KCD_CD=#{kcdCd}
@@ -61,6 +70,7 @@
         FROM CM_KCD K INNER JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) M ON K.KCD_CD = M.ORI_CD
+
         <if test="limit != '' and limit != null and offset != '' and offset != null">
             limit ${limit} offset ${offset};
         </if>
@@ -81,14 +91,26 @@
     </select>
 
     <select id="select_icdNotMapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
-        select
-            KCD_CD kcdCd,
-            KCD_ENG kcdEng,
-            KCD_KOR kcdKor,
-            UDT_DT udtDt,
-            null sctId
-        from CM_KCD
-        where icd_cd is null;
+        SELECT
+            K.KCD_CD kcdCd,
+            K.KCD_ENG kcdEng,
+            K.KCD_KOR kcdKor,
+            M.SCT_ID sctId,
+            S.SCT_TERM sctTerm,
+            M.MAP_STAT_CD mapStatCd,
+            CD.CD_DSCRT mapStatNm,
+            M.UDT_DT udtDt
+        from EMR.CM_KCD K 
+            left outer join EMR.MAP_KCD_SCT M
+            on K.KCD_CD=M.ORI_CD
+            AND M.ORI_TP_CD='KCD'
+            left outer join EMR.CM_SNOMEDCT S
+            on M.SCT_ID=S.SCT_ID
+            left outer join EMR.MCODE CD
+            ON left(M.MAP_STAT_CD,1)=CD.CD_ID
+            AND CD.CD_GRP='MAP_STAT_CD'
+            AND CD.CD_STAT_CD='0'
+        where icd_cd is null;              
     </select>
 
     <select id="selectKcdCdInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKcdVo">

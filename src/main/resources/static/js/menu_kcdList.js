@@ -53,9 +53,20 @@ function dynamic_event_func(){
         location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version option:selected').val();
     });
 
+    /*
     $('.sctIdDetail').on('click', function(){
       window.open(
            '/sctIdDetail',
+           'Detail',
+           'width=1200,height=800,left=200,'
+       );
+      $('#sctId').val($(this).text());
+    });
+    */
+
+    $('.sctIdDetail').on('click', function(){
+      window.open(
+           'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
            'Detail',
            'width=1200,height=800,left=200,'
        );
@@ -71,8 +82,8 @@ function kcdList_req(){
         url: "/select"+$('#listOption option:selected').val(),
         type:'get',
         data:{
-            mapVer:$('#version option:selected').val(),
-            mapStatCd:$('#mapStatCd option:selected').val(),
+            mapVer:$('#version').val(),
+            mapStatCd:$('#mapStatCd').val(),
             kcdCd:$('#searchToKcdCd').val().toUpperCase(),
             limit:limit,
             offset:currentOffset
@@ -102,10 +113,13 @@ function kcdList_req(){
                             'data-sctId':!data[i].sctId?'-':data[i].sctId,
                         }),
                         $('<td>', {
-                            text:'-'
+                            text: data[i].sctTerm
                         }),
                         $('<td>', {
-                            text:'-'
+                            text: data[i].mapStatNm +"("+data[i].mapStatCd+")"
+                        }),
+                        $('<td>', {
+                            text: data[i].udtDt
                         })
                     );
                     $('#kcdListTable tbody').append($tr);
