@@ -39,6 +39,12 @@
             <tbody></tbody>
         </table>
     </div>
+
+    <div class="sctMetaLinkDiv">
+        <a id=link1 href = "" target=_1>SNOMED CT Browser</a>
+    </div>
+
+    
 </div>
 
 
