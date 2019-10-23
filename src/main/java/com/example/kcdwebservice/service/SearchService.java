@@ -25,6 +25,7 @@ public class SearchService {
        // paramMap.put("offset", "0");
         paramMap.put("term", searchVo.getTerm());
         paramMap.put("ecl", searchVo.getEcl());
+        result = HttpRestCall.callGet(URL, paramMap);
         /*
         for(int i = 0; i<searchVo.getEcl().size(); i++){
             paramMap.put("ecl", searchVo.getEcl().get(i));
