@@ -8,7 +8,6 @@ function menu_kcdList_staticFunc(){
     $('.kcdSearchOption').on('change', function(){
         currentOffset = 0;
         totalCnt = 0;
-        alert("test");
         kcdList_totalCount_req();
         kcdList_req();
     });
