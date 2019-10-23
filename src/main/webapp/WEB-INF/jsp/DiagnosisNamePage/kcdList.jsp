@@ -32,31 +32,33 @@
                         <option value="NotMapping">비매핑</option>
                         <option value="IcdNotMapping">ICD 비매핑</option>
                     </select>
-                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
+                    <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
                     <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
-
+                    <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
+                        <label for="searchToKcdCd">검색: </label>
+                        <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
+                    </div>
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
-                        <span><b>KCD_CD Total : </b></span>
+                        <span><b>KCD 코드기준 Total : </b></span>
                         <span id="kcdTotalCnt"></span>
                     </div>
                     <div>
-                        <span><b>Total : </b></span>
+                        <span><b>매핑 Total : </b></span>
                         <span id="totalCnt"></span>
                     </div>
                 </div>
 
                 <div class="col-xl-3">
                     <div style="display: inline-block; margin-top: 20px;">
-                    <span style="width: 50px; display: inherit;">
-                        <button class="btn btn-light" id="prev"><<</button>
-                    </span>
-                        <span id="currentPage"></span>
                         <span style="width: 50px; display: inherit;">
-                        <button class="btn btn-light" id="next">>></button>
-                    </span>
+                            <button class="btn btn-light" id="prev">
+                                <<</button> </span> <span id="currentPage"></span>
+                        <span style="width: 50px; display: inherit;">
+                            <button class="btn btn-light" id="next">>></button>
+                        </span>
                     </div>
                     <div style="display: inline-block; margin-top: 20px;">
                         <button class="btn btn-outline-danger" id="excelDownloadBtn">Excel Download</button>
@@ -65,10 +67,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
-                    <label for="searchToKcdCd">검색: </label>
-                    <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
-                </div>
+
             </div>
             <input type="text" hidden name="limit" id="limit">
             <input type="text" hidden name="offset" id="offset">
@@ -77,14 +76,14 @@
     <div class="kcdListTableDiv">
         <table class="table table-striped" id="kcdListTable">
             <thead>
-            <tr>
-                <th scope="col">KCD코드</th>
-                <th scope="col">KCD 한글명/영문명</th>
-                <th scope="col">Snomed ID</th>
-                <th scope="col">Snomed CT Term</th>
-                <th scope="col">매핑상태</th>
-                <th scope="col">매핑일자</th>
-            </tr>
+                <tr>
+                    <th scope="col">KCD코드</th>
+                    <th scope="col">KCD 한글명/영문명</th>
+                    <th scope="col">Snomed ID</th>
+                    <th scope="col">Snomed CT Term</th>
+                    <th scope="col">매핑상태</th>
+                    <th scope="col">매핑일자</th>
+                </tr>
             </thead>
             <tbody></tbody>
         </table>

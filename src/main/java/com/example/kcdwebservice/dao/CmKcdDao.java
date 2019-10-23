@@ -3,7 +3,6 @@ package com.example.kcdwebservice.dao;
 import java.util.List;
 
 import com.example.kcdwebservice.vo.CmKcdVo;
-import com.example.kcdwebservice.vo.MapKcdSctVo;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -20,13 +19,14 @@ public interface CmKcdDao {
 
     String kcdTotalAllCnt();
 
-    String totalAllCnt(MapKcdSctVo mapKcdSctVo);
-
-    String totalMappingCnt(MapKcdSctVo mapKcdSctVo);
-
-    String totalNotMappingCnt(MapKcdSctVo mapKcdSctVo);
+    String totalKcdAllCnt(CmKcdVo mapKcdSctVo);
+    String totalKcdMappingCnt(CmKcdVo mapKcdSctVo);
+    String totalKcdNotMappingCnt(CmKcdVo mapKcdSctVo);
+    String totalKcdIcdNotMappingCnt(CmKcdVo mapKcdSctVo);
     
-    String totalIcdNotMappingCnt(MapKcdSctVo mapKcdSctVo);
-    
+    String totalAllCnt(CmKcdVo mapKcdSctVo);
+    String totalMappingCnt(CmKcdVo mapKcdSctVo);
+    String totalNotMappingCnt(CmKcdVo mapKcdSctVo);
+    String totalIcdNotMappingCnt(CmKcdVo mapKcdSctVo);
 
 }

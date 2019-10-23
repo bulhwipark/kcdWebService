@@ -1,7 +1,21 @@
 package com.example.kcdwebservice.controller;
 
-import com.example.kcdwebservice.service.*;
-import com.example.kcdwebservice.vo.*;
+import java.util.List;
+
+import com.example.kcdwebservice.service.CmKcdService;
+import com.example.kcdwebservice.service.CmSnomedCtService;
+import com.example.kcdwebservice.service.DicKcdSynonymService;
+import com.example.kcdwebservice.service.MCodeService;
+import com.example.kcdwebservice.service.MapKcdSctService;
+import com.example.kcdwebservice.service.RuleMapService;
+import com.example.kcdwebservice.service.SearchService;
+import com.example.kcdwebservice.vo.CmKcdVo;
+import com.example.kcdwebservice.vo.CmSnomedCtVo;
+import com.example.kcdwebservice.vo.DicKcdSynonymVo;
+import com.example.kcdwebservice.vo.MCodeVo;
+import com.example.kcdwebservice.vo.MapKcdSctVo;
+import com.example.kcdwebservice.vo.SearchVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -9,10 +23,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -95,9 +111,9 @@ public class MainController {
      */
     @RequestMapping(value="/getTotalCount")
     @ResponseBody
-    public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, MapKcdSctVo mapKcdSctVo){
+    public ResponseEntity<String> getTotalCount(@RequestParam("mappingStatus")String mappingStatus, CmKcdVo mapKcdSctVo){
         JSONObject jsonObject = new JSONObject();
-        String kcdTotalCnt = cmKcdService.kcdTotalCnt();
+        String kcdTotalCnt = cmKcdService.kcdTotalCnt(mappingStatus, mapKcdSctVo);
         String totalCnt = cmKcdService.mappingStatTotalCnt(mappingStatus, mapKcdSctVo);
         try {
             jsonObject.put("kcdTotalCnt", kcdTotalCnt);

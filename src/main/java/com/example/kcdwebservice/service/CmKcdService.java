@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.kcdwebservice.dao.CmKcdDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
-import com.example.kcdwebservice.vo.MapKcdSctVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,22 +30,32 @@ public class CmKcdService {
         return cmKcdDao.selectKcdCdInfo(kcdCd);
     }
 
-    public String mappingStatTotalCnt(String mappingStatus, MapKcdSctVo mapKcdSctVo) {
+    public String mappingStatTotalCnt(String mappingStatus, CmKcdVo cmkcdVo) {
         String totalCnt = null;
         if(mappingStatus.equals("All")){
-            totalCnt = cmKcdDao.totalAllCnt(mapKcdSctVo);
+            totalCnt = cmKcdDao.totalAllCnt(cmkcdVo);
         }else if(mappingStatus.equals("Mapping")){
-            totalCnt = cmKcdDao.totalMappingCnt(mapKcdSctVo);
+            totalCnt = cmKcdDao.totalMappingCnt(cmkcdVo);
         }else if(mappingStatus.equals("NotMapping")){
-            totalCnt = cmKcdDao.totalNotMappingCnt(mapKcdSctVo);
+            totalCnt = cmKcdDao.totalNotMappingCnt(cmkcdVo);
         }else if(mappingStatus.equals("IcdNotMapping")){
-            totalCnt = cmKcdDao.totalIcdNotMappingCnt(mapKcdSctVo);
+            totalCnt = cmKcdDao.totalIcdNotMappingCnt(cmkcdVo);
         }
         return totalCnt;
     }
 
-    public String kcdTotalCnt() {
-        return cmKcdDao.kcdTotalAllCnt();
+    public String kcdTotalCnt(String mappingStatus, CmKcdVo cmkcdVo) {
+        String totalCnt = null;
+        if(mappingStatus.equals("All")){
+            totalCnt = cmKcdDao.totalKcdAllCnt(cmkcdVo);
+        }else if(mappingStatus.equals("Mapping")){
+            totalCnt = cmKcdDao.totalKcdMappingCnt(cmkcdVo);
+        }else if(mappingStatus.equals("NotMapping")){
+            totalCnt = cmKcdDao.totalKcdNotMappingCnt(cmkcdVo);
+        }else if(mappingStatus.equals("IcdNotMapping")){
+            totalCnt = cmKcdDao.totalKcdIcdNotMappingCnt(cmkcdVo);
+        }
+        return totalCnt;
     }
 
     public List<CmKcdVo> selectIcdNotMapping(CmKcdVo cmKcdVo) {
