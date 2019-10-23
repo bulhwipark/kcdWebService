@@ -30,7 +30,7 @@
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
-                        <option value="IcdNotMapping">ICD 비매핑</option>
+                        <option value="IcdNotMapping" selected>ICD 비매핑</option>
                     </select>
                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
