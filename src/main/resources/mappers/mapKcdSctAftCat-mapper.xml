@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.MapKcdSctAftCatDao">
+    <insert id="attValInsert" parameterType="com.example.kcdwebservice.vo.MapKcdSctAftCatVo">
+        INSERT INTO EMR.MAP_KCD_SCT_AFT_CAT (
+            ORI_TP_CD,
+            MAP_VER,
+            ORI_CD,
+            SCT_ID,
+            ATT_SCT_ID,
+            VAL_SCT_ID,
+            MAP_STAT_CD,
+            RV_STAT_CD,
+            DISP_ODR,
+            UDT_DT
+         )
+        VALUES (
+            #{oriTpCd},
+            #{mapVer},
+            #{oriCd},
+            #{sctId},
+            #{attSctId},
+            #{valSctId},
+            #{mapStatCd},
+            '0',
+            '0',
+            sysdate()
+        );
+    </insert>
+</mapper>

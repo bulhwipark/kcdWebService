@@ -22,7 +22,8 @@ public class SearchService {
        // paramMap.put("limit", "50");
        // paramMap.put("offset", "0");
         paramMap.put("term", searchVo.getTerm());
-
+        paramMap.put("ecl", searchVo.getEcl());
+        /*
         for(int i = 0; i<searchVo.getEcl().size(); i++){
             paramMap.put("ecl", searchVo.getEcl().get(i));
             result = HttpRestCall.callGet(URL, paramMap);
@@ -31,6 +32,7 @@ public class SearchService {
                 break;
             }
         }
+        */
         return result;
     }
 
@@ -39,21 +41,37 @@ public class SearchService {
         JSONObject result = null;
         try {
            result = autoRules.autoRule_1(searchVo);
-           if(result.get("status").equals("false")) {
-               result = autoRules.autoRule_2(searchVo);
-               if(result.get("status").equals("false")){
-                   result = autoRules.autoRule_3(searchVo);
-                   if(result.get("status").equals("false")){
-                       result = autoRules.autoRule_4(searchVo);
-                       if(result.get("status").equals("false")){
-                           result = autoRules.autoRule_6(searchVo);
-                           if(result.get("status").equals("false")){
-                               result = autoRules.autoRule_8(searchVo);
-                           }
-                       }
-                   }
-               }
-           }
+            if (result.get("status").equals("false")) {
+                result = autoRules.autoRule_2(searchVo);
+                if (result.get("status").equals("false")) {
+                    result = autoRules.autoRule_3(searchVo);
+                    if (result.get("status").equals("false")) {
+                        result = autoRules.autoRule_4(searchVo);
+                        if (result.get("status").equals("false")) {
+                            result = autoRules.autoRule_6(searchVo);
+                            if (result.get("status").equals("false")) {
+                                result = autoRules.autoRule_8(searchVo);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 유사도 기준 검색 룰만 별도로 실행.
+     * @param searchVo
+     * @return
+     */
+    public JSONObject similarityRequest(SearchVo searchVo) {
+        AutoRules autoRules = new AutoRules();
+        JSONObject result = null;
+        try {
+            result =  autoRules.autoRule_8(searchVo);
         } catch (JSONException e) {
             e.printStackTrace();
         }

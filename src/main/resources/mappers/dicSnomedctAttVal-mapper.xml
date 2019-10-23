@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.DicSnomedctAttValDao">
+    <select id="getAttrList" resultType="com.example.kcdwebservice.vo.DicSnomedctAttValVo">
+        SELECT distinct ATT_SCT_ID attSctId,
+               S.SCT_TERM cmSctTerm
+        FROM EMR.DIC_SNOMEDCT_ATT_VAL A
+            inner join EMR.CM_SNOMEDCT S on A.ATT_SCT_ID = S.SCT_ID;
+    </select>
+
+    <select id="getValList" parameterType="String" resultType="com.example.kcdwebservice.vo.DicSnomedctAttValVo">
+        SELECT
+        A.VAL_SCT_ID attSctId,
+         S.SCT_TERM cmSctTerm
+        FROM EMR.DIC_SNOMEDCT_ATT_VAL A
+                 inner join EMR.CM_SNOMEDCT S on A.VAL_SCT_ID = S.SCT_ID
+        where ATT_SCT_ID = #{value};
+    </select>
+</mapper>

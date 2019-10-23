@@ -10,6 +10,11 @@ function kcd_detail_static_func(){
         $('#clinicalFinding').prop('checked', false);
     });
 
+    //disorder, clinicalfinding 클릭시 좌측 ecl 인풋에 텍스트는 삭제.
+    $('input[name="defaultRule"]').on('click', function(){
+        $('#ecl').val('');
+    });
+
     //kcd 상세리스트 쪽 전체 선택.
     $('#allSelect').on('click',function(){
         if($(this).prop('checked')){
@@ -44,11 +49,14 @@ function kcd_detail_static_func(){
         }
     });
 
-    //동의어 이벤트트
+    //동의어 이벤트
    $('#synonym').on('change', function(){
         $('#term').val($('#synonym option:selected').val());
     });
 
+   $('#attr_select').on('change', function(){
+       getValueList();
+   });
 }
 
 function kcd_detail_dynamic_func(){
@@ -67,17 +75,7 @@ function kcd_detail_dynamic_func(){
             $('#saveBtn').prop('disabled', true);
         }
     });
-/*
-    $('.sctIdDetail').on('click', function(){
-        window.open(
-            '/sctIdDetail',
-            'Detail',
-            'width=1200,height=800,left=200,'
-        );
-        $('#sctId').val($(this).text());
-    });
-    */
-   
+
     $('.sctIdDetail').on('click', function(){
         window.open(
             'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
@@ -86,6 +84,12 @@ function kcd_detail_dynamic_func(){
         );
         $('#sctId').val($(this).text());
     });
+
+    /*$('.addAttrBtn').on('click', function(){
+        $('#modal_kcdKor').text($('#kcdKor').text());
+        $('#modal_kcdEng').text($('#kcdEng').text());
+        kcdAttrList_ajax($(this).val());
+    })*/
 }
 
 /**
@@ -155,10 +159,11 @@ function get_kcdDetail_list(){
                         $('<td>').append(
                             $('<button>',{
                                 value:data[i].sctId,
-                                class:'btn btn-sm btn-info',
+                                class:'btn btn-sm btn-info addAttrBtn',
                                 text:'속성추가',
                                 'data-toggle':'modal',
-                                'data-target':'#attrValSetting_modal'
+                                'data-target':'#attrValSetting_modal',
+                                onclick:'attr_val_modalSetting('+ data[i].sctId +')'
                             })
                         )
                     );
@@ -190,24 +195,18 @@ function search_req(){
     var param = new Object();
     param.term = $('#term').val();
 
-    param.ecl = [];
-
-    if($('#disorder').prop('checked')){
-        param.ecl.push($('#disorder').val());
-    }
-
-    if($('#clinicalFinding').prop('checked')){
-        param.ecl.push($('#clinicalFinding').val());
+    if($('input[name="defaultRule"]:checked').val()){
+        param.ecl = $('input[name="defaultRule"]:checked').val();
+    }else{
+        param.ecl = $('#ecl').val();
     }
 
     //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
-    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
-        if($('#ecl').val().length > 0){
-            param.ecl.push($('#ecl').val());
-        }
-    }
-    param.ecl = param.ecl.join(",");
-
+    // if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
+    //     if($('#ecl').val().length > 0){
+    //         param.ecl.push($('#ecl').val());
+    //     }
+    // }
     $.ajax({
         url:'/search',
         type:'post',
@@ -392,7 +391,7 @@ function autoRuleSet(){
         }
     }
     param.ecl = param.ecl.join(",");
-    console.log(param.ecl);
+
     $.ajax({
         url:'/autoRuleSet',
         type:'post',
@@ -463,6 +462,123 @@ function autoRuleSet(){
             }
         }
     });
+}
+
+/**
+ * 유사도기준 검색 ajax
+ */
+function similaritySearch(){
+    var param = new Object();
+    param.term = $('#term').val();
+
+    param.ecl = [];
+
+    if($('#disorder').prop('checked')){
+        param.ecl.push($('#disorder').val());
+    }
+
+    if($('#clinicalFinding').prop('checked')){
+        param.ecl.push($('#clinicalFinding').val());
+    }
+
+    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
+    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
+        if($('#ecl').val().length > 0){
+            param.ecl.push($('#ecl').val());
+        }
+    }
+    param.ecl = param.ecl.join(",");
+    $.ajax({
+        url:'/similaritySearch',
+        type:'post',
+        data:param,
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+        }
+    });
+}
+
+function attr_val_modalSetting(sctId){
+    $('#modal_sctId').text(sctId);
+    $('#modal_kcdKor').text($('#kcdKor').text());
+    $('#modal_kcdEng').text($('#kcdEng').text());
+
+     $.ajax({
+        url:'/getKcdAttrList',
+        type:'post',
+        data:{
+            sctId:sctId
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            $('#attr_select').empty();
+            if(data.length>0){
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>', {
+                        text:data[i].cmSctTerm,
+                        value:data[i].attSctId
+                    });
+                    $('#attr_select').append($option);
+                }
+                $('#val_select').attr("disabled", false);
+                getValueList();
+            }else{
+                console.log("attr 목록 없음.");
+            }
+        }
+    })
+}
+
+function getValueList(){
+    console.log($('#attr_select option:selected').val());
+    $.ajax({
+        url:'/getKcdValList',
+        type:'post',
+        data:{
+            sctId:$('#attr_select option:selected').val()
+        },
+        dataType:'json',
+        async:false,
+        success:function(data){
+            console.log(data);
+            $('#val_select').empty();
+            if(data.length > 0){
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                        text:data[i].cmSctTerm,
+                        value:data[i].attSctId
+                    });
+                    $('#val_select').append($option);
+                }
+            }else{
+                console.log("리스트 없음.")
+            }
+        }
+    })
+}
+
+function attr_val_save(){
+    console.log($('#modal_kcdCd').val());
+    console.log($('#mapVer').val());
+    $.ajax({
+        url:'/attrValSave',
+        type:'post',
+        data:{
+            oriTpCd:'D',
+            oriCd:$('#modal_kcdCd').text(),
+            mapVer:$('#mapVer').val(),
+            sctId:$('#modal_sctId').text(),
+            attSctId:$('#attr_select option:selected').val(),
+            valSctId:$('#val_select option:selected').val(),
+            mapStatCd:'80'
+        },
+        dataType:'',
+        success:function(){
+            console.log("save")
+        }
+    })
 }
 
 function alert_timeout(){
