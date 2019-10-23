@@ -8,7 +8,9 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,10 +38,12 @@ public class SearchService {
         return result;
     }
 
-    public JSONObject autoRuleRequest(SearchVo searchVo) {
+    public List<JSONObject> autoRuleRequest(SearchVo searchVo) {
         AutoRules autoRules = new AutoRules();
+        List<JSONObject> list = new ArrayList<>();
         JSONObject result = null;
         try {
+           /*
            result = autoRules.autoRule_1(searchVo);
             if (result.get("status").equals("false")) {
                 result = autoRules.autoRule_2(searchVo);
@@ -56,10 +60,17 @@ public class SearchService {
                     }
                 }
             }
+            */
+           list.add(autoRules.autoRule_1(searchVo));
+           list.add(autoRules.autoRule_2(searchVo));
+           list.add(autoRules.autoRule_3(searchVo));
+           list.add(autoRules.autoRule_4(searchVo));
+           list.add(autoRules.autoRule_6(searchVo));
+           list.add(autoRules.autoRule_8(searchVo));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return result;
+        return list;
     }
 
     /**

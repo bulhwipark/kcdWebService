@@ -33,15 +33,13 @@ public class AutoRules {
         return result;
     }
 
-    public String autoRuleRequest(SearchVo searchVo, Set<String> conceptIds){
+    public String autoRuleRequest(SearchVo searchVo, String conceptId){
         String result = null;
-        String URL = "http://1.224.169.78:8095/MAIN/concepts?";
+        String URL = "http://1.224.169.78:8095/browser/MAIN/concepts/"+ conceptId +"?";
         HashMap<String, String> paramMap = new HashMap<>();
-        paramMap.put("activeFilter", "true");
-        paramMap.put("termActive", "true");
-        paramMap.put("ecl", searchVo.getEcl());
-        paramMap.put("term", searchVo.getTerm());
-        paramMap.put("conceptIds", conceptIds.toString());
+        paramMap.put("branch", "MAIN");
+        paramMap.put("conceptId", conceptId);
+        //paramMap.put("form", "inferred");
         result = HttpRestCall.callGet(URL, paramMap);
         return result;
     }
@@ -269,11 +267,27 @@ public class AutoRules {
                 conceptIdList.add(String.valueOf(obj.get("conceptId")));
             }
             System.out.println(conceptIdList.toString());
-            result = autoRuleRequest(searchVo, conceptIdList);
-            JSONObject checkJSON = new JSONObject(result);
-            if(checkJSON.getJSONArray("items").length() > 0){
+            List<JSONObject> items = new ArrayList<>();
+            for(int i = 0; i<conceptIdList.size(); i++){
+                String res = autoRuleRequest(searchVo, String.valueOf(conceptIdList.toArray()[i]));
+                JSONArray resList = new JSONObject(res).getJSONArray("descriptions");
+                System.out.println(searchVo.getEcl().replace("<", ""));
+                for(int k = 0; k<resList.length(); k++){
+                    JSONObject obj = resList.getJSONObject(k);
+                    if(obj.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
+                        JSONObject termObj = (JSONObject) obj.get("fsn");
+                        System.out.println(termObj.get("term"));
+                        items.add(obj);
+                    }
+                }
+            }
+            Map<String, Object> checkMap = new HashMap<>();
+            checkMap.put("items", items);
+            JSONObject checkJSON = new JSONObject(checkMap);
+
+            if(items.size() > 0){
                 returnJSON.put("status", "true");
-                returnJSON.put("result", result);
+                returnJSON.put("result", checkJSON.toString());
                 returnJSON.put("searchTerm", searchVo.getTerm());
                 returnJSON.put("ruleCode", "98");
             }else{
@@ -283,6 +297,6 @@ public class AutoRules {
         }catch(IOException e){
             e.printStackTrace();
         }
-        return returnJSON;
+       return returnJSON;
     }
 }
