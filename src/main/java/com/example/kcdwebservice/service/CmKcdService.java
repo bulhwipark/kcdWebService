@@ -1,12 +1,13 @@
 package com.example.kcdwebservice.service;
 
+import java.util.List;
+
 import com.example.kcdwebservice.dao.CmKcdDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CmKcdService {
@@ -36,8 +37,10 @@ public class CmKcdService {
             totalCnt = cmKcdDao.totalAllCnt(mapKcdSctVo);
         }else if(mappingStatus.equals("Mapping")){
             totalCnt = cmKcdDao.totalMappingCnt(mapKcdSctVo);
-        }else{
+        }else if(mappingStatus.equals("NotMapping")){
             totalCnt = cmKcdDao.totalNotMappingCnt(mapKcdSctVo);
+        }else if(mappingStatus.equals("IcdNotMapping")){
+            totalCnt = cmKcdDao.totalIcdNotMappingCnt(mapKcdSctVo);
         }
         return totalCnt;
     }

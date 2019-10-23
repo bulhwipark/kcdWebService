@@ -71,7 +71,10 @@
            M.MAP_STAT_CD mapStatCd,
            CD.CD_DSCRT mapStatNm
         FROM CM_KCD K INNER JOIN (
-                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} 
+                <if test="mapStatCd != 'All'">
+                    and MAP_STAT_CD = #{mapStatCd}
+                </if>
         ) M ON K.KCD_CD = M.ORI_CD
         LEFT OUTER JOIN CM_SNOMEDCT S
         ON M.SCT_ID=S.SCT_ID
@@ -87,14 +90,13 @@
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
         select KCD_CD kcdCd,
            KCD_ENG kcdEng,
-           KCD_KOR kcdKor,
-           '' udtDt,
-           '' sctId,
-           ''  sctTerm,
-           ''  mapStatCd,
-           ''  mapStatNm
+           KCD_KOR kcdKor
+           
         from CM_KCD where KCD_CD not in (
-            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
+            select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer} 
+            <if test="mapStatCd != 'All'">
+                    and MAP_STAT_CD = #{mapStatCd}
+            </if>
         )
         <if test="limit != '' and limit != null and offset != '' and offset != null">
             limit ${limit} offset ${offset};
@@ -121,7 +123,7 @@
             ON left(M.MAP_STAT_CD,1)=CD.CD_ID
             AND CD.CD_GRP='MAP_STAT_CD'
             AND CD.CD_STAT_CD='0'
-        where icd_cd is null;              
+        where K.ICD_CD is null;              
     </select>
 
     <select id="selectKcdCdInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKcdVo">
@@ -145,7 +147,10 @@
         SELECT count(*)
         FROM CM_KCD K 
         WHERE KCD_CD IN (
-                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} 
+                 <if test="mapStatCd != 'All'">
+                    and MAP_STAT_CD = #{mapStatCd}
+                </if>
         );
     </select>
 
@@ -153,15 +158,28 @@
         SELECT count(*)
         FROM CM_KCD K 
         WHERE KCD_CD NOT IN (
-                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
+                SELECT ORI_CD FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} 
+                 <if test="mapStatCd != 'All'">
+                    and MAP_STAT_CD = #{mapStatCd}
+                </if>
+
         );
     </select>
 
     <select id="totalAllCnt" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" resultType="String">
         SELECT count(*)
         FROM CM_KCD K LEFT JOIN (
-                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} and MAP_STAT_CD = #{mapStatCd}
+                SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = #{mapVer} 
+                <if test="mapStatCd != 'All'">
+                    and MAP_STAT_CD = #{mapStatCd}
+                </if>
         ) M ON K.KCD_CD = M.ORI_CD;
+    </select>
+
+    <select id="totalIcdNotMappingCnt" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" resultType="String">
+        SELECT count(*)
+        FROM CM_KCD K 
+        WHERE ICD_CD is null
     </select>
 <!--
     <select id="totalMappingCnt" parameterType="String" resultType="String">

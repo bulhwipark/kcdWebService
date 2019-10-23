@@ -108,7 +108,7 @@ function kcdList_req(){
                             }),
                         ),
                         $('<td>', {
-                            class:'sctIdDetail',
+                            class: !data[i].sctId?'':'sctIdDetail',
                             text:!data[i].sctId?'-':data[i].sctId,
                             'data-sctId':!data[i].sctId?'-':data[i].sctId,
                         }),
@@ -116,7 +116,8 @@ function kcdList_req(){
                             text: data[i].sctTerm
                         }),
                         $('<td>', {
-                            text: data[i].mapStatNm +"("+data[i].mapStatCd+")"
+                            
+                            text: (!data[i].mapStatCd? '': data[i].mapStatNm +"("+data[i].mapStatCd+")")
                         }),
                         $('<td>', {
                             text: data[i].udtDt
@@ -156,8 +157,8 @@ function kcdList_totalCount_req(){
         async:false,
         data:{
             mappingStatus:$('#listOption option:selected').val(),
-            mapVer:$('#version option:selected').val(),
-            mapStatCd: $('#mapStatCd option:selected').val()
+            mapVer:$('#version').val(),
+            mapStatCd: $('#mapStatCd').val()
 
         },
         dataType:'json',

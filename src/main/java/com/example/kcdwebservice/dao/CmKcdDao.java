@@ -1,11 +1,12 @@
 package com.example.kcdwebservice.dao;
 
+import java.util.List;
+
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @Mapper
@@ -24,5 +25,8 @@ public interface CmKcdDao {
     String totalMappingCnt(MapKcdSctVo mapKcdSctVo);
 
     String totalNotMappingCnt(MapKcdSctVo mapKcdSctVo);
+    
+    String totalIcdNotMappingCnt(MapKcdSctVo mapKcdSctVo);
+    
 
 }
