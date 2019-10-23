@@ -1,3 +1,5 @@
+
+
 function kcd_detail_static_func(){
     get_kcdCdObject_req();
     get_kcdDetail_list();
@@ -114,6 +116,7 @@ function get_kcdCdObject_req(){
     });
 }
 
+
 /**
  * kcd 목록 이벤트
  */
@@ -128,6 +131,8 @@ function get_kcdDetail_list(){
         dataType:'json',
         success:function(data){
             if(data.length > 0){
+
+
                 kcdDetailList = JSON.parse(JSON.stringify(data));
                 $('#kcdDetailTable tbody').empty();
                 $('#allSelect').prop("checked", false);
@@ -235,18 +240,13 @@ function search_req(){
                             class:'sctIdDetail',
                             text:items[i].conceptId
                         }),
-                        //active
-                        $('<td>',{
-                            text:items[i].active
-                        }),
+                       
                         //term
                         $('<td>',{
-                            text:items[i]['fsn']['term']
+                            text: items[i]['fsn']['term']
+
                         }),
-                        //moduleId
-                        $('<td>',{
-                            text:items[i].moduleId
-                        }),
+                       
                         //checkBox
                         $('<td>').append(
                             $('<input>',{
@@ -421,20 +421,15 @@ function autoRuleSet(){
                         var $tr = $('<tr>',{id:items[i].conceptId}).append(
                             //conceptId
                             $('<td>',{
+                                class:'sctIdDetail',
                                 text:items[i].conceptId
                             }),
-                            //active
-                            $('<td>',{
-                                text:items[i].active
-                            }),
+                           
                             //term
                             $('<td>',{
                                 text:items[i]['fsn']['term']
                             }),
-                            //moduleId
-                            $('<td>',{
-                                text:items[i].moduleId
-                            }),
+                            
                             $('<td>',{
                                 class:'autoRuleCol',
                                 text:data.ruleCode
