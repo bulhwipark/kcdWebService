@@ -422,37 +422,37 @@ function autoRuleSet(){
 
                         $('#searchResultAllSelect').prop("checked", false);
                         for(var i = 0; i<items.length; i++){
-                            var $tr = $('<tr>',{id:items[i].conceptId}).append(
-                                //conceptId
-                                $('<td>',{
-                                    text:items[i].conceptId
-                                }),
-                                //active
-                                $('<td>',{
-                                    text:items[i].active
-                                }),
-                                //term
-                                $('<td>',{
-                                    text:items[i]['fsn']['term']
-                                }),
-                                //moduleId
-                                $('<td>',{
-                                    text:items[i].moduleId
-                                }),
-                                $('<td>',{
-                                    class:'autoRuleCol',
-                                    text:data[q].ruleCode
-                                }),
-                                //checkBox
-                                $('<td>').append(
-                                    $('<input>',{
-                                        type:'checkbox',
-                                        name:'searchResultSaveCheckbox',
-                                        value:items[i].conceptId
-                                    })
+                            if($('#searchResultTable tbody').children('#' + items[i].conceptId).length > 0){
+                                $('#searchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
+                                    $('#searchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
                                 )
-                            );
-                            $('#searchResultTable tbody').append($tr);
+                            }else{
+                                var $tr = $('<tr>',{id:items[i].conceptId}).append(
+                                    //conceptId
+                                    $('<td>',{
+                                        text:items[i].conceptId
+                                    }),
+                                    //term
+                                    $('<td>',{
+                                        text:items[i]['fsn']['term']
+                                    }),
+                                    $('<td>',{
+                                        class:'autoRuleCol',
+                                        id:items[i].conceptId + "_ruleCode",
+                                        text:data[q].ruleCode
+                                    }),
+                                    //checkBox
+                                    $('<td>').append(
+                                        $('<input>',{
+                                            type:'checkbox',
+                                            name:'searchResultSaveCheckbox',
+                                            value:items[i].conceptId
+                                        })
+                                    )
+                                );
+                                $('#searchResultTable tbody').append($tr);
+                            }
+
                         }
                         $('#saveBtnDiv').removeClass('displayNone');
                         $('.autoRuleCol').removeClass('displayNone');
