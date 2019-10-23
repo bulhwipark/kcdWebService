@@ -33,7 +33,9 @@ function menu_kcdList_staticFunc(){
     //이전 버튼
     $('#prev').on('click', function(e){
         e.preventDefault();
-        if(currentOffset !== 0){
+        if((currentOffset-limit) <= 0){
+            currentOffset = 0
+        }else{
             currentOffset = currentOffset-limit
         }
         kcdList_req();
@@ -105,7 +107,7 @@ function kcdList_req(){
                             }),
                             $('<div>',{
                                 text:'en : ' + data[i].kcdEng
-                            }),
+                            })
                         ),
                         $('<td>', {
                             class: !data[i].sctId?'':'sctIdDetail',

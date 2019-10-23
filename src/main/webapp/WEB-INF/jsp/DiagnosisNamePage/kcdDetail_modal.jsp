@@ -29,23 +29,67 @@
                         <div><b>영문명 : </b><span id="modal_kcdEng"></span></div>
                     </div>
                 </div>
-                <hr>
-                <div style="width: 300px; display: inline-block; margin-left: 30px;">
-                    <label for="attr_select">Attribute</label>
-                    <select class="form-control" name="" id="attr_select">
 
-                    </select>
+                <hr>
+
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="attr_select1">Attribute</label>
+                    <select class="form-control attrSelect" name="attr" id="attr_select1" data-num="1"></select>
                 </div>
                 <div style="width: 300px; display: inline-block; margin-left: 30px;">
-                    <label for="val_select">Value</label>
-                    <select class="form-control" name="" id="val_select" disabled>
-                    </select>
+                    <label for="val_select1">Value</label>
+                    <select class="form-control valSelect" name="" id="val_select1" disabled></select>
+                </div>
+
+                <hr>
+
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="attr_select2">Attribute</label>
+                    <select class="form-control attrSelect" name="attr" id="attr_select2"  data-num="2"></select>
+                </div>
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="val_select2">Value</label>
+                    <select class="form-control valSelect" name="" id="val_select2" disabled></select>
+                </div>
+
+                <hr>
+
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="attr_select3">Attribute</label>
+                    <select class="form-control attrSelect" name="" id="attr_select3"  data-num="3"></select>
+                </div>
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="val_select3">Value</label>
+                    <select class="form-control valSelect" name="" id="val_select3" disabled></select>
+                </div>
+
+                <hr>
+
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="attr_select4">Attribute</label>
+                    <select class="form-control attrSelect" name="" id="attr_select4"  data-num="4"></select>
+                </div>
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="val_select4">Value</label>
+                    <select class="form-control valSelect" name="" id="val_select4" disabled></select>
+                </div>
+
+                <hr>
+
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="attr_select5">Attribute</label>
+                    <select class="form-control attrSelect" name="" id="attr_select5" data-num="5"></select>
+                </div>
+                <div style="width: 300px; display: inline-block; margin-left: 30px;">
+                    <label for="val_select5">Value</label>
+                    <select class="form-control valSelect" name="" id="val_select5" disabled></select>
                 </div>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="attr_val_save()">적용</button>
+                <button type="button" class="btn btn-primary" id="attrSaveBtn" data-dismiss="modal" onclick="attr_val_save()" disabled>적용</button>
+                <button type="button" class="btn btn-warning" id="attrUpdateBtn"  data-dismiss="modal" onclick="attr_val_update()">수정</button>
                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

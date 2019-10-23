@@ -30,4 +30,26 @@
             sysdate()
         );
     </insert>
+
+    <select id="getList" parameterType="com.example.kcdwebservice.vo.MapKcdSctAftCatVo" resultType="com.example.kcdwebservice.vo.MapKcdSctAftCatVo">
+        select ORI_TP_CD   oriTpCd,
+               MAP_VER     mapVer,
+               ORI_CD      oriCd,
+               SCT_ID      sctId,
+               ATT_SCT_ID  attSctId,
+               VAL_SCT_ID  valSctId,
+               MAP_STAT_CD mapStatCd,
+               RV_STAT_CD  rvStatCd,
+               DISP_ODR    dispOdr,
+               UDT_DT      udtDt
+        from MAP_KCD_SCT_AFT_CAT
+        where ORI_CD = #{oriCd}
+          and SCT_ID = #{sctId}
+    </select>
+
+    <delete id="attValDelete" parameterType="com.example.kcdwebservice.vo.MapKcdSctAftCatVo">
+        DELETE FROM MAP_KCD_SCT_AFT_CAT
+         where ORI_CD = #{oriCd} and SCT_ID = #{sctId};
+    </delete>
+
 </mapper>

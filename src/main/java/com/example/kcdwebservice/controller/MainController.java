@@ -327,11 +327,29 @@ public class MainController {
 
     @RequestMapping(value="/attrValSave")
     @ResponseBody
-    public void attrValSave(MapKcdSctAftCatVo mapKcdSctAftCatVo){
-        System.out.println(mapKcdSctAftCatVo.getAttSctId());
-        System.out.println(mapKcdSctAftCatVo.getValSctId());
-        mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo);
+    public void attrValSave(
+            MapKcdSctAftCatVo mapKcdSctAftCatVo,
+            @RequestParam("attrParam")String attrParam,
+            @RequestParam("valParam")String valParam
+    ){
+        mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo, attrParam, valParam);
     }
 
+    @RequestMapping(value="/attrValUpdate")
+    @ResponseBody
+    public void attrValUpdate(
+            MapKcdSctAftCatVo mapKcdSctAftCatVo,
+            @RequestParam("attrParam")String attrParam,
+            @RequestParam("valParam")String valParam
+    ){
+        mapKcdSctAftCatService.attValUpdate(mapKcdSctAftCatVo, attrParam, valParam);
+    }
+
+    @RequestMapping(value="/getMapAttrValList")
+    @ResponseBody
+    public ResponseEntity<List<MapKcdSctAftCatVo>> getMapAttrValList(MapKcdSctAftCatVo mapKcdSctAftCatVo){
+        List<MapKcdSctAftCatVo> list = mapKcdSctAftCatService.getList(mapKcdSctAftCatVo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
 }

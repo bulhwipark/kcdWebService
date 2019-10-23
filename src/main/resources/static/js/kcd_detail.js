@@ -1,5 +1,3 @@
-
-
 function kcd_detail_static_func(){
     get_kcdCdObject_req();
     get_kcdDetail_list();
@@ -56,8 +54,16 @@ function kcd_detail_static_func(){
         $('#term').val($('#synonym option:selected').val());
     });
 
-   $('#attr_select').on('change', function(){
-       getValueList();
+   $('.attrSelect').on('change', function(){
+       getValueList($(this).data('num'));
+   });
+
+   $('.valSelect').on('change', function(){
+       $('#attrSaveBtn').attr('disabled', false);
+   });
+
+   $('#attrUpdateBtn').on('click', function(){
+
    });
 }
 
@@ -131,8 +137,6 @@ function get_kcdDetail_list(){
         dataType:'json',
         success:function(data){
             if(data.length > 0){
-
-
                 kcdDetailList = JSON.parse(JSON.stringify(data));
                 $('#kcdDetailTable tbody').empty();
                 $('#allSelect').prop("checked", false);
@@ -502,59 +506,103 @@ function similaritySearch(){
     });
 }
 
+/**
+ * 속성추가 모달 세팅하는 펑션.
+ * 추가되어있는 속성/값 리스트를 조회 >>> 조회된 리스트가 잇으면 수정버튼 show 없으면 저장버튼 show
+ *
+ * @param sctId
+ */
 function attr_val_modalSetting(sctId){
     $('#modal_sctId').text(sctId);
     $('#modal_kcdKor').text($('#kcdKor').text());
     $('#modal_kcdEng').text($('#kcdEng').text());
 
-     $.ajax({
-        url:'/getKcdAttrList',
-        type:'post',
-        data:{
-            sctId:sctId
-        },
-        dataType:'json',
-        success:function(data){
-            console.log(data);
-            $('#attr_select').empty();
-            if(data.length>0){
-                for(var i = 0; i<data.length; i++){
-                    var $option = $('<option>', {
-                        text:data[i].cmSctTerm,
-                        value:data[i].attSctId
-                    });
-                    $('#attr_select').append($option);
+    var infoList = null;
+    var ajax_res = getMapAttrValList_ajax();
+    ajax_res.done(function(attrValList){
+        console.log(attrValList);
+        infoList = JSON.parse(JSON.stringify(attrValList));
+         $.ajax({
+            url:'/getKcdAttrList',
+            type:'post',
+            data:{
+                sctId:sctId
+            },
+            dataType:'json',
+            async:false,
+            success:function(data){
+                console.log(data);
+                $('.attrSelect, .valSelect').empty();
+                $('.valSelect').attr('disabled', true);
+
+                $('.attrSelect').append(
+                    $('<option>',{
+                        value:'',
+                        text:'속성을 선택하세요.',
+                        disabled:true,
+                        selected:true
+                    })
+                );
+
+                if(data.length>0){
+                    for(var i = 0; i<data.length; i++){
+                        var $option = $('<option>', {
+                            text:data[i].cmSctTerm,
+                            value:data[i].attSctId
+                        });
+                        $('.attrSelect').append($option);
+                    }
+                }else{
+                    console.log("attr 목록 없음.");
                 }
-                $('#val_select').attr("disabled", false);
-                getValueList();
-            }else{
-                console.log("attr 목록 없음.");
             }
-        }
-    })
+        });
+    });
+
+    if (infoList.length > 0) {
+        $('#attrSaveBtn').hide();
+        $('#attrUpdateBtn').show();
+    } else {
+        $('#attrSaveBtn').show();
+        $('#attrUpdateBtn').hide();
+    }
+
+    for (var i = 0; i < infoList.length; i++) {
+        $('#attr_select'+(i+1)).val(infoList[i].attSctId);
+        getValueList(i+1);
+        $('#val_select'+(i+1)).val(infoList[i].valSctId);
+    }
 }
 
-function getValueList(){
-    console.log($('#attr_select option:selected').val());
+function getValueList(currentNum){
     $.ajax({
         url:'/getKcdValList',
         type:'post',
         data:{
-            sctId:$('#attr_select option:selected').val()
+            sctId:$('#attr_select'+ currentNum +' option:selected').val()
         },
         dataType:'json',
         async:false,
         success:function(data){
             console.log(data);
-            $('#val_select').empty();
+            $('#val_select' + currentNum).empty();
+            $('#val_select' + currentNum).append(
+                $('<option>',{
+                    value:'',
+                    text:' 값을 선택하세요.',
+                    disabled:true,
+                    selected:true
+                })
+            );
             if(data.length > 0){
                 for(var i = 0; i<data.length; i++){
                     var $option = $('<option>',{
                         text:data[i].cmSctTerm,
                         value:data[i].attSctId
                     });
-                    $('#val_select').append($option);
+                    $('#val_select'+currentNum).append($option);
                 }
+                $('#val_select'+currentNum).attr('disabled', false);
             }else{
                 console.log("리스트 없음.")
             }
@@ -563,8 +611,18 @@ function getValueList(){
 }
 
 function attr_val_save(){
-    console.log($('#modal_kcdCd').val());
-    console.log($('#mapVer').val());
+    var attrOptList = $('.attrSelect option:selected');
+    var attrParam = [];
+    var valParam = [];
+    for(var i = 0; i<attrOptList.length; i++){
+        if(attrOptList[i].value){
+            if($('#val_select' + (i+1) + " option:selected").val()){
+                attrParam.push(attrOptList[i].value);
+                valParam.push($('#val_select' + (i+1) + " option:selected").val());
+            }
+        }
+    }
+
     $.ajax({
         url:'/attrValSave',
         type:'post',
@@ -573,15 +631,66 @@ function attr_val_save(){
             oriCd:$('#modal_kcdCd').text(),
             mapVer:$('#mapVer').val(),
             sctId:$('#modal_sctId').text(),
-            attSctId:$('#attr_select option:selected').val(),
-            valSctId:$('#val_select option:selected').val(),
-            mapStatCd:'80'
+            // attSctId:$('#attr_select option:selected').val(),
+            // valSctId:$('#val_select option:selected').val(),
+            mapStatCd:'80',
+            attrParam:attrParam.join(','),
+            valParam:valParam.join(',')
         },
-        dataType:'',
         success:function(){
             console.log("save")
         }
     })
+}
+
+function attr_val_update(){
+    var attrOptList = $('.attrSelect option:selected');
+    var attrParam = [];
+    var valParam = [];
+    for(var i = 0; i<attrOptList.length; i++){
+        if(attrOptList[i].value){
+            if($('#val_select' + (i+1) + " option:selected").val()){
+                attrParam.push(attrOptList[i].value);
+                valParam.push($('#val_select' + (i+1) + " option:selected").val());
+            }
+        }
+    }
+
+    $.ajax({
+        url:'/attrValUpdate',
+        type:'post',
+        data:{
+            oriTpCd:'D',
+            oriCd:$('#modal_kcdCd').text(),
+            mapVer:$('#mapVer').val(),
+            sctId:$('#modal_sctId').text(),
+            // attSctId:$('#attr_select option:selected').val(),
+            // valSctId:$('#val_select option:selected').val(),
+            mapStatCd:'80',
+            attrParam:attrParam.join(','),
+            valParam:valParam.join(',')
+        },
+        success:function(){
+            console.log("update");
+        }
+    })
+}
+
+function getMapAttrValList_ajax(){
+    var ajax = $.ajax({
+        url:'/getMapAttrValList',
+        type:'post',
+        data:{
+            oriCd:$('#modal_kcdCd').text(),
+            sctId:$('#modal_sctId').text(),
+        },
+        dataType:'json',
+        async:false
+        /*success:function(data){
+            console.log(data)
+        }*/
+    });
+    return ajax;
 }
 
 function alert_timeout(){
