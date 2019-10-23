@@ -21,7 +21,7 @@
         ) M ON K.KCD_CD = M.ORI_CD
         LEFT OUTER JOIN CM_SNOMEDCT S
         ON M.SCT_ID=S.SCT_ID
-        left outer join EMR.MCODE CD
+        LEFT OUTER JOIN EMR.MCODE CD
         ON left(M.MAP_STAT_CD,1)=CD.CD_ID
         AND CD.CD_GRP='MAP_STAT_CD'
         AND CD.CD_STAT_CD='0'
@@ -66,11 +66,19 @@
            K.KCD_ENG kcdEng,
            K.KCD_KOR kcdKor,
            K.UDT_DT udtDt,
-           M.SCT_ID sctId
+           M.SCT_ID sctId,
+           S.SCT_TERM sctTerm,
+           M.MAP_STAT_CD mapStatCd,
+           CD.CD_DSCRT mapStatNm
         FROM CM_KCD K INNER JOIN (
                 SELECT * FROM MAP_KCD_SCT WHERE MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         ) M ON K.KCD_CD = M.ORI_CD
-
+        LEFT OUTER JOIN CM_SNOMEDCT S
+        ON M.SCT_ID=S.SCT_ID
+        LEFT OUTER JOIN EMR.MCODE CD
+        ON left(M.MAP_STAT_CD,1)=CD.CD_ID
+        AND CD.CD_GRP='MAP_STAT_CD'
+        AND CD.CD_STAT_CD='0'
         <if test="limit != '' and limit != null and offset != '' and offset != null">
             limit ${limit} offset ${offset};
         </if>
@@ -80,8 +88,11 @@
         select KCD_CD kcdCd,
            KCD_ENG kcdEng,
            KCD_KOR kcdKor,
-           UDT_DT udtDt,
-           null sctId
+           '' udtDt,
+           '' sctId,
+           ''  sctTerm,
+           ''  mapStatCd,
+           ''  mapStatNm
         from CM_KCD where KCD_CD not in (
             select distinct ORI_CD from MAP_KCD_SCT where MAP_VER = ${mapVer} and MAP_STAT_CD = #{mapStatCd}
         )
