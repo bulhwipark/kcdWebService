@@ -2,6 +2,7 @@ package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.*;
 import com.example.kcdwebservice.vo.*;
+import com.google.gson.internal.$Gson$Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -31,6 +32,10 @@ public class MainController {
     private DicKcdSynonymService dicKcdSynonymService;
     @Autowired
     private MCodeService mCodeService;
+    @Autowired
+    private DicSnomedctAttValService dicSnomedctAttValService;
+    @Autowired
+    private MapKcdSctAftCatService mapKcdSctAftCatService;
 
     /**
      * 메인화면.
@@ -189,7 +194,6 @@ public class MainController {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -269,4 +273,50 @@ public class MainController {
         model.addAttribute("list", list);
         return "ExcelDownload";
     }
+
+    /**
+     * 유사도 기준조회.
+     * @param searchVo
+     * @return
+     */
+    @RequestMapping(value="/similaritySearch")
+    @ResponseBody
+    public ResponseEntity<String> similaritySearch(SearchVo searchVo){
+        JSONObject result = searchService.similarityRequest(searchVo);
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
+    /**
+     * Attribute 목록 조회.
+     * @param sctId
+     *
+     **/
+    @RequestMapping(value="/getKcdAttrList")
+    @ResponseBody
+    public ResponseEntity<List<DicSnomedctAttValVo>> getKcdAttrList(@RequestParam("sctId")String sctId){
+        List<DicSnomedctAttValVo> list = dicSnomedctAttValService.getAttrList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * val 목록 조회
+     * @param sctId
+     * @return
+     */
+    @RequestMapping(value="/getKcdValList")
+    @ResponseBody
+    public ResponseEntity<List<DicSnomedctAttValVo>> getKcdValList(@RequestParam("sctId") String sctId){
+        List<DicSnomedctAttValVo> list = dicSnomedctAttValService.getValList(sctId);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/attrValSave")
+    @ResponseBody
+    public void attrValSave(MapKcdSctAftCatVo mapKcdSctAftCatVo){
+        System.out.println(mapKcdSctAftCatVo.getAttSctId());
+        System.out.println(mapKcdSctAftCatVo.getValSctId());
+        mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo);
+    }
+
+
 }

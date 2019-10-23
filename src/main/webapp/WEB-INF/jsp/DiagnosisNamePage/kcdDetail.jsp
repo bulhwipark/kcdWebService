@@ -18,6 +18,7 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
+        <input type="hidden" value="${mapVer}" id="mapVer">
         <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
         <div>
             <div><b>한글명 : </b><span id="kcdKor"></span></div>
@@ -86,7 +87,7 @@
             --%>
             <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">자동룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary">유사도 기준조회</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기준조회</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-warning">Clean</button>
         </div>
     </div>
