@@ -62,9 +62,9 @@ function kcd_detail_static_func(){
        $('#attrSaveBtn').attr('disabled', false);
    });
 
-   $('#attrUpdateBtn').on('click', function(){
-
-   });
+   $('.attrRemove').on('click', function(){
+       deleteAttrVal($(this).data('num'));
+   })
 }
 
 function kcd_detail_dynamic_func(){
@@ -516,7 +516,7 @@ function attr_val_modalSetting(sctId){
     $('#modal_sctId').text(sctId);
     $('#modal_kcdKor').text($('#kcdKor').text());
     $('#modal_kcdEng').text($('#kcdEng').text());
-
+    $('.attrRemove').hide();
     var infoList = null;
     var ajax_res = getMapAttrValList_ajax();
     ajax_res.done(function(attrValList){
@@ -541,7 +541,7 @@ function attr_val_modalSetting(sctId){
                         text:'속성을 선택하세요.',
                         disabled:true,
                         selected:true
-                    })
+                    }),
                 );
 
                 if(data.length>0){
@@ -571,6 +571,7 @@ function attr_val_modalSetting(sctId){
         $('#attr_select'+(i+1)).val(infoList[i].attSctId);
         getValueList(i+1);
         $('#val_select'+(i+1)).val(infoList[i].valSctId);
+        $('#attr_remove'+(i+1)).show();
     }
 }
 
@@ -691,6 +692,24 @@ function getMapAttrValList_ajax(){
         }*/
     });
     return ajax;
+}
+
+function deleteAttrVal(num){
+    $.ajax({
+        url:'/deleteAttrVal',
+        type:'post',
+        data:{
+            oriCd:$('#modal_kcdCd').text(),
+            sctId:$('#modal_sctId').text(),
+            attSctId:$('#attr_select'+num+' option:selected').val(),
+            valSctId:$('#val_select'+num+ ' option:selected').val()
+        },
+        success:function(){
+            $('#attr_select'+num).val('');
+            $('#val_select'+num).empty().attr('disabled', true);
+            console.log('delete');
+        }
+    })
 }
 
 function alert_timeout(){

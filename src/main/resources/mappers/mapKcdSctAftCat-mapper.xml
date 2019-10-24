@@ -49,7 +49,14 @@
 
     <delete id="attValDelete" parameterType="com.example.kcdwebservice.vo.MapKcdSctAftCatVo">
         DELETE FROM MAP_KCD_SCT_AFT_CAT
-         where ORI_CD = #{oriCd} and SCT_ID = #{sctId};
+         where ORI_CD = #{oriCd} and SCT_ID = #{sctId}
+        <if test="attSctId != '' and attSctId != null ">
+            and ATT_SCT_ID = #{attSctId}
+        </if>
+        <if test="valSctId != '' and valSctId != null ">
+            and VAL_SCT_ID = #{valSctId}
+        </if>
+        ;
     </delete>
 
 </mapper>

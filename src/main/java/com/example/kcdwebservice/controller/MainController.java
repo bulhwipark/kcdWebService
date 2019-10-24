@@ -352,4 +352,10 @@ public class MainController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @RequestMapping(value="/deleteAttrVal")
+    @ResponseBody
+    public void deleteAttrVal(MapKcdSctAftCatVo mapKcdSctAftCatVo){
+        mapKcdSctAftCatService.deleteAttrVal(mapKcdSctAftCatVo);
+    }
+
 }

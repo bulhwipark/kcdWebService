@@ -41,4 +41,8 @@ public class MapKcdSctAftCatService {
             mapKcdSctAftCatDao.attValInsert(mapKcdSctAftCatVo);
         }
     }
+
+    public void deleteAttrVal(MapKcdSctAftCatVo mapKcdSctAftCatVo) {
+        mapKcdSctAftCatDao.attValDelete(mapKcdSctAftCatVo);
+    }
 }

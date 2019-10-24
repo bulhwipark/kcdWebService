@@ -40,7 +40,7 @@
                     <label for="val_select1">Value</label>
                     <select class="form-control valSelect" name="" id="val_select1" disabled></select>
                 </div>
-
+                <button class="btn btn-sm btn-danger attrRemove" id="attr_remove1" data-num="1">삭제</button>
                 <hr>
 
                 <div style="width: 300px; display: inline-block; margin-left: 30px;">
@@ -51,6 +51,7 @@
                     <label for="val_select2">Value</label>
                     <select class="form-control valSelect" name="" id="val_select2" disabled></select>
                 </div>
+                <button class="btn btn-sm btn-danger attrRemove" id="attr_remove2" data-num="2">삭제</button>
 
                 <hr>
 
@@ -62,6 +63,7 @@
                     <label for="val_select3">Value</label>
                     <select class="form-control valSelect" name="" id="val_select3" disabled></select>
                 </div>
+                <button class="btn btn-sm btn-danger attrRemove" id="attr_remove3" data-num="3">삭제</button>
 
                 <hr>
 
@@ -73,6 +75,7 @@
                     <label for="val_select4">Value</label>
                     <select class="form-control valSelect" name="" id="val_select4" disabled></select>
                 </div>
+                <button class="btn btn-sm btn-danger attrRemove" id="attr_remove4" data-num="4">삭제</button>
 
                 <hr>
 
@@ -84,6 +87,7 @@
                     <label for="val_select5">Value</label>
                     <select class="form-control valSelect" name="" id="val_select5" disabled></select>
                 </div>
+                <button class="btn btn-sm btn-danger attrRemove" id="attr_remove5" data-num="5">삭제</button>
             </div>
 
             <!-- Modal footer -->
