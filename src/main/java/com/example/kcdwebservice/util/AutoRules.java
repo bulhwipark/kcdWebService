@@ -152,10 +152,33 @@ public class AutoRules {
      * @throws JSONException
      */
     public JSONObject autoRule_3(SearchVo searchVo) throws JSONException {
-        System.out.println(searchVo.getTerm());
         JSONObject returnJSON = new JSONObject();
-        returnJSON.put("status", "false");
-        returnJSON.put("ruleCode", "93");
+        String[] term = searchVo.getTerm().split(" ");
+        for(int i = 0; i<term.length; i++){
+            term[i] = term[i].substring(0, term[i].length()-1);
+        }
+
+        searchVo.setTerm(
+                String.join(" ", term)
+        );
+        String result = autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "93");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("ruleCode", "93");
+        }
+        System.out.println("-------------rule_3-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
         return returnJSON;
     }
 
