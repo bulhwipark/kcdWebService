@@ -50,9 +50,12 @@ function kcd_detail_static_func(){
     });
 
     //동의어 이벤트
-   $('#synonym').on('change', function(){
+    $('#synonym').on('change', function () {
         $('#term').val($('#synonym option:selected').val());
-    });
+    })
+        .on('click', function () {
+            $('#term').val($('#synonym option:selected').val());
+        });
 
    $('.attrSelect').on('change', function(){
        getValueList($(this).data('num'));
@@ -507,26 +510,30 @@ function similaritySearch(){
                 $('#searchResultTable tbody').empty();
                 for(var i = 0; i<items.length; i++){
                     var itemVal = items[i];
-                    var $tr = $('<tr>', {id:itemVal.conceptId}).append(
-                        $('<td>',{
-                            class:'sctIdDetail',
-                            text:itemVal.conceptId
-                        }),
-                        $('<td>',{
-                            text:itemVal.fsn.term
-                        }),
-                        $('<td>',{
-                            text:data.ruleCode
-                        }),
-                        //checkBox
-                        $('<td>').append(
-                            $('<input>',{
-                                type:'checkbox',
-                                name:'searchResultSaveCheckbox',
-                                value:itemVal.conceptId
-                            })
-                        )
-                    );
+                    if($('#searchResultTable tbody').children('#' + itemVal.conceptId).length > 0){
+                        
+                    }else{
+                        var $tr = $('<tr>', {id:itemVal.conceptId}).append(
+                            $('<td>',{
+                                class:'sctIdDetail',
+                                text:itemVal.conceptId
+                            }),
+                            $('<td>',{
+                                text:itemVal.fsn.term
+                            }),
+                            $('<td>',{
+                                text:data.ruleCode
+                            }),
+                            //checkBox
+                            $('<td>').append(
+                                $('<input>',{
+                                    type:'checkbox',
+                                    name:'searchResultSaveCheckbox',
+                                    value:itemVal.conceptId
+                                })
+                            )
+                        );
+                    }
 
                     $('#searchResultTable tbody').append($tr);
                 }

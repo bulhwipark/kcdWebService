@@ -67,7 +67,7 @@ public class SearchService {
            list.add(autoRules.autoRule_3(searchVo));
            list.add(autoRules.autoRule_4(searchVo));
            list.add(autoRules.autoRule_6(searchVo));
-           list.add(autoRules.autoRule_8(searchVo));
+           /*list.add(autoRules.autoRule_8(searchVo));*/
         } catch (JSONException e) {
             e.printStackTrace();
         }

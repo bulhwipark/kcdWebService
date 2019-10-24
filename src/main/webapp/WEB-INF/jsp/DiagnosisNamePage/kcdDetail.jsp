@@ -87,8 +87,8 @@
             --%>
             <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-warning">Clean</button>
+            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button>
+           <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>
     <div class="row" id="searchResultTableDiv">

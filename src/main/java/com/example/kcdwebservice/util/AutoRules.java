@@ -267,11 +267,10 @@ public class AutoRules {
 
                     for(int h = 0; h < relationships.length(); h++){
                         JSONObject target = relationships.getJSONObject(h).getJSONObject("target");
-                        if(target.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
-                            JSONObject termObj = (JSONObject) target.get("fsn");
-                            System.out.println(termObj.get("term"));
+                        /*if(target.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
                             items.add((JSONObject) new JSONObject(res));
-                        }
+                        }*/
+                        items.add((JSONObject) new JSONObject(res));
                     }
                 }
             }
