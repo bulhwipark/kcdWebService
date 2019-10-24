@@ -84,7 +84,8 @@ function kcd_detail_dynamic_func(){
         }
     });
 
-    $('.sctIdDetail').on('click', function(){
+    $('.sctIdDetail').on('click', function(e){
+        e.stopPropagation();
         window.open(
             'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
             'Detail',
@@ -430,6 +431,7 @@ function autoRuleSet(){
                                 var $tr = $('<tr>',{id:items[i].conceptId}).append(
                                     //conceptId
                                     $('<td>',{
+                                        class:"sctIdDetail",
                                         text:items[i].conceptId
                                     }),
                                     //term
@@ -507,6 +509,7 @@ function similaritySearch(){
                     var itemVal = items[i];
                     var $tr = $('<tr>', {id:itemVal.conceptId}).append(
                         $('<td>',{
+                            class:'sctIdDetail',
                             text:itemVal.conceptId
                         }),
                         $('<td>',{
@@ -527,7 +530,7 @@ function similaritySearch(){
 
                     $('#searchResultTable tbody').append($tr);
                 }
-
+                kcd_detail_dynamic_func();
             }else{
                 console.log("데이터 없음");
                 console.log(data);
