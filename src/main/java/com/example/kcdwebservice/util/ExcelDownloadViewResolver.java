@@ -2,6 +2,7 @@ package com.example.kcdwebservice.util;
 
 import com.example.kcdwebservice.vo.CmKcdVo;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
@@ -17,7 +18,6 @@ public class ExcelDownloadViewResolver extends AbstractXlsxView {
         response.setHeader("Content-Disposition", "attachment; filename=\"KCDListExcel.xlsx\"");
 
         List<CmKcdVo> list = (List<CmKcdVo>) model.get("list");
-
 
         CellStyle cellStyle = workbook.createCellStyle();
 

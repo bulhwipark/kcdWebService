@@ -44,8 +44,8 @@ function menu_kcdList_staticFunc(){
     //excel download
     $('#excelDownloadBtn').on('click', function(e){
         e.preventDefault();
-        $('#limit').val(limit);
-        $('#offset').val(currentOffset);
+        /*$('#limit').val(limit);
+        $('#offset').val(currentOffset);*/
         $('#searchForm')[0].submit();
     });
 }

@@ -260,15 +260,18 @@ public class AutoRules {
             List<JSONObject> items = new ArrayList<>();
             for(int i = 0; i<conceptIdList.size(); i++){
                 String res = autoRuleRequest(searchVo, String.valueOf(conceptIdList.toArray()[i]));
-                JSONArray resList = new JSONObject(res).getJSONArray("relationships");
-                System.out.println(searchVo.getEcl().replace("<", ""));
+                JSONArray resList = new JSONObject(res).getJSONArray("classAxioms");
+
                 for(int k = 0; k<resList.length(); k++){
-                    JSONObject obj = resList.getJSONObject(k);
-                    JSONObject check = obj.getJSONObject("target");
-                    if(check.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
-                        JSONObject termObj = (JSONObject) check.get("fsn");
-                        System.out.println(termObj.get("term"));
-                        items.add(check);
+                    JSONArray relationships = resList.getJSONObject(k).getJSONArray("relationships");
+
+                    for(int h = 0; h < relationships.length(); h++){
+                        JSONObject target = relationships.getJSONObject(h).getJSONObject("target");
+                        if(target.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
+                            JSONObject termObj = (JSONObject) target.get("fsn");
+                            System.out.println(termObj.get("term"));
+                            items.add((JSONObject) new JSONObject(res));
+                        }
                     }
                 }
             }

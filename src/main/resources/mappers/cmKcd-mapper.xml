@@ -37,7 +37,7 @@
     </select>
 
 
-    <select id="selectAll" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
+    <select id="selectAll" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo" fetchSize="1000">
         SELECT K.KCD_CD kcdCd,
            K.KCD_ENG kcdEng,
            K.KCD_KOR kcdKor,
@@ -259,7 +259,7 @@
         
     </select>
 
-    <select id="select_icdNotMapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
+    <select id="select_icdNotMapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo" fetchSize="1000">
         SELECT
             K.KCD_CD kcdCd,
             K.KCD_ENG kcdEng,

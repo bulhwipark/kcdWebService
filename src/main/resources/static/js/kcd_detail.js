@@ -480,13 +480,6 @@ function similaritySearch(){
         param.ecl = $('#ecl').val();
     }
 
-    /*//disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
-    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
-        if($('#ecl').val().length > 0){
-            param.ecl.push($('#ecl').val());
-        }
-    }
-    param.ecl = param.ecl.join(",");*/
     $.ajax({
         url:'/similaritySearch',
         type:'post',
@@ -495,16 +488,29 @@ function similaritySearch(){
         success:function(data){
             console.log(data);
             if(data.status === "true"){
-                $('#searchResultTable tbody').empty();
                 var obj = JSON.parse(data.result);
-                for(var i = 0; i<obj.items.length; i++){
-                    var item = obj.items[i];
-                    var $tr = $('<tr>', {id:item.conceptId}).append(
+                var items = obj['items'];
+                //중복제거.
+                if(kcdDetailList){
+                    for(var i = 0; i<kcdDetailList.length; i++){
+                        items = items.filter(function(item, idx, arr){
+                            if(item.conceptId != kcdDetailList[i].sctId){
+                                return item;
+                            }
+                        });
+                    }
+                }
+                searchList = JSON.parse(JSON.stringify(items));
+
+                $('#searchResultTable tbody').empty();
+                for(var i = 0; i<items.length; i++){
+                    var itemVal = items[i];
+                    var $tr = $('<tr>', {id:itemVal.conceptId}).append(
                         $('<td>',{
-                            text:item.conceptId
+                            text:itemVal.conceptId
                         }),
                         $('<td>',{
-                            text:item.fsn.term
+                            text:itemVal.fsn.term
                         }),
                         $('<td>',{
                             text:data.ruleCode
@@ -514,7 +520,7 @@ function similaritySearch(){
                             $('<input>',{
                                 type:'checkbox',
                                 name:'searchResultSaveCheckbox',
-                                value:item.conceptId
+                                value:itemVal.conceptId
                             })
                         )
                     );
