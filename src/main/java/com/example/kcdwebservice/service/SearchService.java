@@ -84,6 +84,7 @@ public class SearchService {
         JSONObject result = null;
         try {
             result =  autoRules.autoRule_8(searchVo);
+            System.out.println(result.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

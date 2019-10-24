@@ -1,6 +1,7 @@
 package com.example.kcdwebservice.util;
 
 import com.example.kcdwebservice.vo.SearchVo;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -234,32 +235,21 @@ public class AutoRules {
      * @return \"Benign neoplasm of breast, unspecifiedt\"\n"
      */
     public JSONObject autoRule_8(SearchVo searchVo) throws JSONException {
-        //List<String> conceptIdList = new ArrayList<>();
         Set<String> conceptIdList = new HashSet<>();
         JSONObject returnJSON = new JSONObject();
         try{
-            String jsonStr = "{\n" +
-                    "    \"query\": {\n" +
-                    "       \"query_string\" : {\n" +
-                    "            \"query\" :  " + "\"" +searchVo.getTerm() +"\"\n"+
-                    "        }\n" +
-                    "\n" +
-                    "    },\n" +
-                    "    \"_source\": [\"conceptId\",\"term\"]\n" +
-                    "}";
-
+            String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \""+ searchVo.getTerm() +"\"}},\"_source\": [\"conceptId\",\"term\"]}";
             RestClient restClient = RestClient.builder(
-                    new HttpHost("localhost", 9200, "http")
+                    new HttpHost("1.224.169.78", 9200, "http")
             ).build();
 
-            Map<String, String> params = Collections.emptyMap();
+            Map<String, String> params = Collections.EMPTY_MAP;
             HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
-            Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity);
+            Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity );
 
             String result = EntityUtils.toString(response.getEntity());
             JSONObject jsonObject = new JSONObject(result);
             JSONObject hitsObj = new JSONObject(String.valueOf(jsonObject.get("hits")));
-
             JSONArray jsonArray = hitsObj.getJSONArray("hits");
             for(int i = 0; i<jsonArray.length(); i++){
                 JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
@@ -270,14 +260,15 @@ public class AutoRules {
             List<JSONObject> items = new ArrayList<>();
             for(int i = 0; i<conceptIdList.size(); i++){
                 String res = autoRuleRequest(searchVo, String.valueOf(conceptIdList.toArray()[i]));
-                JSONArray resList = new JSONObject(res).getJSONArray("descriptions");
+                JSONArray resList = new JSONObject(res).getJSONArray("relationships");
                 System.out.println(searchVo.getEcl().replace("<", ""));
                 for(int k = 0; k<resList.length(); k++){
                     JSONObject obj = resList.getJSONObject(k);
-                    if(obj.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
-                        JSONObject termObj = (JSONObject) obj.get("fsn");
+                    JSONObject check = obj.getJSONObject("target");
+                    if(check.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
+                        JSONObject termObj = (JSONObject) check.get("fsn");
                         System.out.println(termObj.get("term"));
-                        items.add(obj);
+                        items.add(check);
                     }
                 }
             }

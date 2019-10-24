@@ -378,23 +378,19 @@ function autoRuleSet(){
     var param = new Object();
     param.term = $('#term').val();
 
-    param.ecl = [];
-
-    if($('#disorder').prop('checked')){
-        param.ecl.push($('#disorder').val());
-    }
-
-    if($('#clinicalFinding').prop('checked')){
-        param.ecl.push($('#clinicalFinding').val());
+    if($('input[name="defaultRule"]:checked').val()){
+        param.ecl = $('input[name="defaultRule"]:checked').val();
+    }else{
+        param.ecl = $('#ecl').val();
     }
 
     //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
-    if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
-        if($('#ecl').val().length > 0){
-            param.ecl.push($('#ecl').val());
-        }
-    }
-    param.ecl = param.ecl.join(",");
+    // if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
+    //     if($('#ecl').val().length > 0){
+    //         param.ecl.push($('#ecl').val());
+    //     }
+    // }
+    // param.ecl = param.ecl.join(",");
 
     $.ajax({
         url:'/autoRuleSet',
@@ -478,23 +474,19 @@ function similaritySearch(){
     var param = new Object();
     param.term = $('#term').val();
 
-    param.ecl = [];
-
-    if($('#disorder').prop('checked')){
-        param.ecl.push($('#disorder').val());
+    if($('input[name="defaultRule"]:checked').val()){
+        param.ecl = $('input[name="defaultRule"]:checked').val();
+    }else{
+        param.ecl = $('#ecl').val();
     }
 
-    if($('#clinicalFinding').prop('checked')){
-        param.ecl.push($('#clinicalFinding').val());
-    }
-
-    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
+    /*//disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
     if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
         if($('#ecl').val().length > 0){
             param.ecl.push($('#ecl').val());
         }
     }
-    param.ecl = param.ecl.join(",");
+    param.ecl = param.ecl.join(",");*/
     $.ajax({
         url:'/similaritySearch',
         type:'post',
@@ -502,6 +494,39 @@ function similaritySearch(){
         dataType:'json',
         success:function(data){
             console.log(data);
+            if(data.status === "true"){
+                $('#searchResultTable tbody').empty();
+                var obj = JSON.parse(data.result);
+                for(var i = 0; i<obj.items.length; i++){
+                    var item = obj.items[i];
+                    var $tr = $('<tr>', {id:item.conceptId}).append(
+                        $('<td>',{
+                            text:item.conceptId
+                        }),
+                        $('<td>',{
+                            text:item.fsn.term
+                        }),
+                        $('<td>',{
+                            text:data.ruleCode
+                        }),
+                        //checkBox
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'searchResultSaveCheckbox',
+                                value:item.conceptId
+                            })
+                        )
+                    );
+
+                    $('#searchResultTable tbody').append($tr);
+                }
+
+            }else{
+                console.log("데이터 없음");
+                console.log(data);
+            }
+
         }
     });
 }
