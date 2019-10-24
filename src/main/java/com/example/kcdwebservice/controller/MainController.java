@@ -325,6 +325,12 @@ public class MainController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * 속성/밸류 신규저장.
+     * @param mapKcdSctAftCatVo
+     * @param attrParam
+     * @param valParam
+     */
     @RequestMapping(value="/attrValSave")
     @ResponseBody
     public void attrValSave(
@@ -335,6 +341,13 @@ public class MainController {
         mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo, attrParam, valParam);
     }
 
+    /**
+     * 속성/밸류 수정
+     * delete후 insert하는 방식으로 해둠.
+     * @param mapKcdSctAftCatVo
+     * @param attrParam
+     * @param valParam
+     */
     @RequestMapping(value="/attrValUpdate")
     @ResponseBody
     public void attrValUpdate(
@@ -345,6 +358,11 @@ public class MainController {
         mapKcdSctAftCatService.attValUpdate(mapKcdSctAftCatVo, attrParam, valParam);
     }
 
+    /**
+     * 속성/밸류 목록 조회
+     * @param mapKcdSctAftCatVo
+     * @return
+     */
     @RequestMapping(value="/getMapAttrValList")
     @ResponseBody
     public ResponseEntity<List<MapKcdSctAftCatVo>> getMapAttrValList(MapKcdSctAftCatVo mapKcdSctAftCatVo){
@@ -352,6 +370,10 @@ public class MainController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * 속성, 밸류 삭제.
+     * @param mapKcdSctAftCatVo
+     */
     @RequestMapping(value="/deleteAttrVal")
     @ResponseBody
     public void deleteAttrVal(MapKcdSctAftCatVo mapKcdSctAftCatVo){
