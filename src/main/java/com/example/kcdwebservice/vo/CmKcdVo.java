@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CmKcdVo {
+public class CmKcdVo{
     private String kcdCd;
     private String kcdEng;
     private String kcdKor;

@@ -532,7 +532,6 @@ function similaritySearch(){
                 console.log("데이터 없음");
                 console.log(data);
             }
-
         }
     });
 }

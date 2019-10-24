@@ -59,12 +59,12 @@
 
                 <span class="margin-left-20">
                     <label for="disorder">disorder : </label>
-                    <input type="radio" name="defaultRule" id="disorder" value="<64572001">
+                    <input type="radio" name="defaultRule" id="disorder" value="<64572001" checked>
                 </span>
 
                 <span class="margin-left-20">
                     <label for="clinicalFinding">clinical finding : </label>
-                    <input type="radio" name="defaultRule" id="clinicalFinding" value="<404684003" checked>
+                    <input type="radio" name="defaultRule" id="clinicalFinding" value="<404684003" >
                 </span>
             </div>
             <div>
