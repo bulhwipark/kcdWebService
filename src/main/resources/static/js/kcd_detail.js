@@ -387,16 +387,7 @@ function autoRuleSet(){
     }else{
         param.ecl = $('#ecl').val();
     }
-
-    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
-    // if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
-    //     if($('#ecl').val().length > 0){
-    //         param.ecl.push($('#ecl').val());
-    //     }
-    // }
-    // param.ecl = param.ecl.join(",");
-
-    $.ajax({
+      $.ajax({
         url:'/autoRuleSet',
         type:'post',
         async:false,
@@ -439,7 +430,8 @@ function autoRuleSet(){
                                     }),
                                     //term
                                     $('<td>',{
-                                        text:items[i]['fsn']['term']
+                                       // text:items[i]['fsn']['term']
+                                        html:StringMatch_func(items[i]['fsn']['term'], $('#term').val())
                                     }),
                                     $('<td>',{
                                         class:'autoRuleCol',
@@ -751,6 +743,17 @@ function deleteAttrVal(num){
         }
     })
 }
+
+function StringMatch_func(str, matchStr){
+    var matchRes = str.toUpperCase().match(matchStr.trim().toUpperCase());
+    if(matchRes){
+        return str.slice(0, matchRes.index) + "<span class='matchStrCss'>" + str.slice(matchRes.index, matchRes.index+matchRes[0].length) + '</span>' + str.slice(matchRes.index+matchRes[0].length);
+    }else{
+        return str;
+    }
+}
+
+
 
 function alert_timeout(){
     $('#saveAlert').removeClass('displayNone');

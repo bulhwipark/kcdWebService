@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/kcdWebService_style.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>
+<%--<%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>--%>
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
@@ -59,12 +59,12 @@
 
                 <span class="margin-left-20">
                     <label for="disorder">disorder : </label>
-                    <input type="radio" name="defaultRule" id="disorder" value="<64572001" checked>
+                    <input type="radio" name="defaultRule" id="disorder" value="<64572001" >
                 </span>
 
                 <span class="margin-left-20">
                     <label for="clinicalFinding">clinical finding : </label>
-                    <input type="radio" name="defaultRule" id="clinicalFinding" value="<404684003" >
+                    <input type="radio" name="defaultRule" id="clinicalFinding" value="<404684003" checked>
                 </span>
             </div>
             <div>

@@ -59,22 +59,29 @@ public class AutoRules {
         String result = null;
         String term = null;
         String[] strSet = new String[] {
+            "without complication",
+            "with other complication",
             "and",
             "with",
             "other",
             "Other",
             "unspecified",
             "alone",
-            "alone",
-            "without complication",
+            "Alone",
             "single",
             "side",
-            "Side"
+            "Side",
+            "right",
+            "Right",
+            "left",
+            "Left",
+            "multiple",
+            "Multiple"
         };
 
         for(int i = 0; i<strSet.length; i++){
             searchVo.setTerm(
-               searchVo.getTerm().replace(strSet[i]+ " ", "")
+                    searchVo.getTerm().replace(strSet[i], "")
             );
             result = autoRuleRequest(searchVo);
             JSONObject jsonObject = new JSONObject(result);
@@ -93,6 +100,7 @@ public class AutoRules {
             returnJSON.put("ruleCode", "91");
         }else{
             returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", term);
             returnJSON.put("ruleCode", "91");
         }
 
@@ -134,6 +142,7 @@ public class AutoRules {
             returnJSON.put("ruleCode", "92");
         }else{
             returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "92");
         }
         System.out.println("-------------rule_2-------------------------");
@@ -153,9 +162,11 @@ public class AutoRules {
      */
     public JSONObject autoRule_3(SearchVo searchVo) throws JSONException {
         JSONObject returnJSON = new JSONObject();
-        String[] term = searchVo.getTerm().split(" ");
+        String[] term = searchVo.getTerm().trim().split(" ");
         for(int i = 0; i<term.length; i++){
-            term[i] = term[i].substring(0, term[i].length()-1);
+            if(term[i].length() != 0){
+                term[i] = term[i].substring(0, term[i].length()-1);
+            }
         }
 
         searchVo.setTerm(
@@ -171,6 +182,7 @@ public class AutoRules {
             returnJSON.put("ruleCode", "93");
         }else{
             returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "93");
         }
         System.out.println("-------------rule_3-------------------------");
@@ -189,7 +201,7 @@ public class AutoRules {
      * @throws JSONException
      */
     public JSONObject autoRule_4(SearchVo searchVo) throws JSONException {
-        searchVo.setTerm(searchVo.getTerm().replaceAll("[s,-]", ""));
+        searchVo.setTerm(searchVo.getTerm().replaceAll("'s|[,-/]", ""));
         String result = autoRuleRequest(searchVo);
         JSONObject checkJSON = new JSONObject(result);
         JSONObject returnJSON = new JSONObject();
@@ -200,6 +212,7 @@ public class AutoRules {
             returnJSON.put("ruleCode", "94");
         }else{
             returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "94");
         }
         System.out.println("-------------rule_4-------------------------");
@@ -229,6 +242,7 @@ public class AutoRules {
             returnJSON.put("ruleCode", "96");
         }else{
             returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "96");
         }
         System.out.println("-------------rule_6-------------------------");
@@ -240,16 +254,46 @@ public class AutoRules {
     }
 
     /**
-     * 앞 단어부터 하나씩 제거.
+     * malignant neoplasm -> malignant tumor
      * @param searchVo
      * @return
      * @throws JSONException
      */
     public JSONObject autoRule_7(SearchVo searchVo) throws JSONException {
+        String result = null;
+        String[] strArr = new String[]{
+                "malignant neoplasm",
+                "Malignant neoplasm"
+        };
+
+        for(int i = 0; i<strArr.length; i++){
+            if(searchVo.getTerm().indexOf(strArr[i]) > -1){
+                searchVo.setTerm(
+                        searchVo.getTerm().replace(strArr[i], "malignant tumor")
+                );
+            }
+            result = autoRuleRequest(searchVo);
+        }
+
+        JSONObject checkJSON = new JSONObject(result);
         JSONObject returnJSON = new JSONObject();
-        returnJSON.put("status", "false");
-        returnJSON.put("ruleCode", "97");
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "97");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "97");
+        }
+        System.out.println("-------------rule_7-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
         return returnJSON;
+
     }
 
     /**
@@ -308,6 +352,7 @@ public class AutoRules {
                 returnJSON.put("ruleCode", "98");
             }else{
                 returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo.getTerm());
                 returnJSON.put("ruleCode", "98");
             }
         }catch(IOException e){
@@ -315,4 +360,6 @@ public class AutoRules {
         }
        return returnJSON;
     }
+
+
 }

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,12 +45,12 @@ public class ExcelDownloadViewResolver extends AbstractXlsxView {
         //상단 컬럼.
         long start = System.currentTimeMillis();
         for (int i = 0; i < list.size(); i++) {
-
+            /*
             if (i % 20 == 0) {
                 System.out.printf("count: %,d, 시간: %,dms \n", i, System.currentTimeMillis() - start);
                 start = System.currentTimeMillis();
             }
-
+            */
             CmKcdVo stat = list.get(i);
             Row row = sheet.createRow(i + 1);
 

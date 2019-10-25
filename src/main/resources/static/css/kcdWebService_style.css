@@ -36,3 +36,6 @@
 .autoRule-div-display{
     display: none !important;
 }
+.matchStrCss{
+    background-color: yellow;
+}
