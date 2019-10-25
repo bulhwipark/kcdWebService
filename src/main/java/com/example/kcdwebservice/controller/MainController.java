@@ -275,6 +275,10 @@ public class MainController {
      */
     @PostMapping("/excelDownload.xlsx")
     public String excelDownload(CmKcdVo cmKcdVo, Model model){
+        /*
+        cmKcdVo.setLimit("300");
+        cmKcdVo.setOffset("0");
+        */
         List<CmKcdVo> list = null;
         if(cmKcdVo.getListOption().equals("All")){
             list = cmKcdService.selectAll(cmKcdVo);
@@ -285,6 +289,7 @@ public class MainController {
         }else if(cmKcdVo.getListOption().equals("IcdNotMapping")){
             list = cmKcdService.selectIcdNotMapping(cmKcdVo);
         }
+
         model.addAttribute("list", list);
         return "ExcelDownload";
     }
@@ -378,6 +383,26 @@ public class MainController {
     @ResponseBody
     public void deleteAttrVal(MapKcdSctAftCatVo mapKcdSctAftCatVo){
         mapKcdSctAftCatService.deleteAttrVal(mapKcdSctAftCatVo);
+    }
+
+
+    @RequestMapping(value="/excelDownloadTest")
+    @ResponseBody
+    public String excelDownloadTest(CmKcdVo cmKcdVo, Model model){
+        cmKcdVo.setLimit("10");
+        cmKcdVo.setOffset("0");
+        List<CmKcdVo> list = null;
+        if(cmKcdVo.getListOption().equals("All")){
+            list = cmKcdService.selectAll(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("Mapping")){
+            list = cmKcdService.selectMapping(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("NotMapping")){
+            list = cmKcdService.selectNotMapping(cmKcdVo);
+        }else if(cmKcdVo.getListOption().equals("IcdNotMapping")){
+            list = cmKcdService.selectIcdNotMapping(cmKcdVo);
+        }
+        model.addAttribute("list", list);
+        return "ExcelDownload";
     }
 
 }

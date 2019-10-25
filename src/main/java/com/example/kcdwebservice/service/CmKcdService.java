@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.kcdwebservice.dao.CmKcdDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
 
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

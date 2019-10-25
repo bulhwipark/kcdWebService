@@ -48,6 +48,20 @@ function menu_kcdList_staticFunc(){
         $('#offset').val(currentOffset);*/
         $('#searchForm')[0].submit();
     });
+
+    /*$('#excelDownloadBtn').on('click', function(e){
+        e.preventDefault();
+        $.ajax({
+            url:'/excelDownloadTest',
+            type:'post',
+            data:{
+                mapVer:$('#version').val(),
+                listOption:$('#listOption option:selected').val(),
+                mapStatCd:$('#mapStatCd').val()
+            },
+
+        })
+    });*/
 }
 
 function dynamic_event_func(){

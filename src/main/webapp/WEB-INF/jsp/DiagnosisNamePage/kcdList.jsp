@@ -60,11 +60,9 @@
                             <button class="btn btn-light" id="next">>></button>
                         </span>
                     </div>
-<%--
                     <div style="display: inline-block; margin-top: 20px;">
                         <button class="btn btn-outline-danger" id="excelDownloadBtn">Excel Download</button>
                     </div>
---%>
 
                 </div>
             </div>

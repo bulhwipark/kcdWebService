@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.kcdwebservice.vo.CmKcdVo;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.ResultHandler;
 import org.springframework.stereotype.Repository;
 
 @Repository
