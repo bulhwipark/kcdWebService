@@ -87,7 +87,8 @@
             --%>
             <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button>
+            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button> |
+            <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>
@@ -106,10 +107,10 @@
             </thead>
             <tbody></tbody>
         </table>
-        <div id="saveBtnDiv" class="save-btn-div displayNone">
+      <%--  <div id="saveBtnDiv" class="save-btn-div displayNone">
             <span id="saveAlert" class="alertCss displayNone">선택 목록이 저장되었습니다.</span>
             <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
-        </div>
+        </div>--%>
     </div>
     <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdDetail_modal.jsp" %>
 </div>

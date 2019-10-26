@@ -316,6 +316,7 @@ function saveBtn_req(){
                 });
                 $('#' + sctId).remove();
             }
+            $('#saveBtn').attr('disabled', true);
             alert_timeout();
         }
     })
@@ -744,6 +745,13 @@ function deleteAttrVal(num){
     })
 }
 
+/**
+ *
+ * @param str 원본문자열
+ * @param matchStr 매칭시킬 문자열
+ * @returns {string|*}
+ * @constructor
+ */
 function StringMatch_func(str, matchStr){
     var matchRes = str.toUpperCase().match(matchStr.trim().toUpperCase());
     if(matchRes){

@@ -66,9 +66,11 @@ public class AutoRules {
             "other",
             "Other",
             "unspecified",
+            "Unspecified",
             "alone",
             "Alone",
             "single",
+            "Single",
             "side",
             "Side",
             "right",
@@ -122,7 +124,7 @@ public class AutoRules {
     public JSONObject autoRule_2(SearchVo searchVo) throws JSONException {
         String result = null;
         String[] term = searchVo.getTerm().split(" ");
-
+        //수정해야됨.
         for (int i = 0; i < term.length; i++) {
             if (term[i].lastIndexOf("s") > -1) {
                 term[i] = term[i].substring(0, term[i].lastIndexOf("s"));
