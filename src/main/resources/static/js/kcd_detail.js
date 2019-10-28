@@ -329,8 +329,9 @@ function deleteKcdList_req(){
     var currentSelected = $('input[name="sctListCheck"]:checked');
     var sctIdArr = [];
     for(var i = 0; i<currentSelected.length; i++){
-        sctIdArr.push(currentSelected[0].value);
+        sctIdArr.push(currentSelected[i].value);
     }
+    
    $.ajax({
         url:'/deleteKcdList',
         type:'post',
