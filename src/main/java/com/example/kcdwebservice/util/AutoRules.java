@@ -125,13 +125,14 @@ public class AutoRules {
         String result = null;
         String[] term = searchVo.getTerm().split(" ");
         //수정해야됨.
-        for (int i = 0; i < term.length; i++) {
-            if (term[i].lastIndexOf("s") > -1) {
-                term[i] = term[i].substring(0, term[i].lastIndexOf("s"));
-            } else if (term[i].lastIndexOf("es") > -1) {
-                term[i] = term[i].substring(0, term[i].lastIndexOf("es"));
+        for(int i = 0; i<term.length; i++){
+            if(term[i].substring((term[i].length()-2), term[i].length()).equals("es")){
+                term[i] = term[i].substring(0, (term[i].length()-2));
+            }else if(term[i].substring((term[i].length()-1), term[i].length()).equals("s")){
+                term[i] = term[i].substring(0, (term[i].length()-1));
             }
         }
+
         searchVo.setTerm(String.join(" ", term));
         result = autoRuleRequest(searchVo);
 
@@ -147,6 +148,7 @@ public class AutoRules {
             returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "92");
         }
+        
         System.out.println("-------------rule_2-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
