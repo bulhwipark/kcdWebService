@@ -46,15 +46,116 @@ public class AutoRules {
     }
 
     /**
-     * 룰 1
-     * "and", "with", "other", "unspecified", "alone", "without complication", "single" 를 제거 후 검색.
+     * malignant neoplasm -> malignant tumor
+     * @param searchVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject autoRule_1(SearchVo searchVo) throws JSONException {
+        String result = null;
+        String[] strArr = new String[]{
+                "malignant neoplasm",
+                "Malignant neoplasm"
+        };
+
+        for(int i = 0; i<strArr.length; i++){
+            if(searchVo.getTerm().indexOf(strArr[i]) > -1){
+                searchVo.setTerm(
+                        searchVo.getTerm().replace(strArr[i], "malignant tumor")
+                );
+            }
+            result = autoRuleRequest(searchVo);
+        }
+
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "91");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "91");
+        }
+        System.out.println("-------------rule_1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+        return returnJSON;
+
+    }
+
+    /**
+     * s, ',' , '-' 제거
+     * * @param searchVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject autoRule_2(SearchVo searchVo) throws JSONException {
+        searchVo.setTerm(searchVo.getTerm().replaceAll("'s|[,-/]", ""));
+        String result = autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "92");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "92");
+        }
+        System.out.println("-------------rule_2-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+        return returnJSON;
+    }
+
+    /**
+     * '(', '[' 사이 단어까지 모두 제거.
+     * @param searchVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject autoRule_3(SearchVo searchVo) throws JSONException {
+        searchVo.setTerm(searchVo.getTerm().replaceAll("\\((.*?)\\)", ""));
+        searchVo.setTerm(searchVo.getTerm().replaceAll("\\[(.*?)\\]", ""));
+        String result = autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "93");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "93");
+        }
+        System.out.println("-------------rule_3-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+        return returnJSON;
+    }
+
+    /**
+     * 룰 4
      * @param searchVo
      * @return
      * 검색결과 있을때 : {"status":"false","result":[],"searchTerm":"", "ruleCode":"91"}
      * 없을때 : {"status":"false","ruleCode":"91"}
      * @throws JSONException
      */
-    public JSONObject autoRule_1(SearchVo searchVo) throws JSONException {
+    public JSONObject autoRule_4(SearchVo searchVo) throws JSONException {
 
         String result = null;
         String term = null;
@@ -99,14 +200,14 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", term);
-            returnJSON.put("ruleCode", "91");
+            returnJSON.put("ruleCode", "94");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", term);
-            returnJSON.put("ruleCode", "91");
+            returnJSON.put("ruleCode", "94");
         }
 
-        System.out.println("-------------rule_1-------------------");
+        System.out.println("-------------rule_4-------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -121,7 +222,7 @@ public class AutoRules {
      * @return
      * @throws JSONException
      */
-    public JSONObject autoRule_2(SearchVo searchVo) throws JSONException {
+    public JSONObject autoRule_5(SearchVo searchVo) throws JSONException {
         String result = null;
         String[] term = searchVo.getTerm().split(" ");
         //수정해야됨.
@@ -142,14 +243,14 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "92");
+            returnJSON.put("ruleCode", "95");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "92");
+            returnJSON.put("ruleCode", "95");
         }
         
-        System.out.println("-------------rule_2-------------------------");
+        System.out.println("-------------rule_5-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -164,7 +265,7 @@ public class AutoRules {
      * @return
      * @throws JSONException
      */
-    public JSONObject autoRule_3(SearchVo searchVo) throws JSONException {
+    public JSONObject autoRule_6(SearchVo searchVo) throws JSONException {
         JSONObject returnJSON = new JSONObject();
         String[] term = searchVo.getTerm().trim().split(" ");
         for(int i = 0; i<term.length; i++){
@@ -183,66 +284,6 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "93");
-        }else{
-            returnJSON.put("status", "false");
-            returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "93");
-        }
-        System.out.println("-------------rule_3-------------------------");
-        System.out.println(result);
-        System.out.println(returnJSON);
-        System.out.println(returnJSON.toString());
-        System.out.println("-------------------------------------------");
-
-        return returnJSON;
-    }
-
-    /**
-     * s, ',' , '-' 제거
-     * * @param searchVo
-     * @return
-     * @throws JSONException
-     */
-    public JSONObject autoRule_4(SearchVo searchVo) throws JSONException {
-        searchVo.setTerm(searchVo.getTerm().replaceAll("'s|[,-/]", ""));
-        String result = autoRuleRequest(searchVo);
-        JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
-        if(checkJSON.getJSONArray("items").length() > 0){
-            returnJSON.put("status", "true");
-            returnJSON.put("result", result);
-            returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "94");
-        }else{
-            returnJSON.put("status", "false");
-            returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "94");
-        }
-        System.out.println("-------------rule_4-------------------------");
-        System.out.println(result);
-        System.out.println(returnJSON);
-        System.out.println(returnJSON.toString());
-        System.out.println("-------------------------------------------");
-        return returnJSON;
-    }
-
-    /**
-     * '(', '[' 사이 단어까지 모두 제거.
-     * @param searchVo
-     * @return
-     * @throws JSONException
-     */
-    public JSONObject autoRule_6(SearchVo searchVo) throws JSONException {
-        searchVo.setTerm(searchVo.getTerm().replaceAll("\\((.*?)\\)", ""));
-        searchVo.setTerm(searchVo.getTerm().replaceAll("\\[(.*?)\\]", ""));
-        String result = autoRuleRequest(searchVo);
-        JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
-        if(checkJSON.getJSONArray("items").length() > 0){
-            returnJSON.put("status", "true");
-            returnJSON.put("result", result);
-            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "96");
         }else{
             returnJSON.put("status", "false");
@@ -254,58 +295,18 @@ public class AutoRules {
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
         System.out.println("-------------------------------------------");
+
         return returnJSON;
     }
 
-    /**
-     * malignant neoplasm -> malignant tumor
-     * @param searchVo
-     * @return
-     * @throws JSONException
-     */
-    public JSONObject autoRule_7(SearchVo searchVo) throws JSONException {
-        String result = null;
-        String[] strArr = new String[]{
-                "malignant neoplasm",
-                "Malignant neoplasm"
-        };
 
-        for(int i = 0; i<strArr.length; i++){
-            if(searchVo.getTerm().indexOf(strArr[i]) > -1){
-                searchVo.setTerm(
-                        searchVo.getTerm().replace(strArr[i], "malignant tumor")
-                );
-            }
-            result = autoRuleRequest(searchVo);
-        }
-
-        JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
-        if(checkJSON.getJSONArray("items").length() > 0){
-            returnJSON.put("status", "true");
-            returnJSON.put("result", result);
-            returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "97");
-        }else{
-            returnJSON.put("status", "false");
-            returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "97");
-        }
-        System.out.println("-------------rule_7-------------------------");
-        System.out.println(result);
-        System.out.println(returnJSON);
-        System.out.println(returnJSON.toString());
-        System.out.println("-------------------------------------------");
-        return returnJSON;
-
-    }
 
     /**
      * Elasticsearch api 호출.
      * @param searchVo
      * @return \"Benign neoplasm of breast, unspecifiedt\"\n"
      */
-    public JSONObject autoRule_8(SearchVo searchVo) throws JSONException {
+    public JSONObject autoRule_7(SearchVo searchVo) throws JSONException {
         Set<String> conceptIdList = new HashSet<>();
         JSONObject returnJSON = new JSONObject();
         try{
@@ -353,12 +354,18 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", checkJSON.toString());
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "98");
+                returnJSON.put("ruleCode", "97");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "98");
+                returnJSON.put("ruleCode", "97");
             }
+
+            System.out.println("-------------rule_7-------------------------");
+            System.out.println(result);
+            System.out.println(returnJSON);
+            System.out.println(returnJSON.toString());
+            System.out.println("-------------------------------------------");
         }catch(IOException e){
             e.printStackTrace();
         }

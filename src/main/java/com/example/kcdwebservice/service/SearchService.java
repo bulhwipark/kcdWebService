@@ -26,16 +26,6 @@ public class SearchService {
         paramMap.put("term", searchVo.getTerm());
         paramMap.put("ecl", searchVo.getEcl());
         result = HttpRestCall.callGet(URL, paramMap);
-        /*
-        for(int i = 0; i<searchVo.getEcl().size(); i++){
-            paramMap.put("ecl", searchVo.getEcl().get(i));
-            result = HttpRestCall.callGet(URL, paramMap);
-            JSONObject jsonObject = new JSONObject(result);
-            if(jsonObject.getJSONArray("items").length() > 0) {
-                break;
-            }
-        }
-        */
         return result;
     }
 
@@ -62,13 +52,13 @@ public class SearchService {
                 }
             }
             */
-           list.add(autoRules.autoRule_7(searchVo));
-           list.add(autoRules.autoRule_4(searchVo));
-           list.add(autoRules.autoRule_6(searchVo));
            list.add(autoRules.autoRule_1(searchVo));
            list.add(autoRules.autoRule_2(searchVo));
-           //list.add(autoRules.autoRule_3(searchVo));
-           /*list.add(autoRules.autoRule_8(searchVo));*/
+           list.add(autoRules.autoRule_3(searchVo));
+           list.add(autoRules.autoRule_4(searchVo));
+           list.add(autoRules.autoRule_5(searchVo));
+           //list.add(autoRules.autoRule_6(searchVo));
+           /*list.add(autoRules.autoRule_7(searchVo));*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,7 +74,7 @@ public class SearchService {
         AutoRules autoRules = new AutoRules();
         JSONObject result = null;
         try {
-            result =  autoRules.autoRule_8(searchVo);
+            result =  autoRules.autoRule_7(searchVo);
             System.out.println(result.toString());
         } catch (JSONException e) {
             e.printStackTrace();
