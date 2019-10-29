@@ -37,7 +37,7 @@
                     <select class="form-control attrSelect" name="attr" id="attr_select1" data-num="1"></select>
                 </div>
                 <label for="div1" style="margin-left:20px;">Value : </label>
-                <div style="width: 300px; display: inline-block; margin-left: 30px;" id="div1"></div>
+                <div style="width: 260px; display: inline-block; margin-left: 30px;" id="div1"></div>
                 <button class="btn btn-sm btn-danger attrRemove" id="attr_remove1" data-num="1">삭제</button>
 
                 <hr>
@@ -47,7 +47,7 @@
                     <select class="form-control attrSelect" name="attr" id="attr_select2"  data-num="2"></select>
                 </div>
                 <label for="div2" style="margin-left: 20px;">Value : </label>
-                <div style="width: 300px; display: inline-block; margin-left: 30px;" id="div2"></div>
+                <div style="width: 260px; display: inline-block; margin-left: 30px;" id="div2"></div>
                 <button class="btn btn-sm btn-danger attrRemove" id="attr_remove2" data-num="2">삭제</button>
 
                 <hr>
@@ -57,7 +57,7 @@
                     <select class="form-control attrSelect" name="" id="attr_select3"  data-num="3"></select>
                 </div>
                 <label for="div3" style="margin-left: 20px;">Value : </label>
-                <div style="width: 300px; display: inline-block; margin-left: 30px;" id="div3"></div>
+                <div style="width: 260px; display: inline-block; margin-left: 30px;" id="div3"></div>
                 <button class="btn btn-sm btn-danger attrRemove" id="attr_remove3" data-num="3">삭제</button>
 
                 <hr>
@@ -77,7 +77,7 @@
                     <select class="form-control attrSelect" name="" id="attr_select5" data-num="5"></select>
                 </div>
                 <label for="div5" style="margin-left: 20px;">Value : </label>
-                <div style="width: 300px; display: inline-block; margin-left: 30px;" id="div5"></div>
+                <div style="width: 260px; display: inline-block; margin-left: 30px;" id="div5"></div>
                 <button class="btn btn-sm btn-danger attrRemove" id="attr_remove5" data-num="5">삭제</button>
             </div>
 
