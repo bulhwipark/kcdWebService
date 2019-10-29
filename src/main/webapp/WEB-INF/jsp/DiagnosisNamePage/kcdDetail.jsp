@@ -21,9 +21,11 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
+        <%--
         <div class="pull-left">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_prev" data-btntype="prev"><<<<</button>
         </div>
+        --%>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
             <input type="hidden" value="${mapVer}" id="mapVer">
             <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
@@ -32,9 +34,11 @@
                 <div><b>영문명 : </b><span id="kcdEng"></span></div>
             </div>
         </div>
+        <%--
         <div class="pull-right">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_next" data-btntype="next">>>>></button>
         </div>
+        --%>
     </div>
     <div class="row">
         <div class="alert">
