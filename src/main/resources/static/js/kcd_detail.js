@@ -119,7 +119,6 @@ function get_kcdCdObject_req(){
     });
 }
 
-
 /**
  * kcd 목록 이벤트
  */
@@ -567,7 +566,7 @@ function attr_val_modalSetting(sctId){
                 if(data.length>0){
                     for(var i = 0; i<data.length; i++){
                         var $option = $('<option>', {
-                            text:data[i].cmSctTerm,
+                            text:data[i].cmSctTerm2,
                             value:data[i].attSctId
                         });
                         $('.attrSelect').append($option);

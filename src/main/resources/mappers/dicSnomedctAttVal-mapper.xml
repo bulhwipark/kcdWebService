@@ -6,7 +6,8 @@
 <mapper namespace="com.example.kcdwebservice.dao.DicSnomedctAttValDao">
     <select id="getAttrList" resultType="com.example.kcdwebservice.vo.DicSnomedctAttValVo">
         SELECT distinct ATT_SCT_ID attSctId,
-               S.SCT_TERM cmSctTerm
+               S.SCT_TERM cmSctTerm,
+               S.SCT_TERM2 cmSctTerm2
         FROM EMR.DIC_SNOMEDCT_ATT_VAL A
             inner join EMR.CM_SNOMEDCT S on A.ATT_SCT_ID = S.SCT_ID;
     </select>

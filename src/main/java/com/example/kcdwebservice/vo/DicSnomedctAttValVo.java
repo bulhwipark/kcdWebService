@@ -15,6 +15,7 @@ public class DicSnomedctAttValVo {
     private String avDispOdr;
     private String avUdtDt;
     private String cmSctTerm;
+    private String cmSctTerm2;
     private String cmDispOdr;
     private String cmUdtDt;
 
