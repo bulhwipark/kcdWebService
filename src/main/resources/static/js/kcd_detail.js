@@ -65,6 +65,10 @@ function kcd_detail_static_func(){
        deleteAttrVal($(this).data('num'));
    });
 
+   $('.valSelect').on('change', function(){
+       textSearchForm_setting($(this).data('num'));
+   })
+
 }
 
 function kcd_detail_dynamic_func(){
@@ -93,8 +97,6 @@ function kcd_detail_dynamic_func(){
         );
         $('#sctId').val($(this).text());
     });
-
-
 }
 
 /**
@@ -605,6 +607,88 @@ function getValueList(currentNum){
         dataType:'json',
         async:false,
         success:function(data){
+            $('#val_select' + currentNum).empty();
+            $('#val_select' + currentNum).append(
+                $('<option>',{
+                    text:"값을 선택하세요.",
+                    value:''
+                })
+            );
+            if(data.length > 0){
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                        text:data[i].cmSctTerm,
+                        value:data[i].attSctId,
+                        'data-tokens':data[i].cmSctTerm
+                    });
+                    $('#val_select' + currentNum).append($option);
+                }
+                $('#val_select' + currentNum).attr('disabled', false);
+            }else{
+                console.log("리스트 없음.")
+            }
+        }
+    })
+}
+
+function textSearchForm_setting(currentNum){
+    $('#div' + currentNum).empty().append(
+        $('<select>',{
+            class:"textSelect",
+            'data-live-search':"true",
+            id:"text_select"+currentNum
+        }).on('change', function(){
+            $('#attrSaveBtn').attr('disabled', false)
+        })
+    );
+    $('#text_select' + currentNum).selectpicker();
+
+    $('.textSelect input[type="text"].form-control').on('keydown', function(key){
+        if(key.keyCode == 13){
+            console.log('enter');
+            attrValTextSearch_request(currentNum);
+        }
+    })
+}
+
+function attrValTextSearch_request(currentNum){
+     $.ajax({
+         url: '/getTextSearchResult',
+         type: 'post',
+         data: {
+             term: 'blood test',
+             ecl: '<' + $('#val_select' + currentNum + ' option:selected').val()
+         },
+         dataType: 'json',
+         success: function (data) {
+             console.log(data);
+             $('#text_select'+currentNum).empty();
+             if(data.items.length > 0){
+                 for(var i = 0; i<data.items.length; i++){
+                     var item = data.items[i];
+                     var $option = $('<option>',{
+                         text:item.fsn.term
+                     });
+                     $('#text_select'+currentNum).append($option);
+                 }
+                 //$('#text_select'+currentNum).selectpicker('render');
+                 $('#text_select'+currentNum).selectpicker('refresh');
+             }
+         }
+     })
+}
+
+/*
+function getValueList(currentNum){
+    $.ajax({
+        url:'/getKcdValList',
+        type:'post',
+        data:{
+            sctId:$('#attr_select'+ currentNum +' option:selected').val()
+        },
+        dataType:'json',
+        async:false,
+        success:function(data){
             $('#div' + currentNum).empty().append(
                 $('<select>',{
                     class:"valSelect",
@@ -642,6 +726,7 @@ function getValueList(currentNum){
         }
     })
 }
+*/
 
 function attr_val_save(){
     var attrOptList = $('.attrSelect option:selected');

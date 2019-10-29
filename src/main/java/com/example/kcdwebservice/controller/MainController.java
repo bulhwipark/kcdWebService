@@ -381,4 +381,20 @@ public class MainController {
     public void deleteAttrVal(MapKcdSctAftCatVo mapKcdSctAftCatVo){
         mapKcdSctAftCatService.deleteAttrVal(mapKcdSctAftCatVo);
     }
+
+    @RequestMapping(value="/getTextSearchResult")
+    @ResponseBody
+    public ResponseEntity<String> getTextSearchResult(SearchVo searchVo){
+        System.out.println(searchVo.getEcl());
+        System.out.println(searchVo.getTerm());
+        String result = null;
+        try {
+            result = searchService.searchReqeust(searchVo);
+            JSONObject jsonObject = new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
