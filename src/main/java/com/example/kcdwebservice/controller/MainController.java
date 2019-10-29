@@ -1,5 +1,6 @@
 package com.example.kcdwebservice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.example.kcdwebservice.service.CmKcdService;
 import com.example.kcdwebservice.service.CmSnomedCtService;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 public class MainController {
@@ -324,7 +326,6 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/getKcdValList")
-    @ResponseBody
     public ResponseEntity<List<DicSnomedctAttValVo>> getKcdValList(@RequestParam("sctId") String sctId){
         List<DicSnomedctAttValVo> list = dicSnomedctAttValService.getValList(sctId);
         return new ResponseEntity<>(list, HttpStatus.OK);
