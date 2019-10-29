@@ -89,7 +89,7 @@ public class AutoRules {
     }
 
     /**
-     * s, ',' , '-' 제거
+     * 's, ',' , '-' 제거
      * * @param searchVo
      * @return
      * @throws JSONException
@@ -199,11 +199,11 @@ public class AutoRules {
         if(checkObject.getJSONArray("items").length() > 0){
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
-            returnJSON.put("searchTerm", term);
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "94");
         }else{
             returnJSON.put("status", "false");
-            returnJSON.put("searchTerm", term);
+            returnJSON.put("searchTerm", searchVo.getTerm());
             returnJSON.put("ruleCode", "94");
         }
 
@@ -225,12 +225,14 @@ public class AutoRules {
     public JSONObject autoRule_5(SearchVo searchVo) throws JSONException {
         String result = null;
         String[] term = searchVo.getTerm().split(" ");
-        //수정해야됨.
+
         for(int i = 0; i<term.length; i++){
-            if(term[i].substring((term[i].length()-2), term[i].length()).equals("es")){
-                term[i] = term[i].substring(0, (term[i].length()-2));
-            }else if(term[i].substring((term[i].length()-1), term[i].length()).equals("s")){
-                term[i] = term[i].substring(0, (term[i].length()-1));
+            if(term[i].length() > 0){
+                if(term[i].substring((term[i].length()-2), term[i].length()).equals("es")){
+                    term[i] = term[i].substring(0, (term[i].length()-2));
+                }else if(term[i].substring((term[i].length()-1), term[i].length()).equals("s")){
+                    term[i] = term[i].substring(0, (term[i].length()-1));
+                }
             }
         }
 
