@@ -61,13 +61,10 @@ function kcd_detail_static_func(){
        getValueList($(this).data('num'));
    });
 
-   $('.valSelect').on('change', function(){
-       $('#attrSaveBtn').attr('disabled', false);
-   });
-
    $('.attrRemove').on('click', function(){
        deleteAttrVal($(this).data('num'));
-   })
+   });
+
 }
 
 function kcd_detail_dynamic_func(){
@@ -97,11 +94,7 @@ function kcd_detail_dynamic_func(){
         $('#sctId').val($(this).text());
     });
 
-    /*$('.addAttrBtn').on('click', function(){
-        $('#modal_kcdKor').text($('#kcdKor').text());
-        $('#modal_kcdEng').text($('#kcdEng').text());
-        kcdAttrList_ajax($(this).val());
-    })*/
+
 }
 
 /**
@@ -214,12 +207,6 @@ function search_req(){
         param.ecl = $('#ecl').val();
     }
 
-    //disorder 체크해제되어있고, clinicalFinding 체크해제되어있을때만. ecl 세팅.
-    // if(!$('#disorder').prop('checked') && !$('#clinicalFinding').prop('checked')){
-    //     if($('#ecl').val().length > 0){
-    //         param.ecl.push($('#ecl').val());
-    //     }
-    // }
     $.ajax({
         url:'/search',
         type:'post',
@@ -451,7 +438,6 @@ function autoRuleSet(){
                                 );
                                 $('#searchResultTable tbody').append($tr);
                             }
-
                         }
                         $('#saveBtnDiv').removeClass('displayNone');
                         $('.autoRuleCol').removeClass('displayNone');
@@ -619,25 +605,37 @@ function getValueList(currentNum){
         dataType:'json',
         async:false,
         success:function(data){
-            console.log(data);
+            $('#div' + currentNum).empty().append(
+                $('<select>',{
+                    class:"valSelect",
+                    'data-live-search':"true",
+                    id:"val_select"+currentNum
+                }).on('change', function(){
+                    $('#attrSaveBtn').attr('disabled', false)
+                })
+            );
+
             $('#val_select' + currentNum).empty();
             $('#val_select' + currentNum).append(
                 $('<option>',{
-                    value:'',
-                    text:' 값을 선택하세요.',
-                    disabled:true,
-                    selected:true
+                    text:"값을 선택하세요.",
+                    value:''
                 })
             );
             if(data.length > 0){
                 for(var i = 0; i<data.length; i++){
                     var $option = $('<option>',{
                         text:data[i].cmSctTerm,
-                        value:data[i].attSctId
+                        value:data[i].attSctId,
+                        'data-tokens':data[i].cmSctTerm
                     });
-                    $('#val_select'+currentNum).append($option);
+                    $('#val_select' + currentNum).append($option);
                 }
-                $('#val_select'+currentNum).attr('disabled', false);
+                $('#val_select' + currentNum).attr('disabled', false);
+                $('#val_select' + currentNum).addClass("selectpicker");
+                $('#val_select' + currentNum).selectpicker();
+                $('#val_select' + currentNum).selectpicker('refresh');
+                //$('#val_select'+currentNum).attr('disabled', false);
             }else{
                 console.log("리스트 없음.")
             }
@@ -756,13 +754,13 @@ function deleteAttrVal(num){
 function StringMatch_func(str, matchStr){
     var matchRes = str.toUpperCase().match(matchStr.trim().toUpperCase());
     if(matchRes){
-        return str.slice(0, matchRes.index) + "<span class='matchStrCss'>" + str.slice(matchRes.index, matchRes.index+matchRes[0].length) + '</span>' + str.slice(matchRes.index+matchRes[0].length);
+        return str.slice(0, matchRes.index) + "<span class='matchStrCss'>"
+                                            + str.slice(matchRes.index, matchRes.index+matchRes[0].length)
+                                            + '</span>' + str.slice(matchRes.index+matchRes[0].length);
     }else{
         return str;
     }
 }
-
-
 
 function alert_timeout(){
     $('#saveAlert').removeClass('displayNone');
