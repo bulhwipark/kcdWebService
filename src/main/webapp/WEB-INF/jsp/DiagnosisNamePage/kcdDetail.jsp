@@ -21,23 +21,27 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
-        <input type="hidden" value="${mapVer}" id="mapVer">
-        <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
-        <div>
-            <div><b>한글명 : </b><span id="kcdKor"></span></div>
-            <div><b>영문명 : </b><span id="kcdEng"></span></div>
-        </div>
-    </div>
-    <%--
-    <div class="row">
         <div class="pull-left">
-            <button class="btn btn-lg btn-danger"><<<<</button>
+            <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_prev" data-btntype="prev"><<<<</button>
+        </div>
+        <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
+            <input type="hidden" value="${mapVer}" id="mapVer">
+            <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
+            <div>
+                <div><b>한글명 : </b><span id="kcdKor"></span></div>
+                <div><b>영문명 : </b><span id="kcdEng"></span></div>
+            </div>
         </div>
         <div class="pull-right">
-            <button class="btn btn-lg btn-danger">>>>></button>
+            <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_next" data-btntype="next">>>>></button>
         </div>
     </div>
-    --%>
+    <div class="row">
+        <div class="alert">
+            <div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
             <thead>
@@ -101,7 +105,7 @@
             <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button> |
-            <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
+            <button id="saveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>
@@ -120,10 +124,6 @@
             </thead>
             <tbody></tbody>
         </table>
-      <%--  <div id="saveBtnDiv" class="save-btn-div displayNone">
-            <span id="saveAlert" class="alertCss displayNone">선택 목록이 저장되었습니다.</span>
-            <button id="saveBtn" class="btn btn-lg btn-info" disabled onclick="saveBtn_req()">저장</button>
-        </div>--%>
     </div>
     <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdDetail_modal.jsp" %>
 </div>
