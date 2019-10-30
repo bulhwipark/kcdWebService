@@ -20,4 +20,6 @@ public class MapKcdSctVo {
     private String sctTerm;
     private String mapStatNm;
 
+    private String afterMap;
+
 }

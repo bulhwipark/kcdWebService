@@ -50,10 +50,11 @@
         <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
             <thead>
                 <tr>
-                    <th scope="col">SCT_ID</th>
-                    <th scope="col">SCT_TERM</th>
-                    <th scope="col">MAP_STAT_CD</th>
-                    <th scope="col">UDT_DT</th>
+                    <th scope="col">Core Concept</th>
+                    <th scope="col">Concept Name</th>
+                    <th scope="col">Core Map CD</th>
+                    <th scope="col">Attribute&Value</th>
+                    <th scope="col">Update Time</th>
                     <th>
                         전체선택&nbsp;&nbsp;
                         <input type="checkbox" id="allSelect">
@@ -117,8 +118,8 @@
         <table class="table table-striped" id="searchResultTable">
             <thead>
                 <tr>
-                    <th>conceptId</th>
-                    <th>term</th>
+                    <th>Concept Id</th>
+                    <th>Term</th>
                     <th class="autoRuleCol">Rule Code</th>
                     <th>
                         전체선택&nbsp;&nbsp;

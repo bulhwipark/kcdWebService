@@ -13,8 +13,19 @@
             M.RV_STAT_CD rvStatCd,
             M.DISP_ODR dispOdr,
             M.UDT_DT udtDt,
-            S.SCT_TERM sctTerm,
-            CD.CD_DSCRT mapStatNm
+            S.SCT_TERM sctTerm ,
+            CD.CD_DSCRT mapStatNm,
+            (select GROUP_CONCAT(CONCAT(MA.ATT_SCT_ID,'|',A.SCT_TERM,' |= ', MA.VAL_SCT_ID,'|',V.SCT_TERM) SEPARATOR ' , ' ) 
+                from EMR.MAP_KCD_SCT_AFT_CAT MA
+                    inner join EMR.CM_SNOMEDCT A
+                    on MA.ATT_SCT_ID=A.SCT_ID
+                    inner join EMR.CM_SNOMEDCT V
+                    on MA.VAL_SCT_ID=V.SCT_ID
+                where M.ORI_TP_CD=MA.ORI_TP_CD
+                and M.MAP_VER=MA.MAP_VER
+                and M.ORI_CD=MA.ORI_CD
+                and M.SCT_ID=MA.SCT_ID
+            ) afterMap
         from EMR.MAP_KCD_SCT M
             left outer join EMR.CM_SNOMEDCT S
             ON M.SCT_ID=S.SCT_ID

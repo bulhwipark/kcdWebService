@@ -152,6 +152,9 @@ function get_kcdDetail_list(){
                             text:data[i].mapStatNm +"("+data[i].mapStatCd+")"
                         }),
                         $('<td>',{
+                            text:data[i].afterMap
+                        }),
+                        $('<td>',{
                             text:data[i].udtDt
                         }),
                         $('<td>').append(
