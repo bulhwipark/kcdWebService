@@ -1,5 +1,12 @@
 function menu_kcdList_staticFunc(){
     //초기 실행
+    if(sessionStorage.getItem("storageCheck")){
+        $('#listOption').val(sessionStorage.getItem("listOption"));
+        $('#searchToKcdCd').val(sessionStorage.getItem("searchToKcdCd"));
+        limit = parseInt(sessionStorage.getItem("limit"));
+        currentOffset = parseInt(sessionStorage.getItem("offset"));
+        sessionStorage.clear();
+    }
     kcdList_getMappingStatusCd();
     kcdList_totalCount_req();
     kcdList_req();
@@ -44,41 +51,21 @@ function menu_kcdList_staticFunc(){
     //excel download
     $('#excelDownloadBtn').on('click', function(e){
         e.preventDefault();
-        /*$('#limit').val(limit);
-        $('#offset').val(currentOffset);*/
         $('#searchForm')[0].submit();
     });
-
-    /*$('#excelDownloadBtn').on('click', function(e){
-        e.preventDefault();
-        $.ajax({
-            url:'/excelDownloadTest',
-            type:'post',
-            data:{
-                mapVer:$('#version').val(),
-                listOption:$('#listOption option:selected').val(),
-                mapStatCd:$('#mapStatCd').val()
-            },
-
-        })
-    });*/
 }
 
 function dynamic_event_func(){
     $('.kcdDetail').on('click', function(){
+        sessionStorage.setItem("storageCheck", true);
+        sessionStorage.setItem("limit", limit);
+        sessionStorage.setItem("offset", currentOffset);
+        sessionStorage.setItem("totalCnt", totalCnt);
+        sessionStorage.setItem("listOption", $('#listOption option:selected').val());
+        sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
+
         location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version').val();
     });
-
-    /*
-    $('.sctIdDetail').on('click', function(){
-      window.open(
-           '/sctIdDetail',
-           'Detail',
-           'width=1200,height=800,left=200,'
-       );
-      $('#sctId').val($(this).text());
-    });
-    */
 
     $('.sctIdDetail').on('click', function(){
       window.open(

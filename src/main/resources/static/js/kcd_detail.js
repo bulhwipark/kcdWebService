@@ -715,7 +715,8 @@ function attr_val_save(){
             valGrpSctIdParam:valGrpSctIdParam.join(',')
         },
         success:function(){
-            console.log("save")
+            console.log("save");
+            get_kcdDetail_list();
         }
     })
 }
