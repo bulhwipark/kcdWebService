@@ -135,14 +135,10 @@ public class MainController {
     @RequestMapping(value="/kcdDetailPage")
     public ModelAndView kcdDetailPage(
             @RequestParam("kcdCd")String kcdCd
-            , @RequestParam("mapVer")String mapVer
-            , @RequestParam("limit")String limit
-            , @RequestParam("offset")String offset){
+            , @RequestParam("mapVer")String mapVer){
         ModelAndView mav = new ModelAndView();
         mav.addObject("kcdCd", kcdCd);
         mav.addObject("mapVer", mapVer);
-        mav.addObject("limit", limit);
-        mav.addObject("offset", offset);
         mav.setViewName("/DiagnosisNamePage/kcdDetail");
         return mav;
     }

@@ -64,7 +64,7 @@ function dynamic_event_func(){
         sessionStorage.setItem("listOption", $('#listOption option:selected').val());
         sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
 
-        location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version').val() + '&limit=' + limit + '&offset=' + currentOffset;
+        location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version').val();
     });
 
     $('.sctIdDetail').on('click', function(){
