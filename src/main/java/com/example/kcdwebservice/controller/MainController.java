@@ -55,7 +55,9 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/")
-    public String main(){
+    public String main(@RequestParam(value = "limit", required = false)String limit, @RequestParam(value="offset", required = false)String offset){
+        System.out.println(limit);
+        System.out.println(offset);
         return "/index";
     }
 
@@ -131,10 +133,16 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/kcdDetailPage")
-    public ModelAndView kcdDetailPage(@RequestParam("kcdCd")String kcdCd, @RequestParam("mapVer")String mapVer){
+    public ModelAndView kcdDetailPage(
+            @RequestParam("kcdCd")String kcdCd
+            , @RequestParam("mapVer")String mapVer
+            , @RequestParam("limit")String limit
+            , @RequestParam("offset")String offset){
         ModelAndView mav = new ModelAndView();
         mav.addObject("kcdCd", kcdCd);
         mav.addObject("mapVer", mapVer);
+        mav.addObject("limit", limit);
+        mav.addObject("offset", offset);
         mav.setViewName("/DiagnosisNamePage/kcdDetail");
         return mav;
     }

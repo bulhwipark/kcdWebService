@@ -10,7 +10,6 @@
 <head>
     <title>KCD Web Service</title>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css/">
-    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">--%>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/headerMenuCss.css">
@@ -21,11 +20,9 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="kcdListPage">
     <div class="alert alert-primary" role="alert">
-        <%--
         <div class="pull-left">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_prev" data-btntype="prev"><<<<</button>
         </div>
-        --%>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
             <input type="hidden" value="${mapVer}" id="mapVer">
             <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
@@ -34,11 +31,9 @@
                 <div><b>영문명 : </b><span id="kcdEng"></span></div>
             </div>
         </div>
-        <%--
         <div class="pull-right">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_next" data-btntype="next">>>>></button>
         </div>
-        --%>
     </div>
     <div class="row">
         <div class="alert">
@@ -136,14 +131,14 @@
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
 <script src="/static/lib/popper.js"></script>
 <script src="/static/lib/bootstrap.min.js"></script>
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>--%>
 <script src="/static/lib/bootstrap-select.min.js"></script>
 <script src="/static/js/global-variable.js"></script>
 <script src="/static/js/kcd_detail.js"></script>
 <script type="text/javascript">
     $(function(){
         mapVer = '${mapVer}';
+        limit = '${limit}';
+        currentOffset = '${offset}';
         kcd_detail_static_func();
     })
 </script>
