@@ -11,6 +11,7 @@
             ORI_CD,
             SCT_ID,
             ATT_SCT_ID,
+            VALGRP_SCT_ID,
             VAL_SCT_ID,
             MAP_STAT_CD,
             RV_STAT_CD,
@@ -23,6 +24,7 @@
             #{oriCd},
             #{sctId},
             #{attSctId},
+            #{valgrpSctId},
             #{valSctId},
             #{mapStatCd},
             '0',
@@ -37,6 +39,7 @@
                ORI_CD      oriCd,
                SCT_ID      sctId,
                ATT_SCT_ID  attSctId,
+               VALGRP_SCT_ID valgrpSctId,
                VAL_SCT_ID  valSctId,
                MAP_STAT_CD mapStatCd,
                RV_STAT_CD  rvStatCd,
@@ -52,6 +55,9 @@
          where ORI_CD = #{oriCd} and SCT_ID = #{sctId}
         <if test="attSctId != '' and attSctId != null ">
             and ATT_SCT_ID = #{attSctId}
+        </if>
+        <if test="valgrpSctId != '' and valgrpSctId != null ">
+            and VALGRP_SCT_ID = #{valgrpSctId}
         </if>
         <if test="valSctId != '' and valSctId != null ">
             and VAL_SCT_ID = #{valSctId}

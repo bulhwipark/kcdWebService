@@ -338,9 +338,10 @@ public class MainController {
     public void attrValSave(
             MapKcdSctAftCatVo mapKcdSctAftCatVo,
             @RequestParam("attrParam")String attrParam,
-            @RequestParam("valParam")String valParam
+            @RequestParam("valParam")String valParam,
+            @RequestParam("valGrpSctIdParam")String valGrpSctIdParam
     ){
-        mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo, attrParam, valParam);
+        mapKcdSctAftCatService.attValInsert(mapKcdSctAftCatVo, attrParam, valParam, valGrpSctIdParam);
     }
 
     /**
@@ -355,9 +356,10 @@ public class MainController {
     public void attrValUpdate(
             MapKcdSctAftCatVo mapKcdSctAftCatVo,
             @RequestParam("attrParam")String attrParam,
-            @RequestParam("valParam")String valParam
+            @RequestParam("valParam")String valParam,
+            @RequestParam("valGrpSctIdParam")String valGrpSctIdParam
     ){
-        mapKcdSctAftCatService.attValUpdate(mapKcdSctAftCatVo, attrParam, valParam);
+        mapKcdSctAftCatService.attValUpdate(mapKcdSctAftCatVo, attrParam, valParam,valGrpSctIdParam);
     }
 
     /**
@@ -369,6 +371,10 @@ public class MainController {
     @ResponseBody
     public ResponseEntity<List<MapKcdSctAftCatVo>> getMapAttrValList(MapKcdSctAftCatVo mapKcdSctAftCatVo){
         List<MapKcdSctAftCatVo> list = mapKcdSctAftCatService.getList(mapKcdSctAftCatVo);
+
+        for(MapKcdSctAftCatVo vo : list){
+            vo.setValSctIdInfo(searchService.searchConceptId(vo.getValSctId()));
+        }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
