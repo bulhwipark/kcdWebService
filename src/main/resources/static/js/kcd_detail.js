@@ -67,6 +67,44 @@ function kcd_detail_static_func(){
 
    $('.valSelect').on('change', function(){
        textSearchForm_setting($(this).data('num'));
+   });
+
+   $('#kcdList_next').on('click', function(){
+      var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
+      var index = parseInt(sessionStorage.getItem("index"));
+      var result = null;
+      var checkIdx = null;
+      for(var i = index; i<mainKcdList.length; i++){
+          if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
+            result = JSON.parse(JSON.stringify(mainKcdList[i]));
+            checkIdx = i;
+            break;
+          }
+      }
+      sessionStorage.setItem("kcdCd", result.kcdCd);
+      sessionStorage.setItem("index", checkIdx);
+      location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
+   });
+
+   $('#kcdList_prev').on('click', function(){
+       if(parseInt(sessionStorage.getItem("index")) === 0){
+           console.log('마지막 인덱스');
+           return;
+       }
+       var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
+       var index = parseInt(sessionStorage.getItem("index"));
+       var result = null;
+       var checkIdx = null;
+       for(var i = index; i>=0; i--){
+           if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
+               result = JSON.parse(JSON.stringify(mainKcdList[i]));
+               checkIdx = i;
+               break;
+           }
+       }
+       sessionStorage.setItem("kcdCd", result.kcdCd);
+       sessionStorage.setItem("index", checkIdx);
+       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
    })
 
 }
