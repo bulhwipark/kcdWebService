@@ -12,13 +12,15 @@ public class MapKcdSctAftCatService {
     @Autowired
     private MapKcdSctAftCatDao mapKcdSctAftCatDao;
 
-    public void attValInsert(MapKcdSctAftCatVo mapKcdSctAftCatVo, String attrParam, String valParam) {
+    public void attValInsert(MapKcdSctAftCatVo mapKcdSctAftCatVo, String attrParam, String valParam, String valGrpSctIdParam) {
         String[] attrArray = attrParam.split(",");
         String[] valArray = valParam.split(",");
+        String[] valGrpSctIdArray = valGrpSctIdParam.split(",");
 
         for(int i = 0; i<attrArray.length; i++){
             mapKcdSctAftCatVo.setAttSctId(attrArray[i]);
             mapKcdSctAftCatVo.setValSctId(valArray[i]);
+            mapKcdSctAftCatVo.setValgrpSctId(valGrpSctIdArray[i]);
             mapKcdSctAftCatDao.attValInsert(mapKcdSctAftCatVo);
         }
     }
@@ -27,9 +29,10 @@ public class MapKcdSctAftCatService {
         return mapKcdSctAftCatDao.getList(mapKcdSctAftCatVo);
     }
 
-    public void attValUpdate(MapKcdSctAftCatVo mapKcdSctAftCatVo, String attrParam, String valParam) {
+    public void attValUpdate(MapKcdSctAftCatVo mapKcdSctAftCatVo, String attrParam, String valParam, String valGrpSctIdParam) {
         String[] attrArray = attrParam.split(",");
         String[] valArray = valParam.split(",");
+        String[] valGrpSctIdArray = valGrpSctIdParam.split(",");
 
         if(attrArray.length > 0){
             mapKcdSctAftCatDao.attValDelete(mapKcdSctAftCatVo);
@@ -38,6 +41,7 @@ public class MapKcdSctAftCatService {
         for(int i = 0; i<attrArray.length; i++){
             mapKcdSctAftCatVo.setAttSctId(attrArray[i]);
             mapKcdSctAftCatVo.setValSctId(valArray[i]);
+            mapKcdSctAftCatVo.setValgrpSctId(valGrpSctIdArray[i]);
             mapKcdSctAftCatDao.attValInsert(mapKcdSctAftCatVo);
         }
     }

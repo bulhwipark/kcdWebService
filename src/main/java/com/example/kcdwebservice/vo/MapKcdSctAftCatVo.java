@@ -13,9 +13,13 @@ public class MapKcdSctAftCatVo {
     private String oriCd;
     private String sctId;
     private String attSctId;
+    private String valgrpSctId;
     private String valSctId;
     private String mapStatCd;
     private String rvStatCd;
     private String dispOdr;
     private String udtDt;
+
+    //JSON String 변수.
+    private String valSctIdInfo;
 }

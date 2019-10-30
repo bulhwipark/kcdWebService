@@ -81,5 +81,9 @@ public class SearchService {
         }
         return result;
     }
+
+    public String searchConceptId(String valSctId) {
+        return new AutoRules().autoRuleRequest(valSctId);
+    }
 }
 

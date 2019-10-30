@@ -34,7 +34,7 @@ public class AutoRules {
         return result;
     }
 
-    public String autoRuleRequest(SearchVo searchVo, String conceptId){
+    public String autoRuleRequest(String conceptId){
         String result = null;
         String URL = "http://1.224.169.78:8095/browser/MAIN/concepts/"+ conceptId +"?";
         HashMap<String, String> paramMap = new HashMap<>();
@@ -333,7 +333,7 @@ public class AutoRules {
             System.out.println(conceptIdList.toString());
             List<JSONObject> items = new ArrayList<>();
             for(int i = 0; i<conceptIdList.size(); i++){
-                String res = autoRuleRequest(searchVo, String.valueOf(conceptIdList.toArray()[i]));
+                String res = autoRuleRequest(String.valueOf(conceptIdList.toArray()[i]));
                 JSONArray resList = new JSONObject(res).getJSONArray("classAxioms");
 
                 for(int k = 0; k<resList.length(); k++){

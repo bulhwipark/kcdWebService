@@ -538,6 +538,7 @@ function attr_val_modalSetting(sctId){
     $('#modal_kcdKor').text($('#kcdKor').text());
     $('#modal_kcdEng').text($('#kcdEng').text());
     $('.attrRemove').hide();
+    $('.selectPickerDiv').empty();
     var infoList = null;
     var ajax_res = getMapAttrValList_ajax();
     ajax_res.done(function(attrValList){
@@ -591,10 +592,13 @@ function attr_val_modalSetting(sctId){
     for (var i = 0; i < infoList.length; i++) {
         $('#attr_select'+(i+1)).val(infoList[i].attSctId);
         getValueList(i+1);
-        $('#val_select'+(i+1)).val(infoList[i].valSctId);
-        $('#val_select' + (i+1)).selectpicker('render');
+        textSearchForm_setting(i+1);
+        $('#val_select'+(i+1)).val(infoList[i].valgrpSctId);
+        $('#text_select'+(i+1)).data('conceptid', JSON.parse(infoList[i].valSctIdInfo).conceptId);
+        $('#div'+ (i+1) +' .textSelect .filter-option-inner-inner').text(JSON.parse(infoList[i].valSctIdInfo).fsn.term);
         $('#attr_remove'+(i+1)).show();
     }
+    console.log('test');
 }
 
 function getValueList(currentNum){
@@ -656,7 +660,7 @@ function attrValTextSearch_request(currentNum){
          url: '/getTextSearchResult',
          type: 'post',
          data: {
-             term: 'blood test',
+             term: $('#div'+ currentNum +' .textSelect input[type="text"].form-control').val(),
              ecl: '<' + $('#val_select' + currentNum + ' option:selected').val()
          },
          dataType: 'json',
@@ -667,7 +671,8 @@ function attrValTextSearch_request(currentNum){
                  for(var i = 0; i<data.items.length; i++){
                      var item = data.items[i];
                      var $option = $('<option>',{
-                         text:item.fsn.term
+                         text:item.fsn.term,
+                         value:item.conceptId
                      });
                      $('#text_select'+currentNum).append($option);
                  }
@@ -678,65 +683,17 @@ function attrValTextSearch_request(currentNum){
      })
 }
 
-/*
-function getValueList(currentNum){
-    $.ajax({
-        url:'/getKcdValList',
-        type:'post',
-        data:{
-            sctId:$('#attr_select'+ currentNum +' option:selected').val()
-        },
-        dataType:'json',
-        async:false,
-        success:function(data){
-            $('#div' + currentNum).empty().append(
-                $('<select>',{
-                    class:"valSelect",
-                    'data-live-search':"true",
-                    id:"val_select"+currentNum
-                }).on('change', function(){
-                    $('#attrSaveBtn').attr('disabled', false)
-                })
-            );
-
-            $('#val_select' + currentNum).empty();
-            $('#val_select' + currentNum).append(
-                $('<option>',{
-                    text:"값을 선택하세요.",
-                    value:''
-                })
-            );
-            if(data.length > 0){
-                for(var i = 0; i<data.length; i++){
-                    var $option = $('<option>',{
-                        text:data[i].cmSctTerm,
-                        value:data[i].attSctId,
-                        'data-tokens':data[i].cmSctTerm
-                    });
-                    $('#val_select' + currentNum).append($option);
-                }
-                $('#val_select' + currentNum).attr('disabled', false);
-                $('#val_select' + currentNum).addClass("selectpicker");
-                $('#val_select' + currentNum).selectpicker();
-                $('#val_select' + currentNum).selectpicker('refresh');
-                //$('#val_select'+currentNum).attr('disabled', false);
-            }else{
-                console.log("리스트 없음.")
-            }
-        }
-    })
-}
-*/
-
 function attr_val_save(){
     var attrOptList = $('.attrSelect option:selected');
     var attrParam = [];
     var valParam = [];
+    var valGrpSctIdParam = [];
     for(var i = 0; i<attrOptList.length; i++){
         if(attrOptList[i].value){
             if($('#val_select' + (i+1) + " option:selected").val()){
                 attrParam.push(attrOptList[i].value);
-                valParam.push($('#val_select' + (i+1) + " option:selected").val());
+                valGrpSctIdParam.push($('#val_select' + (i+1) + " option:selected").val());
+                valParam.push($('#text_select' + (i+1) + ' option:selected').val());
             }
         }
     }
@@ -745,15 +702,14 @@ function attr_val_save(){
         url:'/attrValSave',
         type:'post',
         data:{
-            oriTpCd:'D',
+            oriTpCd:'KCD',
             oriCd:$('#modal_kcdCd').text(),
             mapVer:$('#mapVer').val(),
             sctId:$('#modal_sctId').text(),
-            // attSctId:$('#attr_select option:selected').val(),
-            // valSctId:$('#val_select option:selected').val(),
             mapStatCd:'80',
             attrParam:attrParam.join(','),
-            valParam:valParam.join(',')
+            valParam:valParam.join(','),
+            valGrpSctIdParam:valGrpSctIdParam.join(',')
         },
         success:function(){
             console.log("save")
@@ -765,11 +721,15 @@ function attr_val_update(){
     var attrOptList = $('.attrSelect option:selected');
     var attrParam = [];
     var valParam = [];
+    var valGrpSctIdParam = [];
     for(var i = 0; i<attrOptList.length; i++){
         if(attrOptList[i].value){
             if($('#val_select' + (i+1) + " option:selected").val()){
-                attrParam.push(attrOptList[i].value);
-                valParam.push($('#val_select' + (i+1) + " option:selected").val());
+                if($('#text_select'+ (i+1) + ' option:selected').val()){
+                    attrParam.push(attrOptList[i].value);
+                    valParam.push($('#text_select' + (i+1) + " option:selected").val());
+                    valGrpSctIdParam.push($('#val_select' + (i+1) + " option:selected").val());
+                }
             }
         }
     }
@@ -778,7 +738,7 @@ function attr_val_update(){
             url: '/attrValUpdate',
             type: 'post',
             data: {
-                oriTpCd: 'D',
+                oriTpCd: 'KCD',
                 oriCd: $('#modal_kcdCd').text(),
                 mapVer: $('#mapVer').val(),
                 sctId: $('#modal_sctId').text(),
@@ -786,7 +746,8 @@ function attr_val_update(){
                 // valSctId:$('#val_select option:selected').val(),
                 mapStatCd: '80',
                 attrParam: attrParam.join(','),
-                valParam: valParam.join(',')
+                valParam: valParam.join(','),
+                valGrpSctIdParam: valGrpSctIdParam.join(",")
             },
             success: function () {
                 console.log("update");
@@ -820,12 +781,14 @@ function deleteAttrVal(num){
             oriCd:$('#modal_kcdCd').text(),
             sctId:$('#modal_sctId').text(),
             attSctId:$('#attr_select'+num+' option:selected').val(),
-            valSctId:$('#val_select'+num+ ' option:selected').val()
+            valSctId:$('#text_select'+ num).data('conceptid'),
+            valgrpSctId:$('#val_select'+num+ ' option:selected').val()
         },
         success:function(){
             $('#attr_select'+num).val('');
+            $('#val_select' + num).empty().attr('disabled', true);
             $('#div'+num).empty();
-            $('#attr_remove' + num).hide()
+            $('#attr_remove' + num).hide();
             console.log('delete');
         }
     })

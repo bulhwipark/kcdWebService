@@ -39,3 +39,8 @@
 .matchStrCss{
     background-color: yellow;
 }
+.selectPickerDiv{
+    width: 260px;
+    display: inline-block;
+    margin-left: 30px;
+}
