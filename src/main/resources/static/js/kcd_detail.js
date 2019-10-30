@@ -732,6 +732,10 @@ function attr_val_update(){
                     attrParam.push(attrOptList[i].value);
                     valParam.push($('#text_select' + (i+1) + " option:selected").val());
                     valGrpSctIdParam.push($('#val_select' + (i+1) + " option:selected").val());
+                }else if($('#text_select' + (i+1)).data('conceptid')){
+                    attrParam.push(attrOptList[i].value);
+                    valParam.push($('#text_select' + (i+1)).data('conceptid'));
+                    valGrpSctIdParam.push($('#val_select' + (i+1) + " option:selected").val());
                 }
             }
         }
