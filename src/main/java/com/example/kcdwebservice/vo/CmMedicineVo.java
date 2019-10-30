@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CmMedicine {
+public class CmMedicineVo {
     private String kdCd;
     private String prinipalCompCd;
     private String drugNmKor;

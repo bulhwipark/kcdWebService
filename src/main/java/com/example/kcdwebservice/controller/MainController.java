@@ -198,7 +198,7 @@ public class MainController {
     @GetMapping(value="/kcdRule2")
     @ResponseBody
     public String autoMapKcdRule2(){
-        ruleMapService.automap1("<404684003"); //Clinical finding (finding)
+        ruleMapService.selectMediList();
        return "/index";
     }
 

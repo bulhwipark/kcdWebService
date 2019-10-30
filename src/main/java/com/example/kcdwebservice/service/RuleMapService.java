@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.kcdwebservice.dao.CmMediDao;
 import com.example.kcdwebservice.dao.MapKcdSctDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
+import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,10 @@ import org.springframework.stereotype.Service;
 public class RuleMapService {
   @Autowired
   private CmKcdService cmKcdService;
-
+  
   @Autowired
   MapKcdSctDao mapKcdSctDao;
+  CmMediDao cmMediDao;
 
   public void automap1(String ecl) {
 
@@ -93,10 +96,29 @@ public class RuleMapService {
 
   }
 
+  public List<CmMedicineVo> selectMediList() {
+
+    
+    List<CmMedicineVo> list = cmMediDao.selectAll();
+    
+    // CmMedicineVo cv= new CmMedicineVo();
+    // cv.setStdCd("test");
+    
+    // List<CmMedicineVo> list = new ArrayList<CmMedicineVo> ();
+    // list.add(cv);
+
+
+    return list;
+
+  }
+
+
   // http://localhost:8080/RESTfulExample/json/product/get
   public static void main(String[] args) {
 
     RuleMapService rs = new RuleMapService();
+
+    
 
     System.out.println(rs.searchTerm("Heart Attack").toString());
 
