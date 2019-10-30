@@ -62,6 +62,9 @@ function dynamic_event_func(){
         sessionStorage.setItem("offset", currentOffset);
         sessionStorage.setItem("totalCnt", totalCnt);
         sessionStorage.setItem("listOption", $('#listOption option:selected').val());
+        sessionStorage.setItem("sctId", $(this).data('sctid'));
+        sessionStorage.setItem("kcdCd", $(this).text());
+        sessionStorage.setItem("index", $(this).data('index'));
         sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
 
         location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version').val();
@@ -95,12 +98,16 @@ function kcdList_req(){
         success:function(data){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
+                mainKcdList = JSON.parse(JSON.stringify(data));
+                sessionStorage.setItem("mainKcdList", JSON.stringify(data));
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {
                             class:'kcdDetail',
                             text:data[i].kcdCd,
-                            'data-kcdCd':data[i].kcdCd
+                            'data-kcdCd':data[i].kcdCd,
+                            'data-sctid':!data[i].sctId?'-':data[i].sctId,
+                            'data-index':i
                         }),
                         $('<td>').append(
                             $('<div>',{
