@@ -53,7 +53,7 @@
                     <th scope="col">Core Concept</th>
                     <th scope="col">Concept Name</th>
                     <th scope="col">Core Map CD</th>
-                    <th scope="col">Attribute&Value</th>
+                    <th scope="col" width="20%">Attribute&Value</th>
                     <th scope="col">Update Time</th>
                     <th>
                         전체선택&nbsp;&nbsp;
