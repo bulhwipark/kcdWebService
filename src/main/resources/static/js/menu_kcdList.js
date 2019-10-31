@@ -102,7 +102,6 @@ function kcdList_req(){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
                 mainKcdList = JSON.parse(JSON.stringify(data));
-                sessionStorage.setItem("mainKcdList", JSON.stringify(data));
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {

@@ -1,8 +1,10 @@
 function kcd_detail_static_func(){
+    //초기 실행.
     get_kcdCdObject_req();
     get_kcdDetail_list();
     termSynonym();
     autoRuleSet();
+    kcdDetail_prevBtn_ajaxReq();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#ecl').on('click',function(){
@@ -74,20 +76,32 @@ function kcd_detail_static_func(){
      * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
      */
    $('#kcdList_next').on('click', function(){
-      var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
-      var index = parseInt(sessionStorage.getItem("index"));
-      var result = null;
-      var checkIdx = null;
-      for(var i = index; i<mainKcdList.length; i++){
-          if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
-            result = JSON.parse(JSON.stringify(mainKcdList[i]));
-            checkIdx = i;
-            break;
-          }
-      }
-      sessionStorage.setItem("kcdCd", result.kcdCd);
-      sessionStorage.setItem("index", checkIdx);
-      location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
+       if(parseInt(sessionStorage.getItem("index")) === 49){
+          sessionStorage.setItem(
+              'offset', parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
+          );
+           kcdDetail_prevBtn_ajaxReq();
+           sessionStorage.setItem("index", 0);
+       }
+       var index = parseInt(sessionStorage.getItem("index"));
+       var result = null;
+       var checkIdx = null;
+       for(var i = index ; i<mainKcdList.length; i++){
+           if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
+               result = JSON.parse(JSON.stringify(mainKcdList[i]));
+               checkIdx = i;
+               break;
+           }else{
+               if(i == 0){
+                   result = JSON.parse(JSON.stringify(mainKcdList[mainKcdList.length - 1]));
+                   checkIdx = mainKcdList.length - 1;
+                   break;
+               }
+           }
+       }
+       sessionStorage.setItem("kcdCd", result.kcdCd);
+       sessionStorage.setItem("index", checkIdx);
+       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
    });
 
     /**
@@ -97,27 +111,31 @@ function kcd_detail_static_func(){
    $('#kcdList_prev').on('click', function(){
        if(parseInt(sessionStorage.getItem("index")) === 0){
            if(sessionStorage.getItem("offset") > 0){
-               console.log('test');
-               var res = kcdDetail_prevBtn_ajaxReq();
-               res.done(function(data){
-                    console.log(data);
-               });
-               return;
+               sessionStorage.setItem(
+                   'offset', parseInt(sessionStorage.getItem("offset")) - parseInt(sessionStorage.getItem("limit"))
+               );
+               kcdDetail_prevBtn_ajaxReq();
+               sessionStorage.setItem("index", mainKcdList.length-1);
            }else{
               //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
                $(this).attr('disabled', true);
                return;
            }
        }
-       var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
        var index = parseInt(sessionStorage.getItem("index"));
        var result = null;
        var checkIdx = null;
-       for(var i = index; i>=0; i--){
+       for(var i = index ; i>=0; i--){
            if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
                result = JSON.parse(JSON.stringify(mainKcdList[i]));
                checkIdx = i;
                break;
+           }else{
+               if(i == 0){
+                   result = JSON.parse(JSON.stringify(mainKcdList[0]));
+                   checkIdx = 0;
+                   break;
+               }
            }
        }
        sessionStorage.setItem("kcdCd", result.kcdCd);
@@ -876,8 +894,9 @@ function StringMatch_func(str, matchStr){
     }
 }
 
+//KCD목록 조회.
 function kcdDetail_prevBtn_ajaxReq(){
-    var ajax = $.ajax({
+    $.ajax({
         url: "/select"+sessionStorage.getItem("listOption"),
         type:'get',
         data:{
@@ -885,12 +904,14 @@ function kcdDetail_prevBtn_ajaxReq(){
             mapStatCd:sessionStorage.getItem("mapStatCd"),
             kcdCd:sessionStorage.getItem("searchToKcdCd").toUpperCase(),
             limit:sessionStorage.getItem("limit"),
-            offset:parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
+            offset:parseInt(sessionStorage.getItem("offset"))
         },
         dataType:'json',
-        async:false
-    });
-    return ajax;
+        async:false,
+        success:function(data){
+            mainKcdList = JSON.parse(JSON.stringify(data));
+        }
+    })
 }
 
 function alert_timeout(){

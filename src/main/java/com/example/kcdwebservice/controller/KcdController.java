@@ -198,7 +198,8 @@ public class KcdController {
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody
     public String autoMapKcdRule2(@PathVariable("id") String ruleTp) {
-       ruleMapService.selectMediList(ruleTp);
+       // 00, 11,
+        ruleMapService.selectMediList(ruleTp);
        return "/index";
     }
 

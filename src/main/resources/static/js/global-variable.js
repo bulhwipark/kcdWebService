@@ -1,6 +1,8 @@
 /*
 저장, 삭제 이벤트시 화면 싱크를 위해 동일하게 유지해야됨.
  */
+//KCD 리스트 변수
+var mainKcdList = null;
 //kcd detail 리스트 변수
 var kcdDetailList = null;
 //search 결과 리스트
