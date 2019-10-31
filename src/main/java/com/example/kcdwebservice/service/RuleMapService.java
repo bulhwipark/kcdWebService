@@ -108,7 +108,7 @@ public class RuleMapService {
       String strUnit=cm.getUnit1();
       double dblAmount=cm.getAmount1();
       String strAmount="";
-    if(ruleTp.equals("11")){
+    if(ruleTp.substring(0,1).equals("1")){
       if ( strUnit.equals("g") && cm.getAmount1()<1){
         strUnit="mg";
         dblAmount=dblAmount*1000;
@@ -157,8 +157,16 @@ public class RuleMapService {
       strUnit="milligram/1 milliliter";
     }
 
+    String strQuery="";
 
-      String strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
+    if(ruleTp.substring(1,1).equals("1")){
+      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+    }else {
+
+      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
+    }
+
+      System.out.println("Term query : "+ strQuery);
       String ecl="<763158003";
       List<String> lsctcd = searchTerm(strQuery,ecl);
 
