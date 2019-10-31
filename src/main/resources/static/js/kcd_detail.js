@@ -92,9 +92,9 @@ function kcd_detail_static_func(){
                checkIdx = i;
                break;
            }else{
-               if(i == 0){
-                   result = JSON.parse(JSON.stringify(mainKcdList[mainKcdList.length - 1]));
-                   checkIdx = mainKcdList.length - 1;
+               if(i == 49){
+                   result = JSON.parse(JSON.stringify(mainKcdList[49]));
+                   checkIdx = 49;
                    break;
                }
            }
