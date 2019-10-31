@@ -22,8 +22,10 @@ public class RuleMapService {
   private CmKcdService cmKcdService;
   
   @Autowired
-  MapKcdSctDao mapKcdSctDao;
   CmMediDao cmMediDao;
+  @Autowired
+  MapKcdSctDao mapKcdSctDao;
+  
 
   public void automap1(String ecl) {
 
@@ -96,16 +98,57 @@ public class RuleMapService {
 
   }
 
-  public List<CmMedicineVo> selectMediList() {
+  public List<CmMedicineVo> selectMediList(String ruleTp) {
 
     
     List<CmMedicineVo> list = cmMediDao.selectAll();
     
-    // CmMedicineVo cv= new CmMedicineVo();
-    // cv.setStdCd("test");
-    
-    // List<CmMedicineVo> list = new ArrayList<CmMedicineVo> ();
-    // list.add(cv);
+    MapKcdSctVo mvo = null;
+    for (CmMedicineVo cm : list) {
+      String strUnit=cm.getUnit1();
+      double dblAmount=cm.getAmount1();
+      String strAmount="";
+    if(ruleTp.equals("11")){
+      if ( strUnit.equals("g") && cm.getAmount1()<1){
+        strUnit="mg";
+        dblAmount=dblAmount*1000;
+        strAmount=String.format("%.0f", dblAmount);  
+      }else if( strUnit.equals("mg") && cm.getAmount1()<1){
+        strUnit="mcg";
+        dblAmount=dblAmount*1000;
+        strAmount=String.format("%.0f", dblAmount);  
+      }else if( strUnit.equals("mcg") && cm.getAmount1()<1){
+        strUnit="nanogram";
+        dblAmount=dblAmount*1000;
+        strAmount=String.format("%.0f", dblAmount);  
+      }else {
+        
+        if(dblAmount*10%10==0){
+          strAmount=String.format("%.0f", dblAmount);  
+        }
+        strAmount=dblAmount+"";  
+      }
+    }else{
+      strAmount=dblAmount+"";
+    }
+      
+
+
+      String strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
+      String ecl="<763158003";
+      List<String> lsctcd = searchTerm(strQuery,ecl);
+
+      for (String sctcd : lsctcd) {
+        mvo = new MapKcdSctVo();
+        mvo.setOriCd(cm.getKdCd());
+        mvo.setSctId(sctcd);
+        mvo.setMapVer("0");
+        mvo.setMapStatCd(ruleTp);
+        cmMediDao.insertAutoMap2(mvo);
+      }
+
+    }
+
 
 
     return list;

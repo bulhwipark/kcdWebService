@@ -5,15 +5,34 @@
 
 <mapper namespace="com.example.kcdwebservice.dao.CmMediDao">
 
-
     <select id="selectAll"  resultType="com.example.kcdwebservice.vo.CmMedicineVo">
-        SELECT * from EMR.CM_MEDICINE limit 100;
+        SELECT 
+        KD_CD				kdCd	,
+        PRINCIPAL_COMP_CD	prinipalCompCd				,
+        DRUG_NM_KOR			drugNmKor		,
+        DRUG_MANUF			drugManuf		,
+        HIRA_ATC_CD			hiraAtcCd		,
+        HIRA_ATC_NM			hiraAtcNm		,
+        STD_CD				stdCd	,
+        DRUG_NM_ENG			drugNmEng		,
+        SUBSTANCE_NM		substanceNm			,
+        AMOUNT1				amount1	,
+        UNIT1				unit1	,
+        EFT_SUBST_NM		eftSubstNm			,
+        AMOUNT2				amount2	,
+        UNIT2				unit2	,
+        AMOUNT3				amount3	,
+        UNIT3				unit3	,
+        MED_DOSE_FRM		medDoseFrm			,
+        RT_OF_ADMIN			rtOfAdmin		
+        from CM_MEDICINE 
+        where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2);
     </select>
 
     
     <insert id="insertAutoMap2" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
-        INSERT into MAP_KCD_SCT2(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
-        values(#{oriCd},#{sctId},#{mapVer},'1','0','1',sysdate())
+        INSERT into MAP_KCD_SCT2(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values('MEDI',#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
     </insert>
 
 </mapper>

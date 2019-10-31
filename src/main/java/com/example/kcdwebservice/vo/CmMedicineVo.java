@@ -17,12 +17,12 @@ public class CmMedicineVo {
     private String stdCd;
     private String drugNmEng;
     private String substanceNm;
-    private String amount1;
+    private double amount1;
     private String unit1;
     private String eftSubstNm;
-    private String amount2;
+    private double amount2;
     private String unit2;
-    private String amount3;
+    private double amount3;
     private String unit3;
     private String medDoseFrm;
     private String rtOfAdmin;

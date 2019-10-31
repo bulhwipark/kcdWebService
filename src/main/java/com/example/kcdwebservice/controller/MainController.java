@@ -195,10 +195,10 @@ public class MainController {
        return "/index";
     }
 
-    @GetMapping(value="/kcdRule2")
+    @GetMapping(value="/mediRule/{id}")
     @ResponseBody
-    public String autoMapKcdRule2(){
-        ruleMapService.selectMediList();
+    public String autoMapKcdRule2(@PathVariable("id") String ruleTp) {
+       ruleMapService.selectMediList(ruleTp);
        return "/index";
     }
 
