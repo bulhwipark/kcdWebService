@@ -12,7 +12,7 @@
             <a class="nav-link headerMenu" data-menu="kcdListPage">진단명</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link headerMenu" data-menu="default1"> - </a>
+            <a class="nav-link headerMenu" data-menu="medicinePage"> 약제 </a>
         </li>
         <li class="nav-item">
             <a class="nav-link headerMenu" data-menu="default2"> - </a>
