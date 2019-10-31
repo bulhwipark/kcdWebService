@@ -24,10 +24,12 @@
 <script src="/static/js/global-variable.js"></script>
 <script src="/static/js/headerMenuHandle.js"></script>
 <script src="/static/js/menu_kcdList.js"></script>
+<script src="/static/js/medicinePage/medicineList.js"></script>
 <script type="text/javascript">
     $(function(){
         static_function();
         menu_kcdList_staticFunc();
+        menu_medicineList_staticFunc();
     });
 </script>
 </html>

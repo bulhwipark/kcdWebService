@@ -3,8 +3,8 @@ function menu_kcdList_staticFunc(){
     if(sessionStorage.getItem("storageCheck")){
         $('#listOption').val(sessionStorage.getItem("listOption"));
         $('#searchToKcdCd').val(sessionStorage.getItem("searchToKcdCd"));
-        limit = parseInt(sessionStorage.getItem("limit"));
-        currentOffset = parseInt(sessionStorage.getItem("offset"));
+        kcd.limit = parseInt(sessionStorage.getItem("limit"));
+        kcd.currentOffset = parseInt(sessionStorage.getItem("offset"));
         sessionStorage.clear();
     }
     kcdList_getMappingStatusCd();
@@ -13,15 +13,15 @@ function menu_kcdList_staticFunc(){
 
     //이벤트바인딩.
     $('.kcdSearchOption').on('change', function(){
-        currentOffset = 0;
-        totalCnt = 0;
+        kcd.currentOffset = 0;
+        kcd.totalCnt = 0;
         kcdList_totalCount_req();
         kcdList_req();
     });
 
     $('#searchToKcdCd').on('keyup', function(){
-        currentOffset = 0;
-        totalCnt = 0;
+        kcd.currentOffset = 0;
+        kcd.totalCnt = 0;
         kcdList_totalCount_req();
         kcdList_req();
     });
@@ -29,10 +29,10 @@ function menu_kcdList_staticFunc(){
     //다음 버튼
     $('#next').on('click', function(e){
         e.preventDefault();
-        if((currentOffset+limit) >= totalCnt ){
-            currentOffset = (totalCnt-1);
+        if((kcd.currentOffset+kcd.limit) >= kcd.totalCnt ){
+            kcd.currentOffset = (kcd.totalCnt-1);
         }else{
-            currentOffset = currentOffset+limit;
+            kcd.currentOffset = kcd.currentOffset+kcd.limit;
         }
         kcdList_req();
     });
@@ -40,10 +40,10 @@ function menu_kcdList_staticFunc(){
     //이전 버튼
     $('#prev').on('click', function(e){
         e.preventDefault();
-        if((currentOffset-limit) <= 0){
-            currentOffset = 0
+        if((kcd.currentOffset-kcd.limit) <= 0){
+            kcd.currentOffset = 0
         }else{
-            currentOffset = currentOffset-limit
+            kcd.currentOffset = kcd.currentOffset-kcd.limit
         }
         kcdList_req();
     });
@@ -59,9 +59,9 @@ function dynamic_event_func(){
     $('.kcdDetail').on('click', function(){
         //상세화면에서의 페이징을 위해 세팅.
         sessionStorage.setItem("storageCheck", true);
-        sessionStorage.setItem("limit", limit);
-        sessionStorage.setItem("offset", currentOffset);
-        sessionStorage.setItem("totalCnt", totalCnt);
+        sessionStorage.setItem("limit", kcd.limit);
+        sessionStorage.setItem("offset", kcd.currentOffset);
+        sessionStorage.setItem("totalCnt", kcd.totalCnt);
         sessionStorage.setItem("listOption", $('#listOption option:selected').val());
         sessionStorage.setItem("sctId", $(this).data('sctid'));
         sessionStorage.setItem("kcdCd", $(this).text());
@@ -94,14 +94,14 @@ function kcdList_req(){
             mapVer:$('#version').val(),
             mapStatCd:$('#mapStatCd').val(),
             kcdCd:$('#searchToKcdCd').val().toUpperCase(),
-            limit:limit,
-            offset:currentOffset
+            limit:kcd.limit,
+            offset:kcd.currentOffset
         },
         dataType:'json',
         success:function(data){
             if(data.length > 0){
                 $('#kcdListTable tbody').empty();
-                mainKcdList = JSON.parse(JSON.stringify(data));
+                kcd.mainKcdList = JSON.parse(JSON.stringify(data));
                 for(var i = 0; i<data.length; i++){
                     var $tr = $('<tr>').append(
                         $('<td>', {
@@ -139,19 +139,19 @@ function kcdList_req(){
                 }
                 dynamic_event_func();
 
-                if(currentOffset == 0){
+                if(kcd.currentOffset == 0){
                     $('#prev').addClass('displayNone');
                 }else{
                     $('#prev').removeClass('displayNone');
                 }
 
-                if(currentOffset == totalCnt){
+                if(kcd.currentOffset == kcd.totalCnt){
                     $('#next').addClass('displayNone');
                 }else{
                     $('#next').removeClass('displayNone');
                 }
 
-                $('#currentPage').text((currentOffset+1) + '/' + totalCnt);
+                $('#currentPage').text((kcd.currentOffset+1) + '/' + kcd.totalCnt);
             }else{
                 console.log("자료 없음 처리.")
             }
@@ -176,8 +176,8 @@ function kcdList_totalCount_req(){
         dataType:'json',
         success:function(data){
             console.log(data);
-            kcdTotalCnt = data.kcdTotalCnt;
-            totalCnt = data.totalCnt;
+            kcd.kcdTotalCnt = data.kcdTotalCnt;
+            kcd.totalCnt = data.totalCnt;
             $('#kcdTotalCnt').text(data.kcdTotalCnt?data.kcdTotalCnt:'-');
             $('#totalCnt').text(data.totalCnt?data.totalCnt:'-');
         }

@@ -6,27 +6,26 @@
                 약제 목록
             </h2>
         </div>
-        <form id="searchForm" method="post" action="/excelDownload.xlsx">
+        <form id="medSearchForm" method="post" action="/excelDownload.xlsx">
             <div class="row" style="margin-bottom: 10px;">
-                <input type="hidden" name="mapVer" id="version" value="0">
+                <input type="hidden" name="mapVer" id="medVersion" value="0">
                 <div class="form-inline col-xl-3">
-                    <label for="listOption">매핑상태 : </label>
-                    <select class="form-control kcdSearchOption" name="listOption" id="listOption" style="width: 90px;">
+                    <label for="medListOption">매핑상태 : </label>
+                    <select class="form-control medSearchOption" name="medListOption" id="medListOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
-                        <option value="IcdNotMapping" selected>ICD 비매핑</option>
                     </select>
-                    <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
+                    <input type="hidden" name="medMapStatCd" id="medMapStatCd" value="All">
                     <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
-                        <label for="searchToKcdCd">검색: </label>
-                        <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
+                        <label for="searchToKdCd">검색: </label>
+                        <input name="kdCd" id="searchToKdCd" class="form-control" type="text" placeholder="KD코드 검색.">
                     </div>
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
                         <span><b>약제 코드기준 Total : </b></span>
-                        <span id="kcdTotalCnt"></span>
+                        <span id="kdTotalCnt"></span>
                     </div>
                     <div>
                         <span><b>매핑 Total : </b></span>
@@ -56,8 +55,8 @@
             <input type="text" hidden name="offset" id="offset">
         </form>
     </div>
-    <div class="kcdListTableDiv">
-        <table class="table table-striped" id="">
+    <div class="medListTableDiv">
+        <table class="table table-striped" id="medListTable">
             <thead>
             <tr>
                 <th scope="col">약제코드</th>

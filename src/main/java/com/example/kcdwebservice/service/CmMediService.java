@@ -18,8 +18,8 @@ public class CmMediService {
     @Autowired
     CmMediDao cmMediDao;
 
-    public List<CmMedicineVo> selectAll() {
-        return cmMediDao.selectAll();
+    public List<CmMedicineVo> selectAll(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.selectAll(cmMedicineVo);
     }
 
 

@@ -26,5 +26,8 @@ public class CmMedicineVo {
     private String unit3;
     private String medDoseFrm;
     private String rtOfAdmin;
+
+    private String limit;
+    private String offset;
     
 }

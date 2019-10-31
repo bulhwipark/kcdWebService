@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface CmMediDao {
     List<CmMedicineVo> selectAll();
+    List<CmMedicineVo> selectAll(CmMedicineVo cmMedicineVo);
     void  insertAutoMap2(MapKcdSctVo mvo);
     
 }
