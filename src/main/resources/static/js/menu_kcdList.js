@@ -57,6 +57,7 @@ function menu_kcdList_staticFunc(){
 
 function dynamic_event_func(){
     $('.kcdDetail').on('click', function(){
+        //상세화면에서의 페이징을 위해 세팅.
         sessionStorage.setItem("storageCheck", true);
         sessionStorage.setItem("limit", limit);
         sessionStorage.setItem("offset", currentOffset);
@@ -66,6 +67,8 @@ function dynamic_event_func(){
         sessionStorage.setItem("kcdCd", $(this).text());
         sessionStorage.setItem("index", $(this).data('index'));
         sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
+        sessionStorage.setItem("mapVer", $('#version').val());
+        sessionStorage.setItem("mapStatCd", $('#mapStatCd').val());
 
         location.href = '/kcdDetailPage?kcdCd=' + $(this).text() + '&mapVer=' + $('#version').val();
     });

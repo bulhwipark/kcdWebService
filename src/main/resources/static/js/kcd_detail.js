@@ -69,6 +69,10 @@ function kcd_detail_static_func(){
        textSearchForm_setting($(this).data('num'));
    });
 
+    /**
+     * kcd 상세화면 다음버튼 이벤트
+     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     */
    $('#kcdList_next').on('click', function(){
       var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
       var index = parseInt(sessionStorage.getItem("index"));
@@ -86,10 +90,24 @@ function kcd_detail_static_func(){
       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
    });
 
+    /**
+     * kcd 상세화면 이전버튼 이벤트
+     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     */
    $('#kcdList_prev').on('click', function(){
        if(parseInt(sessionStorage.getItem("index")) === 0){
-           console.log('마지막 인덱스');
-           return;
+           if(sessionStorage.getItem("offset") > 0){
+               console.log('test');
+               var res = kcdDetail_prevBtn_ajaxReq();
+               res.done(function(data){
+                    console.log(data);
+               });
+               return;
+           }else{
+              //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
+               $(this).attr('disabled', true);
+               return;
+           }
        }
        var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
        var index = parseInt(sessionStorage.getItem("index"));
@@ -856,6 +874,23 @@ function StringMatch_func(str, matchStr){
     }else{
         return str;
     }
+}
+
+function kcdDetail_prevBtn_ajaxReq(){
+    var ajax = $.ajax({
+        url: "/select"+sessionStorage.getItem("listOption"),
+        type:'get',
+        data:{
+            mapVer:sessionStorage.getItem("mapVer"),
+            mapStatCd:sessionStorage.getItem("mapStatCd"),
+            kcdCd:sessionStorage.getItem("searchToKcdCd").toUpperCase(),
+            limit:sessionStorage.getItem("limit"),
+            offset:parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
+        },
+        dataType:'json',
+        async:false
+    });
+    return ajax;
 }
 
 function alert_timeout(){
