@@ -122,7 +122,6 @@ public class RuleMapService {
         dblAmount=dblAmount*1000;
         strAmount=String.format("%.0f", dblAmount);  
       }else {
-        
         if(dblAmount*10%10==0){
           strAmount=String.format("%.0f", dblAmount);  
         }
@@ -131,7 +130,32 @@ public class RuleMapService {
     }else{
       strAmount=dblAmount+"";
     }
-      
+    
+    if(strUnit.equals("mg")){
+      strUnit="milligram";
+    }else if(strUnit.equals("g")){
+      strUnit="gram";
+    }else if(strUnit.equals("μg")){
+      strUnit="microgram";
+    }else if(strUnit.equals("KI.U")){
+      strUnit="KIU";
+    }else if(strUnit.equals("MI.U")){
+      strUnit="MIU";
+    }else if(strUnit.equals("L")){
+      strUnit="liter";
+    }else if(strUnit.equals("cm2")){
+      strUnit="square centimeter";
+    }else if(strUnit.equals("mm")){
+      strUnit="milimeter";
+    }else if(strUnit.equals("mL/g")){
+      strUnit="milliliter/gram";
+    }else if(strUnit.equals("mL/mL")){
+      strUnit="milliliter/milliliter";
+    }else if(strUnit.equals("mL")){
+      strUnit="milimeter";
+    }else if(strUnit.equals("mg/mL")){
+      strUnit="milligram/1 milliliter";
+    }
 
 
       String strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
