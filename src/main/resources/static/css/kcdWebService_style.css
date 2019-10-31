@@ -5,7 +5,7 @@
     text-align: right;
     font-size: 25px;
 }
-.kcdDetail:hover{
+.kcdDetail:hover, .medDetail:hover{
     cursor: pointer;
     background-color: #007bff;
     color: white;

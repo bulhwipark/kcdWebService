@@ -22,7 +22,7 @@ public class MedicineController {
     public ResponseEntity<List<CmMedicineVo>> mediSelect(@PathVariable("option")String option, CmMedicineVo cmMedicineVo){
         List<CmMedicineVo> list = null;
         if(option.equals("all")){
-            list = cmMediService.selectAll(cmMedicineVo);
+            list = cmMediService.medi_selectAll(cmMedicineVo);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

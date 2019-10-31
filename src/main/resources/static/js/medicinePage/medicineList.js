@@ -23,7 +23,27 @@ function medicineList_req(){
                             'data-kdCd':data[i].kdCd,
                             //'data-sctid':!data[i].sctId?'-':data[i].sctId,
                             'data-index':i
-                        })
+                        }),
+                        $('<td>').append(
+                            $('<div>',{
+                                text:'ko : ' + data[i].drugNmKor
+                            }),
+                            $('<div>',{
+                                text:'en : ' + data[i].drugNmEng
+                            })
+                        ),
+                        $('<td>',{
+                            text:data[i].sctId?data[i].sctId:'-'
+                        }),
+                        $('<td>',{
+                            text:data[i].sctTerm?data[i].sctTerm:'-'
+                        }),
+                        $('<td>',{
+                            text:data[i].mapStatCd?data[i].mapStatCd:'-'
+                        }),
+                        $('<td>',{
+                            text:data[i].udtDt
+                        }),
                     );
                     $('#medListTable tbody').append($tr);
                 }

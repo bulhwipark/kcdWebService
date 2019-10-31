@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.kcdwebservice.dao.CmMediDao">
 
-    <select id="selectAll" parameterType="com.example.kcdwebservice.vo.CmMedicineVo"  resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+    <select id="selectAll" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
         SELECT KD_CD             kdCd,
                PRINCIPAL_COMP_CD prinipalCompCd,
                DRUG_NM_KOR       drugNmKor,
@@ -25,17 +25,35 @@
                MED_DOSE_FRM      medDoseFrm,
                RT_OF_ADMIN       rtOfAdmin
         from CM_MEDICINE
-        where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2)
-        <if test="limit != '' and limit != null and offset != '' and offset != null">
-            limit ${limit} offset ${offset}
-        </if>
-        ;
+        where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2);
     </select>
 
-    
     <insert id="insertAutoMap2" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
         INSERT into MAP_KCD_SCT2(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
         values('MEDI',#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
     </insert>
+
+    <select id="medi_selectAll" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT M.KD_CD kdCd,
+               M.DRUG_NM_ENG drugNmEng,
+               M.DRUG_NM_KOR drugNmKor,
+               M2.UDT_DT udtDt,
+               M2.SCT_ID sctId,
+               S.SCT_TERM sctTerm,
+               M2.MAP_STAT_CD mapStatCd,
+               CD.CD_DSCRT cdDscrt
+        FROM CM_MEDICINE M
+                 LEFT JOIN (
+            SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
+        ) M2 ON M.KD_CD = M2.ORI_CD
+                 LEFT OUTER JOIN CM_SNOMEDCT S ON M.STD_CD = S.SCT_ID
+                 LEFT OUTER JOIN MCODE CD ON LEFT(M2.MAP_STAT_CD, 1) = CD.CD_ID
+                                            AND CD.CD_GRP = 'MAP_STAT_CD'
+                                            AND CD.CD_STAT_CD = '0'
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset};
+        </if>
+        ;
+    </select>
 
 </mapper>
