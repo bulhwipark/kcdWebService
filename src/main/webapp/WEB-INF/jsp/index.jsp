@@ -16,6 +16,7 @@
 <body>
 <%@ include file="/WEB-INF/jsp/header/headerMenu.jsp" %>
 <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdList.jsp" %>
+<%@include file="/WEB-INF/jsp/medicinePage/medList.jsp" %>
 </body>
 
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>

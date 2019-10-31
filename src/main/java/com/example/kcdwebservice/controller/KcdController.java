@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-public class MainController {
+public class KcdController {
 
     @Autowired
     private CmKcdService cmKcdService;
