@@ -15,7 +15,7 @@ var kcd = {
     currentOffset: 0
 };
 
-var medicine = {
+var medi = {
     kcdTotalCnt: 0,
     totalCnt: 0,
     limit: 50,

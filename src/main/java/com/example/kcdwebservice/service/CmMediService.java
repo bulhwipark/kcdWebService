@@ -25,4 +25,12 @@ public class CmMediService {
     public List<CmMedicineVo> medi_selectAll(CmMedicineVo cmMedicineVo) {
         return cmMediDao.medi_selectAll(cmMedicineVo);
     }
+
+    public List<CmMedicineVo> medi_selectMapping(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.medi_selectMapping(cmMedicineVo);
+    }
+
+    public List<CmMedicineVo> medi_selectNoMapping(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.medi_selectNoMapping(cmMedicineVo);
+    }
 }

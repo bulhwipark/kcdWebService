@@ -50,10 +50,62 @@
                  LEFT OUTER JOIN MCODE CD ON LEFT(M2.MAP_STAT_CD, 1) = CD.CD_ID
                                             AND CD.CD_GRP = 'MAP_STAT_CD'
                                             AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != '' and kdCd != null">
+                M.KD_CD = #{kdCd}
+            </if>
+        </where>
         <if test="limit != '' and limit != null and offset != '' and offset != null">
-            limit ${limit} offset ${offset};
+            limit ${limit} offset ${offset}
         </if>
         ;
+    </select>
+
+    <select id="medi_selectMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT M.KD_CD kdCd,
+               M.DRUG_NM_ENG drugNmEng,
+               M.DRUG_NM_KOR drugNmKor,
+               M2.UDT_DT udtDt,
+               M2.SCT_ID sctId,
+               S.SCT_TERM sctTerm,
+               M2.MAP_STAT_CD mapStatCd,
+               CD.CD_DSCRT cdDscrt
+        FROM CM_MEDICINE M
+                 INNER JOIN (SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
+        ) M2 ON M.KD_CD = M2.ORI_CD
+                 LEFT OUTER JOIN CM_SNOMEDCT S ON M.STD_CD = S.SCT_ID
+                 LEFT OUTER JOIN MCODE CD ON LEFT(M2.MAP_STAT_CD, 1) = CD.CD_ID
+            AND CD.CD_GRP = 'MAP_STAT_CD'
+            AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != '' and kdCd != null">
+                M.KD_CD = #{kdCd}
+            </if>
+        </where>
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset}
+        </if>
+            ;
+    </select>
+
+    <select id="medi_selectNoMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT M.KD_CD kdCd,
+               M.DRUG_NM_ENG drugNmEng,
+               M.DRUG_NM_KOR drugNmKor
+        FROM CM_MEDICINE M
+        WHERE KD_CD NOT IN (
+            SELECT DISTINCT ORI_CD
+            FROM MAP_KCD_SCT2
+            WHERE MAP_VER = 0
+        )
+        <if test="kdCd != '' and kdCd != null ">
+            and M.KD_CD = #{kdCd}
+        </if>
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset}
+        </if>
+        ;
+
     </select>
 
 </mapper>

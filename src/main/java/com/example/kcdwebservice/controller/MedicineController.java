@@ -21,8 +21,12 @@ public class MedicineController {
     @ResponseBody
     public ResponseEntity<List<CmMedicineVo>> mediSelect(@PathVariable("option")String option, CmMedicineVo cmMedicineVo){
         List<CmMedicineVo> list = null;
-        if(option.equals("all")){
+        if(option.equals("All")){
             list = cmMediService.medi_selectAll(cmMedicineVo);
+        }else if(option.equals("Mapping")){
+            list = cmMediService.medi_selectMapping(cmMedicineVo);
+        }else{
+            list = cmMediService.medi_selectNoMapping(cmMedicineVo);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

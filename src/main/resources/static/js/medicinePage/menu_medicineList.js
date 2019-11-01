@@ -1,18 +1,28 @@
 function menu_medicineList_staticFunc(){
-    medicineList_req();
+    medicineList_req('All');
+
+    $('#medListOption').on('change', function(){
+        medicineList_req();
+    });
+
+    $('#searchToKdCd').on('keyup', function(){
+        medicineList_req();
+    });
+
 }
 
 function medicineList_req(){
     $.ajax({
-        url:'/medicine/select/all',
+        url:'/medicine/select/'+$('#medListOption option:selected').val(),
         type:'post',
-        data:{
-          limit:medicine.limit,
-          offset:medicine.currentOffset
+        data: {
+            kdCd: $('#searchToKdCd').val(),
+            limit: medi.limit,
+            offset: medi.currentOffset
         },
         dataType:'json',
         success:function(data){
-            medicine.mainMedList = JSON.parse(JSON.stringify(data));
+            medi.mainMedList = JSON.parse(JSON.stringify(data));
             if(data.length > 0){
                 $('#medListTable tbody').empty();
                 for(var i = 0; i<data.length; i++){

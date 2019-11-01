@@ -16,5 +16,8 @@ public interface CmMediDao {
     List<CmMedicineVo> selectAll();
     List<CmMedicineVo> medi_selectAll(CmMedicineVo cmMedicineVo);
     void  insertAutoMap2(MapKcdSctVo mvo);
-    
+
+    List<CmMedicineVo> medi_selectMapping(CmMedicineVo cmMedicineVo);
+
+    List<CmMedicineVo> medi_selectNoMapping(CmMedicineVo cmMedicineVo);
 }
