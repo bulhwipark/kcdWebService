@@ -7,7 +7,7 @@ function menu_kcdList_staticFunc(){
         kcd.currentOffset = parseInt(sessionStorage.getItem("offset"));
         sessionStorage.clear();
     }
-    kcdList_getMappingStatusCd();
+    //kcdList_getMappingStatusCd();
     kcdList_totalCount_req();
     kcdList_req();
 
@@ -171,7 +171,6 @@ function kcdList_totalCount_req(){
             mappingStatus:$('#listOption option:selected').val(),
             mapVer:$('#version').val(),
             mapStatCd: $('#mapStatCd').val()
-
         },
         dataType:'json',
         success:function(data){

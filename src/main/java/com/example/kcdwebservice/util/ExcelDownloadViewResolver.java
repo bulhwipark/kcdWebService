@@ -1,10 +1,7 @@
 package com.example.kcdwebservice.util;
 
 import com.example.kcdwebservice.vo.CmKcdVo;
-import org.apache.ibatis.session.ResultHandler;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
@@ -15,10 +12,12 @@ import java.util.Map;
 
 @Component("ExcelDownload")
 public class ExcelDownloadViewResolver extends AbstractXlsxView {
+
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setHeader("Content-Disposition", "attachment; filename=\"KCDListExcel.xlsx\"");
-
+        String[] headerNmArr = (String[]) model.get("headerNmArr");
+        String sheetNm = (String) model.get("sheetNm");
         List<CmKcdVo> list = (List<CmKcdVo>) model.get("list");
 
         CellStyle cellStyle = workbook.createCellStyle();
@@ -26,24 +25,17 @@ public class ExcelDownloadViewResolver extends AbstractXlsxView {
         DataFormat numberDataFormat = workbook.createDataFormat();
         cellStyle.setWrapText(true);
 
-        Sheet sheet = workbook.createSheet("Kcd 목록");
+        Sheet sheet = workbook.createSheet(sheetNm);
 
         //상단 컬럼.
         Row header = sheet.createRow(0);
-        Cell headerCell0 = header.createCell(0);
-        headerCell0.setCellValue("KCD코드");
-        Cell headerCell1 = header.createCell(1);
-        headerCell1.setCellValue("한글명/영문명");
-        Cell headerCell2 = header.createCell(2);
-        headerCell2.setCellValue("SCTID");
-        Cell headerCell3 = header.createCell(3);
-        headerCell3.setCellValue("Snomed CT Term");
-        Cell headerCell4 = header.createCell(4);
-        headerCell4.setCellValue("매핑상태");
-        Cell headerCell5 = header.createCell(5);
-        headerCell5.setCellValue("매핑일자");
+        for(int i = 0; i<headerNmArr.length; i++){
+            Cell headerCell0 = header.createCell(i);
+            headerCell0.setCellValue(headerNmArr[i]);
+        }
         //상단 컬럼.
-        long start = System.currentTimeMillis();
+
+       // long start = System.currentTimeMillis();
         for (int i = 0; i < list.size(); i++) {
             /*
             if (i % 20 == 0) {
