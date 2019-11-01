@@ -108,7 +108,18 @@ public class RuleMapService {
       String strUnit=cm.getUnit1();
       double dblAmount=cm.getAmount1();
       String strAmount="";
-    if(ruleTp.substring(0,1).equals("1")){
+
+    if(ruleTp.substring(0,1).equals("2") && dblAmount!=0){
+      strUnit=cm.getUnit3();
+      dblAmount=cm.getAmount3();
+    }else  if(ruleTp.substring(0,1).equals("3") && dblAmount!=0){
+      strUnit=cm.getUnit2();
+      dblAmount=cm.getAmount2();
+    }
+
+
+
+    if(ruleTp.substring(0,1).equals("1")||ruleTp.substring(0,1).equals("2")){
       if ( strUnit.equals("g") && cm.getAmount1()<1){
         strUnit="mg";
         dblAmount=dblAmount*1000;

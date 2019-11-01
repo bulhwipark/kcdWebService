@@ -198,9 +198,15 @@ public class MainController {
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody
     public String autoMapKcdRule2(@PathVariable("id") String ruleTp) {
-       // 00, 11, 
-        ruleMapService.selectMediList(ruleTp);
-       return "/index";
+    //    ruleMapService.selectMediList("00");
+    //    ruleMapService.selectMediList("10");
+    //    ruleMapService.selectMediList("11");
+    //    ruleMapService.selectMediList("20");
+    //    ruleMapService.selectMediList("21");
+       ruleMapService.selectMediList("5");
+       ruleMapService.selectMediList("6");
+
+       return "자동룰매핑종료";
     }
 
     @RequestMapping(value="/search")
