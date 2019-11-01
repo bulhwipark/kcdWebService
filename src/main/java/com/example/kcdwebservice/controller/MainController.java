@@ -198,11 +198,23 @@ public class MainController {
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody
     public String autoMapKcdRule2(@PathVariable("id") String ruleTp) {
-    //    ruleMapService.selectMediList("00");
-    //    ruleMapService.selectMediList("10");
-    //    ruleMapService.selectMediList("11");
-    //    ruleMapService.selectMediList("20");
-    //    ruleMapService.selectMediList("21");
+        
+        ruleMapService.selectMediList("10");
+        ruleMapService.selectMediList("11");
+        ruleMapService.selectMediList("12");
+        ruleMapService.selectMediList("13");
+        ruleMapService.selectMediList("20");
+        ruleMapService.selectMediList("21");
+        ruleMapService.selectMediList("22");
+        ruleMapService.selectMediList("23");
+        ruleMapService.selectMediList("30");
+        ruleMapService.selectMediList("31");
+        ruleMapService.selectMediList("32");
+        ruleMapService.selectMediList("33");
+        ruleMapService.selectMediList("40");
+        ruleMapService.selectMediList("41");
+        ruleMapService.selectMediList("42");
+        ruleMapService.selectMediList("43");
        ruleMapService.selectMediList("5");
        ruleMapService.selectMediList("6");
 

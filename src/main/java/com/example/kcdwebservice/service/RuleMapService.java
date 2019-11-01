@@ -105,8 +105,8 @@ public class RuleMapService {
     
     MapKcdSctVo mvo = null;
     for (CmMedicineVo cm : list) {
-      String strUnit=cm.getUnit1();
-      double dblAmount=cm.getAmount1();
+      String strUnit="";
+      double dblAmount=0.0;
       String strAmount="";
 
     if(ruleTp.substring(0,1).equals("2") && dblAmount!=0){
@@ -115,11 +115,17 @@ public class RuleMapService {
     }else  if(ruleTp.substring(0,1).equals("3") && dblAmount!=0){
       strUnit=cm.getUnit2();
       dblAmount=cm.getAmount2();
+    }else  if(ruleTp.substring(0,1).equals("4") && dblAmount!=0){
+      strUnit=cm.getUnit3();
+      dblAmount=cm.getAmount3();
+    }else{
+      strUnit=cm.getUnit1();
+      dblAmount=cm.getAmount1();
     }
 
 
 
-    if(ruleTp.substring(0,1).equals("1")||ruleTp.substring(0,1).equals("2")){
+    if(ruleTp.substring(1,1).equals("1")){
       if ( strUnit.equals("g") && cm.getAmount1()<1){
         strUnit="mg";
         dblAmount=dblAmount*1000;
@@ -140,52 +146,56 @@ public class RuleMapService {
       strAmount=dblAmount+"";
     }
     
-    if(strUnit.equals("mg")){
-      strUnit="milligram";
-    }else if(strUnit.equals("g")){
-      strUnit="gram";
-    }else if(strUnit.equals("μg")){
-      strUnit="microgram";
-    }else if(strUnit.equals("KI.U")){
-      strUnit="KIU";
-    }else if(strUnit.equals("MI.U")){
-      strUnit="MIU";
-    }else if(strUnit.equals("L")){
-      strUnit="liter";
-    }else if(strUnit.equals("cm2")){
-      strUnit="square centimeter";
-    }else if(strUnit.equals("mm")){
-      strUnit="milimeter";
-    }else if(strUnit.equals("mL/g")){
-      strUnit="milliliter/gram";
-    }else if(strUnit.equals("mL/mL")){
-      strUnit="milliliter/milliliter";
-    }else if(strUnit.equals("mL")){
-      strUnit="milimeter";
-    }else if(strUnit.equals("mg/mL")){
-      strUnit="milligram/1 milliliter";
+    if(ruleTp.substring(1,1).equals("2")){
+      if(strUnit.equals("mg")){
+        strUnit="milligram";
+      }else if(strUnit.equals("g")){
+        strUnit="gram";
+      }else if(strUnit.equals("μg")){
+        strUnit="microgram";
+      }else if(strUnit.equals("KI.U")){
+        strUnit="KIU";
+      }else if(strUnit.equals("MI.U")){
+        strUnit="MIU";
+      }else if(strUnit.equals("L")){
+        strUnit="liter";
+      }else if(strUnit.equals("cm2")){
+        strUnit="square centimeter";
+      }else if(strUnit.equals("mm")){
+        strUnit="milimeter";
+      }else if(strUnit.equals("mL/g")){
+        strUnit="milliliter/gram";
+      }else if(strUnit.equals("mL/mL")){
+        strUnit="milliliter/milliliter";
+      }else if(strUnit.equals("mL")){
+        strUnit="milimeter";
+      }else if(strUnit.equals("mg/mL")){
+        strUnit="milligram/1 milliliter";
+      }
     }
-    
     if(dblAmount*10%10==0){
       strAmount=String.format("%.0f", dblAmount);  
     }
 
     String strQuery="";
 
-    if(ruleTp.substring(1,1).equals("1")){
+    if(ruleTp.substring(0,1).equals("1") ||ruleTp.substring(0,1).equals("2") ){
       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+    }else if(ruleTp.substring(0,1).equals("3") ||ruleTp.substring(0,1).equals("4") ){
+      strQuery=cm.getEftSubstNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+    }else  if(ruleTp.substring(0,1).equals("5")){
+      strQuery="only "+cm.getSubstanceNm();
+    }else  if(ruleTp.substring(0,1).equals("6")){
+      strQuery="only "+cm.getEftSubstNm();
     }else {
-
-      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
+       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
     }
 
-    if(ruleTp.substring(0,1).equals("5")){
-      strQuery="only "+cm.getSubstanceNm()+" "+ cm.getRtOfAdmin();
+
+    if(!ruleTp.substring(1,1).equals("3")){
+      strQuery+= " "+ cm.getRtOfAdmin();
     }
-    
-    if(ruleTp.substring(0,1).equals("6")){
-      strQuery="only "+cm.getEftSubstNm()+" "+ cm.getRtOfAdmin();
-    }
+
 
       System.out.println("Term query : "+ strQuery);
       String ecl="<763158003";
