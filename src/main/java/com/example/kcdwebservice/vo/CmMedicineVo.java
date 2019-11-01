@@ -32,7 +32,8 @@ public class CmMedicineVo {
     private String sctTerm;
     private String mapStatCd;
     private String cdDscrt;
-
+    private String mapVer;
+    private String medListOption;
     private String limit;
     private String offset;
     

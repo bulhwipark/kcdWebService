@@ -6,7 +6,7 @@
                 약제 목록
             </h2>
         </div>
-        <form id="medSearchForm" method="post" action="/mediExcelDownload.xlsx">
+        <form id="mediSearchForm" method="post" action="/mediExcelDownload.xlsx">
             <div class="row" style="margin-bottom: 10px;">
                 <input type="hidden" name="mapVer" id="medVersion" value="0">
                 <div class="form-inline col-xl-3">
@@ -25,26 +25,29 @@
                 <div class="totalCnt-css col-xl-3">
                     <div>
                         <span><b>약제 코드기준 Total : </b></span>
-                        <span id="kdTotalCnt"></span>
+                        <span id="medi_kdTotalCnt"></span>
                     </div>
                     <div>
                         <span><b>매핑 Total : </b></span>
-                        <span id="totalCnt"></span>
+                        <span id="medi_totalCnt"></span>
                     </div>
                 </div>
 
                 <div class="col-xl-3">
                     <div style="display: inline-block; margin-top: 20px;">
                         <span style="width: 50px; display: inherit;">
-                            <button class="btn btn-light" id="prev">
-                                <<</button> </span> <span id="currentPage"></span>
+                            <button class="btn btn-light" id="medi_prev"><<</button>
+                        </span>
+                        <span id="medi_currentPage"></span>
                         <span style="width: 50px; display: inherit;">
-                            <button class="btn btn-light" id="next">>></button>
+                            <button class="btn btn-light" id="medi_next">>></button>
                         </span>
                     </div>
+                    <%--
                     <div style="display: inline-block; margin-top: 20px;">
                         <button class="btn btn-outline-danger" id="medExcelDownloadBtn">Excel Download</button>
                     </div>
+                    --%>
 
                 </div>
             </div>

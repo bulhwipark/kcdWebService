@@ -49,13 +49,11 @@ public class MedicineController {
     }
 
 
-    /*
     @PostMapping(value="/mediExcelDownload.xlsx")
     public String mediExcelDownload(CmMedicineVo cmMedicineVo, Model model){
         System.out.println(cmMedicineVo.getKdCd());
         return "";
     }
-    */
 
 
 }

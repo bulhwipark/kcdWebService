@@ -16,7 +16,7 @@ var kcd = {
 };
 
 var medi = {
-    kcdTotalCnt: 0,
+    mediTotalCnt: 0,
     totalCnt: 0,
     limit: 50,
     currentOffset: 0,
