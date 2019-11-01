@@ -133,9 +133,7 @@ public class RuleMapService {
         dblAmount=dblAmount*1000;
         strAmount=String.format("%.0f", dblAmount);  
       }else {
-        if(dblAmount*10%10==0){
-          strAmount=String.format("%.0f", dblAmount);  
-        }
+       
         strAmount=dblAmount+"";  
       }
     }else{
@@ -167,6 +165,10 @@ public class RuleMapService {
     }else if(strUnit.equals("mg/mL")){
       strUnit="milligram/1 milliliter";
     }
+    
+    if(dblAmount*10%10==0){
+      strAmount=String.format("%.0f", dblAmount);  
+    }
 
     String strQuery="";
 
@@ -175,6 +177,14 @@ public class RuleMapService {
     }else {
 
       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm()+ " "+ cm.getRtOfAdmin();
+    }
+
+    if(ruleTp.substring(0,1).equals("5")){
+      strQuery="only "+cm.getSubstanceNm()+" "+ cm.getRtOfAdmin();
+    }
+    
+    if(ruleTp.substring(0,1).equals("6")){
+      strQuery="only "+cm.getEftSubstNm()+" "+ cm.getRtOfAdmin();
     }
 
       System.out.println("Term query : "+ strQuery);
