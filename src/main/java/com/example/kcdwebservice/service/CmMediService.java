@@ -18,15 +18,19 @@ public class CmMediService {
     @Autowired
     CmMediDao cmMediDao;
 
-    public List<CmMedicineVo> selectAll() {
-        return cmMediDao.selectAll();
-    }
-
-
     public void  selectAll(MapKcdSctVo mv) {
         cmMediDao.insertAutoMap2(mv);
     }
 
+    public List<CmMedicineVo> medi_selectAll(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.medi_selectAll(cmMedicineVo);
+    }
 
+    public List<CmMedicineVo> medi_selectMapping(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.medi_selectMapping(cmMedicineVo);
+    }
 
+    public List<CmMedicineVo> medi_selectNoMapping(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.medi_selectNoMapping(cmMedicineVo);
+    }
 }

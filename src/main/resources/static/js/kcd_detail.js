@@ -1,8 +1,10 @@
 function kcd_detail_static_func(){
+    //초기 실행.
     get_kcdCdObject_req();
     get_kcdDetail_list();
     termSynonym();
     autoRuleSet();
+    kcdDetail_prevBtn_ajaxReq();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#ecl').on('click',function(){
@@ -69,37 +71,71 @@ function kcd_detail_static_func(){
        textSearchForm_setting($(this).data('num'));
    });
 
+    /**
+     * kcd 상세화면 다음버튼 이벤트
+     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     */
    $('#kcdList_next').on('click', function(){
-      var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
-      var index = parseInt(sessionStorage.getItem("index"));
-      var result = null;
-      var checkIdx = null;
-      for(var i = index; i<mainKcdList.length; i++){
-          if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
-            result = JSON.parse(JSON.stringify(mainKcdList[i]));
-            checkIdx = i;
-            break;
-          }
-      }
-      sessionStorage.setItem("kcdCd", result.kcdCd);
-      sessionStorage.setItem("index", checkIdx);
-      location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
-   });
-
-   $('#kcdList_prev').on('click', function(){
-       if(parseInt(sessionStorage.getItem("index")) === 0){
-           console.log('마지막 인덱스');
-           return;
+       if(parseInt(sessionStorage.getItem("index")) === 49){
+          sessionStorage.setItem(
+              'offset', parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
+          );
+           kcdDetail_prevBtn_ajaxReq();
+           sessionStorage.setItem("index", 0);
        }
-       var mainKcdList = JSON.parse(sessionStorage.getItem("mainKcdList"));
        var index = parseInt(sessionStorage.getItem("index"));
        var result = null;
        var checkIdx = null;
-       for(var i = index; i>=0; i--){
-           if(sessionStorage.getItem("kcdCd") !== mainKcdList[i].kcdCd){
-               result = JSON.parse(JSON.stringify(mainKcdList[i]));
+       for(var i = index ; i<kcd.mainKcdList.length; i++){
+           if(sessionStorage.getItem("kcdCd") !== kcd.mainKcdList[i].kcdCd){
+               result = JSON.parse(JSON.stringify(kcd.mainKcdList[i]));
                checkIdx = i;
                break;
+           }else{
+               if(i == 49){
+                   result = JSON.parse(JSON.stringify(kcd.mainKcdList[49]));
+                   checkIdx = 49;
+                   break;
+               }
+           }
+       }
+       sessionStorage.setItem("kcdCd", result.kcdCd);
+       sessionStorage.setItem("index", checkIdx);
+       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
+   });
+
+    /**
+     * kcd 상세화면 이전버튼 이벤트
+     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     */
+   $('#kcdList_prev').on('click', function(){
+       if(parseInt(sessionStorage.getItem("index")) === 0){
+           if(sessionStorage.getItem("offset") > 0){
+               sessionStorage.setItem(
+                   'offset', parseInt(sessionStorage.getItem("offset")) - parseInt(sessionStorage.getItem("limit"))
+               );
+               kcdDetail_prevBtn_ajaxReq();
+               sessionStorage.setItem("index", kcd.mainKcdList.length-1);
+           }else{
+              //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
+               $(this).attr('disabled', true);
+               return;
+           }
+       }
+       var index = parseInt(sessionStorage.getItem("index"));
+       var result = null;
+       var checkIdx = null;
+       for(var i = index ; i>=0; i--){
+           if(sessionStorage.getItem("kcdCd") !== kcd.mainKcdList[i].kcdCd){
+               result = JSON.parse(JSON.stringify(kcd.mainKcdList[i]));
+               checkIdx = i;
+               break;
+           }else{
+               if(i == 0){
+                   result = JSON.parse(JSON.stringify(kcd.mainKcdList[0]));
+                   checkIdx = 0;
+                   break;
+               }
            }
        }
        sessionStorage.setItem("kcdCd", result.kcdCd);
@@ -173,7 +209,7 @@ function get_kcdDetail_list(){
         dataType:'json',
         success:function(data){
             if(data.length > 0){
-                kcdDetailList = JSON.parse(JSON.stringify(data));
+                kcd.kcdDetailList = JSON.parse(JSON.stringify(data));
                 $('#kcdDetailTable tbody').empty();
                 $('#allSelect').prop("checked", false);
                 for(var i = 0; i<data.length; i++){
@@ -220,7 +256,7 @@ function get_kcdDetail_list(){
                 kcd_detail_dynamic_func();
             }else{
                 console.log('자료 없음 처리.');
-                kcdDetailList = JSON.parse(JSON.stringify(data));
+                kcd.kcdDetailList = JSON.parse(JSON.stringify(data));
                 $('#kcdDetailTable tbody').empty();
                 $('#allSelect').prop("checked", false);
                 var $tr = $('<tr>').append(
@@ -260,14 +296,14 @@ function search_req(){
                 var items = data['items'];
 
                 //중복제거.
-                for(var i = 0; i<kcdDetailList.length; i++){
+                for(var i = 0; i<kcd.kcdDetailList.length; i++){
                     items = items.filter(function(item, idx, arr){
-                        if(item.conceptId != kcdDetailList[i].sctId){
+                        if(item.conceptId != kcd.kcdDetailList[i].sctId){
                             return item;
                         }
                     });
                 }
-                searchList = JSON.parse(JSON.stringify(items));
+                kcd.searchList = JSON.parse(JSON.stringify(items));
                 $('#searchResultTable tbody').empty();
                 $('#searchResultAllSelect').prop("checked", false);
                 for(var i = 0; i<items.length; i++){
@@ -314,10 +350,10 @@ function saveBtn_req(){
 
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for(var i  = 0; i<currentSelected.length; i++){
-        if(searchList){
-            for(var j = 0; j<searchList.length; j++){
-                if(searchList[j].conceptId == currentSelected[i].value){
-                    sctIdArr.push(searchList[j].conceptId);
+        if(kcd.searchList){
+            for(var j = 0; j<kcd.searchList.length; j++){
+                if(kcd.searchList[j].conceptId == currentSelected[i].value){
+                    sctIdArr.push(kcd.searchList[j].conceptId);
                 }
             }
         }else{
@@ -329,7 +365,7 @@ function saveBtn_req(){
         type:'post',
         data:{
             oriCd : $('#kcdCd').text(),
-            mapVer : mapVer,
+            mapVer : kcd.mapVer,
             mapStatCd:5,
             oriTpCd:'kcd',
             sctId:sctIdArr.join(",")
@@ -338,7 +374,7 @@ function saveBtn_req(){
             get_kcdDetail_list();
             for(var i = 0; i<sctIdArr.length; i++){
                 var sctId = sctIdArr[i];
-                searchList = searchList.filter(function(item, idx, arr){
+                kcd.searchList = kcd.searchList.filter(function(item, idx, arr){
                     if(item.conceptId != sctId){
                         return item;
                     }
@@ -435,16 +471,16 @@ function autoRuleSet(){
                         var items = res['items'];
 
                         //중복제거.
-                        if(kcdDetailList){
-                            for(var i = 0; i<kcdDetailList.length; i++){
+                        if(kcd.kcdDetailList){
+                            for(var i = 0; i<kcd.kcdDetailList.length; i++){
                                 items = items.filter(function(item, idx, arr){
-                                    if(item.conceptId != kcdDetailList[i].sctId){
+                                    if(item.conceptId != kcd.kcdDetailList[i].sctId){
                                         return item;
                                     }
                                 });
                             }
                         }
-                        searchList = JSON.parse(JSON.stringify(items));
+                        kcd.searchList = JSON.parse(JSON.stringify(items));
 
                         $('#searchResultAllSelect').prop("checked", false);
                         for(var i = 0; i<items.length; i++){
@@ -518,16 +554,16 @@ function similaritySearch(){
                 var obj = JSON.parse(data.result);
                 var items = obj['items'];
                 //중복제거.
-                if(kcdDetailList){
-                    for(var i = 0; i<kcdDetailList.length; i++){
+                if(kcd.kcdDetailList){
+                    for(var i = 0; i<kcd.kcdDetailList.length; i++){
                         items = items.filter(function(item, idx, arr){
-                            if(item.conceptId != kcdDetailList[i].sctId){
+                            if(item.conceptId != kcd.kcdDetailList[i].sctId){
                                 return item;
                             }
                         });
                     }
                 }
-                searchList = JSON.parse(JSON.stringify(items));
+                kcd.searchList = JSON.parse(JSON.stringify(items));
 
                 $('#searchResultTable tbody').empty();
                 for(var i = 0; i<items.length; i++){
@@ -856,6 +892,26 @@ function StringMatch_func(str, matchStr){
     }else{
         return str;
     }
+}
+
+//KCD목록 조회.
+function kcdDetail_prevBtn_ajaxReq(){
+    $.ajax({
+        url: "/select"+sessionStorage.getItem("listOption"),
+        type:'get',
+        data:{
+            mapVer:sessionStorage.getItem("mapVer"),
+            mapStatCd:sessionStorage.getItem("mapStatCd"),
+            kcdCd:sessionStorage.getItem("searchToKcdCd").toUpperCase(),
+            limit:sessionStorage.getItem("limit"),
+            offset:parseInt(sessionStorage.getItem("offset"))
+        },
+        dataType:'json',
+        async:false,
+        success:function(data){
+            kcd.mainKcdList = JSON.parse(JSON.stringify(data));
+        }
+    })
 }
 
 function alert_timeout(){

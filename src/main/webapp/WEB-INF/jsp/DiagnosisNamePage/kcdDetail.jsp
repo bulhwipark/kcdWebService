@@ -24,6 +24,9 @@
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_prev" data-btntype="prev"><<<<</button>
         </div>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
+           <div>
+               <a href="/">메인으로</a>
+           </div>
             <input type="hidden" value="${mapVer}" id="mapVer">
             <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
             <div>

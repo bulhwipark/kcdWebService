@@ -93,7 +93,6 @@
 		
     </select>
 
-
      <select id="totalMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
         SELECT count(1)
         FROM CM_KCD K INNER JOIN (
@@ -113,7 +112,6 @@
                 K.KCD_CD=#{kcdCd}
             </if>
         </where>
-     
     </select>
 
     <select id="totalKcdMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
@@ -166,8 +164,6 @@
         </if>
     </select>
 
-
-    
     <select id="totalNotMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
         select count(1)
         from CM_KCD where KCD_CD not in (
@@ -202,8 +198,6 @@
         
     </select>
 
-
-
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
         select KCD_CD kcdCd,
            KCD_ENG kcdEng,
@@ -225,9 +219,6 @@
         </if>
     </select>
 
-
-
-   
     <select id="totalIcdNotMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
         SELECT count(*)
         FROM CM_KCD K 
@@ -236,7 +227,6 @@
                 and K.KCD_CD=#{kcdCd}
             </if>
     </select>
-
 
     <select id="totalKcdIcdNotMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
         SELECT count(1)
