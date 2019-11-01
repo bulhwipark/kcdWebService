@@ -33,4 +33,24 @@ public class CmMediService {
     public List<CmMedicineVo> medi_selectNoMapping(CmMedicineVo cmMedicineVo) {
         return cmMediDao.medi_selectNoMapping(cmMedicineVo);
     }
+
+    public String medi_totalCnt(String mappingStatus, CmMedicineVo cmMedicineVo) {
+        String totalCnt = null;
+        if(mappingStatus.equals("All")){
+            totalCnt = cmMediDao.medi_kdCdTotalCnt(cmMedicineVo);
+        }else if(mappingStatus.equals("Mapping")){
+            totalCnt = cmMediDao.medi_kdCdMappingTotalCnt(cmMedicineVo);
+        }else if(mappingStatus.equals("NoMapping")){
+            totalCnt = cmMediDao.medi_kdCdNoMappingTotalCnt(cmMedicineVo);
+        }
+        return totalCnt;
+    }
+
+    public String medi_mappingStatusTotalCnt(String mappingStatus, CmMedicineVo cmMedicineVo) {
+        String totalCnt = null;
+        if(mappingStatus.equals("All")){
+            totalCnt = cmMediDao.medi_totalCnt(cmMedicineVo);
+        }
+        return totalCnt;
+    }
 }

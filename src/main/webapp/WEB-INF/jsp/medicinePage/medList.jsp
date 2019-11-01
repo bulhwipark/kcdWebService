@@ -6,7 +6,7 @@
                 약제 목록
             </h2>
         </div>
-        <form id="medSearchForm" method="post" action="/excelDownload.xlsx">
+        <form id="medSearchForm" method="post" action="/mediExcelDownload.xlsx">
             <div class="row" style="margin-bottom: 10px;">
                 <input type="hidden" name="mapVer" id="medVersion" value="0">
                 <div class="form-inline col-xl-3">
@@ -43,7 +43,7 @@
                         </span>
                     </div>
                     <div style="display: inline-block; margin-top: 20px;">
-                        <button class="btn btn-outline-danger" id="excelDownloadBtn">Excel Download</button>
+                        <button class="btn btn-outline-danger" id="medExcelDownloadBtn">Excel Download</button>
                     </div>
 
                 </div>

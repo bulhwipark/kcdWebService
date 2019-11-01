@@ -20,4 +20,16 @@ public interface CmMediDao {
     List<CmMedicineVo> medi_selectMapping(CmMedicineVo cmMedicineVo);
 
     List<CmMedicineVo> medi_selectNoMapping(CmMedicineVo cmMedicineVo);
+
+    String medi_totalCnt(CmMedicineVo cmMedicineVo);
+
+    String medi_mappingTotalCnt(CmMedicineVo cmMedicineVo);
+
+    String medi_noMappingTotalCnt(CmMedicineVo cmMedicineVo);
+
+    String medi_kdCdTotalCnt(CmMedicineVo cmMedicineVo);
+
+    String medi_kdCdMappingTotalCnt(CmMedicineVo cmMedicineVo);
+
+    String medi_kdCdNoMappingTotalCnt(CmMedicineVo cmMedicineVo);
 }

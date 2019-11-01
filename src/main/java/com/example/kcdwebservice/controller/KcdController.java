@@ -294,6 +294,8 @@ public class KcdController {
         }
 
         model.addAttribute("list", list);
+        model.addAttribute("sheetNm", "KCD 목록");
+        model.addAttribute("headerNmArr", new String[]{"KCD코드", "한글명/영문명", "SCTID", "Snomed CT Term", "매핑상태", "매핑일자" });
         return "ExcelDownload";
     }
 

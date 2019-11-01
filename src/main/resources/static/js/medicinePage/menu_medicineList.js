@@ -1,5 +1,6 @@
 function menu_medicineList_staticFunc(){
-    medicineList_req('All');
+    medicineTotalCnt_req();
+    medicineList_req();
 
     $('#medListOption').on('change', function(){
         medicineList_req();
@@ -9,6 +10,41 @@ function menu_medicineList_staticFunc(){
         medicineList_req();
     });
 
+    //excel download
+    /*
+    $('#medExcelDownloadBtn').on('click', function(e){
+        e.preventDefault();
+        $('#searchForm')[0].submit();
+    });
+    */
+
+}
+
+function menu_medicineList_dynamicFunc(){
+    $('.mediSctIdDetail').on('click', function(){
+        window.open(
+            'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
+            'Detail',
+            'width=1200,height=800,left=200,'
+        );
+        $('#sctId').val($(this).text());
+    });
+}
+
+function medicineTotalCnt_req(){
+    $.ajax({
+        url:'/getMediTotalCount',
+        type:'post',
+        data:{
+            mappingStatus:$('#medListOption option:selected').val(),
+            mapVer:$('#version').val(),
+            mapStatCd: $('#mapStatCd').val()
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+        }
+    });
 }
 
 function medicineList_req(){
@@ -43,6 +79,7 @@ function medicineList_req(){
                             })
                         ),
                         $('<td>',{
+                            class:'mediSctIdDetail',
                             text:data[i].sctId?data[i].sctId:'-'
                         }),
                         $('<td>',{
@@ -57,6 +94,7 @@ function medicineList_req(){
                     );
                     $('#medListTable tbody').append($tr);
                 }
+                menu_medicineList_dynamicFunc();
             }
         }
     })
