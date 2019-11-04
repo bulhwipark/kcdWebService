@@ -49,6 +49,26 @@ function menu_medicineList_dynamicFunc() {
         );
         $('#sctId').val($(this).text());
     });
+
+    $('.medDetail').on('click', function(){
+        console.log($(this));
+        //상세화면에서의 페이징을 위해 세팅.
+        /*
+        sessionStorage.setItem("storageCheck", true);
+        sessionStorage.setItem("limit", kcd.limit);
+        sessionStorage.setItem("offset", kcd.currentOffset);
+        sessionStorage.setItem("totalCnt", kcd.totalCnt);
+        sessionStorage.setItem("listOption", $('#listOption option:selected').val());
+        sessionStorage.setItem("sctId", $(this).data('sctid'));
+        sessionStorage.setItem("kcdCd", $(this).text());
+        sessionStorage.setItem("index", $(this).data('index'));
+        sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
+        sessionStorage.setItem("mapVer", $('#version').val());
+        sessionStorage.setItem("mapStatCd", $('#mapStatCd').val());
+        */
+        location.href = '/medDetailPage?kdCd=' + $(this).text() + '&mapVer=' + $('#medVersion').val();
+    });
+
 }
 
 function medicineTotalCnt_req() {

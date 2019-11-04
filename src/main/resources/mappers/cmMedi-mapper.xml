@@ -147,12 +147,50 @@
         FROM CM_MEDICINE K LEFT JOIN (
                 SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
         ) M ON K.KD_CD = M.ORI_CD
-        LEFT OUTER JOIN CM_SNOMEDCT S
-        ON M.SCT_ID=S.SCT_ID
+        LEFT OUTER JOIN CM_SNOMEDCT S ON M.SCT_ID=S.SCT_ID
         LEFT OUTER JOIN EMR.MCODE CD
         ON left(M.MAP_STAT_CD,1)=CD.CD_ID
         AND CD.CD_GRP='MAP_STAT_CD'
         AND CD.CD_STAT_CD='0';
     </select>
 
+    <select id="getMediInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT PRINCIPAL_COMP_CD prinipalCompCd,
+               KD_CD kdCd,
+               DRUG_NM_KOR drugNmKor,
+               DRUG_MANUF drugManuf,
+               HIRA_ATC_CD hiraAtcCd,
+               HIRA_ATC_NM hiraAtcNm,
+               STD_CD stdCd,
+               DRUG_NM_ENG drugNmEng,
+               SUBSTANCE_NM substanceNm,
+               AMOUNT1 amount1,
+               UNIT1 unit1,
+               EFT_SUBST_NM eftSubstNm,
+               AMOUNT2 amount2,
+               UNIT2 unit2,
+               AMOUNT3 amount3,
+               UNIT3 unit3,
+               MED_DOSE_FRM medDoseFrm,
+               RT_OF_ADMIN rtOfAdmin
+        FROM CM_MEDICINE
+        WHERE KD_CD = #{value};
+    </select>
+
+    <select id="mediDetailList" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT M.ORI_CD      oriCd,
+               M.SCT_ID      sctId,
+               M.MAP_VER     mapVer,
+               M.MAP_STAT_CD mapStatCd,
+               M.RV_STAT_CD  rvStatCd,
+               M.DISP_ODR    dispOdr,
+               M.UDT_DT      udtDt,
+               S.SCT_TERM    sctTerm,
+               CD.CD_DSCRT   mapStatNm
+        FROM MAP_KCD_SCT2 M
+                 LEFT OUTER JOIN CM_SNOMEDCT S ON M.SCT_ID = S.SCT_ID
+                 LEFT OUTER JOIN MCODE CD
+                                 ON LEFT(M.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        WHERE M.ORI_CD = #{value}
+    </select>
 </mapper>

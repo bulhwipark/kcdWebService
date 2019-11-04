@@ -8,8 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CmMedicineVo {
-    private String kdCd;
     private String prinipalCompCd;
+    private String kdCd;
     private String drugNmKor;
     private String drugManuf;
     private String hiraAtcCd;
@@ -34,6 +34,7 @@ public class CmMedicineVo {
     private String cdDscrt;
     private String mapVer;
     private String medListOption;
+    private String mapStatNm;
     private String limit;
     private String offset;
     

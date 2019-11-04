@@ -20,5 +20,6 @@ var medi = {
     totalCnt: 0,
     limit: 50,
     currentOffset: 0,
-    mainMedList: null
+    mainMedList: null,
+    mediDetailList:[]
 };

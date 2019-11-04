@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: saltlux
-  Date: 2019-10-11
-  Time: 오후 4:06
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -18,24 +11,24 @@
 <body>
 <%--<%@ include file="/WEB-INF/jsp/header/detailHeader.jsp" %>--%>
 <input type="text" id="sctId" hidden>
-<div class="container-fluid content" id="kcdListPage">
+<div class="container-fluid content" id="mediListPage">
     <div class="alert alert-primary" role="alert">
         <div class="pull-left">
-            <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_prev" data-btntype="prev"><<<<</button>
+            <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_prev" data-btntype="prev"><<<<</button>
         </div>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
            <div>
                <a href="/">메인으로</a>
            </div>
             <input type="hidden" value="${mapVer}" id="mapVer">
-            <span><b>KCD코드 : </b><span id="kcdCd">${kcdCd}</span></span>
+            <span><b>KCD코드 : </b><span id="kdCd">${kdCd}</span></span>
             <div>
-                <div><b>한글명 : </b><span id="kcdKor"></span></div>
-                <div><b>영문명 : </b><span id="kcdEng"></span></div>
+                <div><b>한글명 : </b><span id="mediKor"></span></div>
+                <div><b>영문명 : </b><span id="mediEng"></span></div>
             </div>
         </div>
         <div class="pull-right">
-            <button class="btn btn-lg btn-danger detailRoutingBtn" id="kcdList_next" data-btntype="next">>>>></button>
+            <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_next" data-btntype="next">>>>></button>
         </div>
     </div>
     <div class="row">
@@ -45,7 +38,7 @@
         </div>
     </div>
     <div class="row">
-        <table class="table table-striped kcdDetailTableCss" id="kcdDetailTable">
+        <table class="table table-striped kcdDetailTableCss" id="mediDetailTable">
             <thead>
                 <tr>
                     <th scope="col">Core Concept</th>
@@ -55,7 +48,7 @@
                     <th scope="col">Update Time</th>
                     <th>
                         전체선택&nbsp;&nbsp;
-                        <input type="checkbox" id="allSelect">
+                        <input type="checkbox" id="mediAllSelect">
                     </th>
                     <th>
                         속성 추가
@@ -73,25 +66,25 @@
         <div>
             <div>
                 <span>
-                    <label for="ecl"><b>ecl : </b></label>
-                    <input type="text" id="ecl">
+                    <label for="mediEcl"><b>ecl : </b></label>
+                    <input type="text" id="mediEcl">
                 </span>
 
                 <span class="margin-left-20">
-                    <label for="disorder">disorder : </label>
-                    <input type="radio" name="defaultRule" id="disorder" value="<64572001" >
+                    <label for="mediDisorder">disorder : </label>
+                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<64572001" >
                 </span>
 
                 <span class="margin-left-20">
-                    <label for="clinicalFinding">clinical finding : </label>
-                    <input type="radio" name="defaultRule" id="clinicalFinding" value="<404684003" checked>
+                    <label for="mediClinicalFinding">clinical finding : </label>
+                    <input type="radio" name="mediDefaultRule" id="mediClinicalFinding" value="<404684003" checked>
                 </span>
             </div>
             <div>
-                <label for="term"><b>term : </b></label>
-                <input type="text" id="term" style="width: 500px;">
-                <label for="synonym" style="margin-left: 20px;"><b>동의어 : </b></label>
-                <select class="form-control" name="" id="synonym" style="display: inline-block; width: 700px;">
+                <label for="mediTerm"><b>term : </b></label>
+                <input type="text" id="mediTerm" style="width: 500px;">
+                <label for="mediSynonym" style="margin-left: 20px;"><b>동의어 : </b></label>
+                <select class="form-control" name="" id="mediSynonym" style="display: inline-block; width: 700px;">
                 </select>
             </div>
             <%--
@@ -105,15 +98,15 @@
                 <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
             </div>
             --%>
-            <button class="btn btn-lg btn-primary" onclick="search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="similaritySearch()">유사도 기반조회</button> |
-            <button id="saveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="saveBtn_req()">저장</button>
+            <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary" onclick="medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
+            <button id="saveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>
-    <div class="row" id="searchResultTableDiv">
-        <table class="table table-striped" id="searchResultTable">
+    <div class="row" id="mediSearchResultTableDiv">
+        <table class="table table-striped" id="mediSearchResultTable">
             <thead>
                 <tr>
                     <th>Concept Id</th>
@@ -121,7 +114,7 @@
                     <th class="autoRuleCol">Rule Code</th>
                     <th>
                         전체선택&nbsp;&nbsp;
-                        <input type="checkbox" id="searchResultAllSelect">
+                        <input type="checkbox" id="mediSearchResultAllSelect">
                     </th>
                 </tr>
             </thead>
@@ -136,13 +129,13 @@
 <script src="/static/lib/bootstrap.min.js"></script>
 <script src="/static/lib/bootstrap-select.min.js"></script>
 <script src="/static/js/global-variable.js"></script>
-<script src="/static/js/kcd_detail.js"></script>
+<script src="/static/js/medicinePage/medi_detail.js"></script>
 <script type="text/javascript">
     $(function(){
-        kcd.mapVer = '${mapVer}';
-        kcd.limit = '${limit}';
-        kcd.currentOffset = '${offset}';
-        kcd_detail_static_func();
+        medi.mapVer = '${mapVer}';
+        medi.limit = '${limit}';
+        medi.currentOffset = '${offset}';
+        medi_detail_static_func();
     })
 </script>
 </html>

@@ -32,4 +32,8 @@ public interface CmMediDao {
     String medi_kdCdMappingTotalCnt(CmMedicineVo cmMedicineVo);
 
     String medi_kdCdNoMappingTotalCnt(CmMedicineVo cmMedicineVo);
+
+    CmMedicineVo getMediInfo(String kdCd);
+
+    List<CmMedicineVo> mediDetailList(String kdCd);
 }

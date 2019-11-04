@@ -53,4 +53,12 @@ public class CmMediService {
         }
         return totalCnt;
     }
+
+    public CmMedicineVo getMediInfo(String kdCd) {
+        return cmMediDao.getMediInfo(kdCd);
+    }
+
+    public List<CmMedicineVo> mediDetailList(String kdCd) {
+        return cmMediDao.mediDetailList(kdCd);
+    }
 }

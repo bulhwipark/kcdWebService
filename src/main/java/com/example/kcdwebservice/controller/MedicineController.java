@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class MedicineController {
     @ResponseBody
     public ResponseEntity<String> getMediTotalCount(@RequestParam("mappingStatus")String mappingStatus, CmMedicineVo cmMedicineVo){
         String mediTotalCnt = cmMediService.medi_totalCnt(mappingStatus, cmMedicineVo);
-        String totalCnt = cmMediService.medi_mappingStatusTotalCnt(mappingStatus, cmMedicineVo);
+        // String totalCnt = cmMediService.medi_mappingStatusTotalCnt(mappingStatus, cmMedicineVo);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mediTotalCnt", mediTotalCnt);
-            jsonObject.put("totalCnt", totalCnt);
+          //  jsonObject.put("totalCnt", totalCnt);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -48,12 +49,43 @@ public class MedicineController {
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
+    /**
+     * 약제 상세 화면.
+     * @param cmMedicineVo
+     * @return
+     */
+    @RequestMapping(value="/medDetailPage")
+    public ModelAndView medDetailPage(CmMedicineVo cmMedicineVo){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("kdCd", cmMedicineVo.getKdCd());
+        mav.addObject("mapVer", cmMedicineVo.getMapVer());
+        mav.setViewName("/medicinePage/medDetail");
+        return mav;
+    }
 
+    @RequestMapping(value="/getMediInfo")
+    @ResponseBody
+    public ResponseEntity<CmMedicineVo> getMediInfo(@RequestParam("kdCd")String kdCd){
+        CmMedicineVo cmMedicineVo = cmMediService.getMediInfo(kdCd);
+        return new ResponseEntity<>(cmMedicineVo, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/getMediDetailList")
+    @ResponseBody
+    public ResponseEntity<List<CmMedicineVo>> getMediDetailList(@RequestParam("kdCd")String kdCd){
+        System.out.println(kdCd);
+        List<CmMedicineVo> list = cmMediService.mediDetailList(kdCd);
+        System.out.println(list.toString());
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
+    /*
     @PostMapping(value="/mediExcelDownload.xlsx")
     public String mediExcelDownload(CmMedicineVo cmMedicineVo, Model model){
         System.out.println(cmMedicineVo.getKdCd());
         return "";
     }
-
+    */
 
 }
