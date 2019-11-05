@@ -25,10 +25,10 @@
                MED_DOSE_FRM      medDoseFrm,
                RT_OF_ADMIN       rtOfAdmin
         from CM_MEDICINE
-       where KD_CD ='641600851'  ;
+      where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2);
        
     </select>
-    <!--#   where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2); -->
+    <!--#    where KD_CD ='641600851'  ;-->
 
     <insert id="insertAutoMap2" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
         INSERT into MAP_KCD_SCT2(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
