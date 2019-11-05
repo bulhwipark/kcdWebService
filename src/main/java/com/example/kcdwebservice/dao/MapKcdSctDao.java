@@ -15,7 +15,12 @@ public interface MapKcdSctDao {
     
     void insertMapKcdSctInfo(MapKcdSctVo mapKcdSctVo);
 
+    void insertMapKcdSctInfo_medi(MapKcdSctVo mapKcdSctVo);
+
     void deleteMapKcdSctInfo(MapKcdSctVo mapKcdSctVo);
+
+    void deleteMapKcdSctInfo_medi(MapKcdSctVo mapKcdSctVo);
+
 }
 
 

@@ -4,5 +4,5 @@ function static_function(){
         $(this).parent().addClass('currentSelectedMenu');
         $('.content').addClass('displayNone');
         $('#' + $(this).data('menu')).removeClass('displayNone');
-    })
+    });
 }

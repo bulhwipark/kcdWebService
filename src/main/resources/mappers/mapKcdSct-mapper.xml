@@ -41,15 +41,22 @@
         values(#{oriCd},#{sctId},#{mapVer},'1','0','1',sysdate())
     </insert>
 
-    
-
     <insert id="insertMapKcdSctInfo" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
         INSERT into MAP_KCD_SCT(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
         values(#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','0',sysdate())
     </insert>
 
+    <insert id="insertMapKcdSctInfo_medi" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
+        INSERT into MAP_KCD_SCT2(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values(#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','0',sysdate())
+    </insert>
+
     <delete id="deleteMapKcdSctInfo" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
-        DELETE from MAP_KCD_SCT where ORI_CD = #{oriCd} and SCT_ID = #{sctId}
+        DELETE from MAP_KCD_SCT where ORI_CD = #{oriCd} and SCT_ID = #{sctId};
+    </delete>
+
+    <delete id="deleteMapKcdSctInfo_medi" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
+        DELETE FROM MAP_KCD_SCT2 WHERE ORI_CD = #{oriCd} AND SCT_ID = #{sctId};
     </delete>
 
 </mapper>
