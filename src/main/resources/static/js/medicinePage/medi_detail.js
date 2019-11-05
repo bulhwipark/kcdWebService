@@ -14,7 +14,7 @@ function medi_detail_static_func(){
 
     //disorder, clinicalfinding 클릭시 좌측 ecl 인풋에 텍스트는 삭제.
     $('input[name="defaultRule"]').on('click', function(){
-        $('#ecl').val('');
+        $('#mediEcl').val('');
     });
 
     //medi 상세리스트 쪽 전체 선택.
@@ -170,6 +170,14 @@ function medi_detail_dynamic_func(){
             'width=1200,height=800,left=200,'
         );
         $('#sctId').val($(this).text());
+    });
+
+    $('input[name="mediSearchResultSaveCheckbox"]').on('change', function(){
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').attr('disabled', false);
+        }else{
+            $('#mediSaveBtn').attr('disabled', true);
+        }
     });
 }
 
@@ -351,41 +359,46 @@ function medi_saveBtn_req(){
 
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for(var i  = 0; i<currentSelected.length; i++){
-        if(kcd.searchList){
-            for(var j = 0; j<kcd.searchList.length; j++){
-                if(kcd.searchList[j].conceptId == currentSelected[i].value){
-                    sctIdArr.push(kcd.searchList[j].conceptId);
+        if(medi.searchList){
+            for(var j = 0; j<medi.searchList.length; j++){
+                if(medi.searchList[j].conceptId == currentSelected[i].value){
+                    sctIdArr.push(medi.searchList[j].conceptId);
                 }
             }
         }else{
             sctIdArr.push(currentSelected[i].value);
         }
     }
+
+    sctIdArr = sctIdArr.filter(function(item, idx, arr){
+        return arr.indexOf(item) == idx;
+    })
+
     $.ajax({
-        url:'/insertSearchList',
+        url:'/mediInsertSearchList',
         type:'post',
         data:{
-            oriCd : $('#kcdCd').text(),
-            mapVer : kcd.mapVer,
+            oriCd : $('#kdCd').text(),
+            mapVer : medi.mapVer,
             mapStatCd:5,
-            oriTpCd:'kcd',
+            oriTpCd:'medi',
             sctId:sctIdArr.join(",")
         },
         success:function(){
-            get_kcdDetail_list();
+            get_mediDetail_list();
             for(var i = 0; i<sctIdArr.length; i++){
                 var sctId = sctIdArr[i];
-                kcd.searchList = kcd.searchList.filter(function(item, idx, arr){
+                medi.searchList = medi.searchList.filter(function(item, idx, arr){
                     if(item.conceptId != sctId){
                         return item;
                     }
                 });
                 $('#' + sctId).remove();
             }
-            $('#saveBtn').attr('disabled', true);
+            $('#mediSaveBtn').attr('disabled', true);
             alert_timeout();
         }
-    })
+    });
 }
 
 /**
@@ -556,10 +569,10 @@ function medi_similaritySearch(){
                 var obj = JSON.parse(data.result);
                 var items = obj['items'];
                 //중복제거.
-                if(kcd.kcdDetailList){
-                    for(var i = 0; i<kcd.kcdDetailList.length; i++){
+                if(medi.mediDetailList){
+                    for(var i = 0; i<medi.mediDetailList.length; i++){
                         items = items.filter(function(item, idx, arr){
-                            if(item.conceptId != kcd.kcdDetailList[i].sctId){
+                            if(item.conceptId != medi.mediDetailList[i].sctId){
                                 return item;
                             }
                         });
@@ -588,7 +601,7 @@ function medi_similaritySearch(){
                             $('<td>').append(
                                 $('<input>',{
                                     type:'checkbox',
-                                    name:'searchResultSaveCheckbox',
+                                    name:'mediSearchResultSaveCheckbox',
                                     value:itemVal.conceptId
                                 })
                             )

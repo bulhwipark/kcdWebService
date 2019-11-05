@@ -30,6 +30,14 @@ public class MapKcdSctService {
         }
     }
 
+    public void insertMapKcdSctInfo_medi(MapKcdSctVo mapKcdSctVo) {
+        List<String>sctIdList = Arrays.asList(mapKcdSctVo.getSctId().split(","));
+        for(int i = 0; i<sctIdList.size(); i++){
+            mapKcdSctVo.setSctId(sctIdList.get(i));
+            mapKcdSctDao.insertMapKcdSctInfo_medi(mapKcdSctVo);
+        }
+    }
+
     /**
      * kcd 삭제
      * @param mapKcdSctVo
@@ -61,4 +69,6 @@ public class MapKcdSctService {
             mapKcdSctAftCatDao.attValDelete(mapKcdSctAftCatVo);
         }
     }
+
+
 }

@@ -29,7 +29,7 @@
     $(function(){
         static_function();
         menu_kcdList_staticFunc();
-        //menu_medicineList_staticFunc();
+        // menu_medicineList_staticFunc();
     });
 </script>
 </html>

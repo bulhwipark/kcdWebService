@@ -115,6 +115,16 @@ public class MedicineController {
     }
 
     /**
+     * medi 저장
+     * @param mapKcdSctVo
+     */
+    @RequestMapping(value="/mediInsertSearchList")
+    @ResponseBody
+    public void mediInsertSearchList(MapKcdSctVo mapKcdSctVo){
+        mapKcdSctService.insertMapKcdSctInfo_medi(mapKcdSctVo);
+    }
+
+    /**
      * medi 삭제
      *
      * @param mapKcdSctVo
