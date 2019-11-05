@@ -28,7 +28,16 @@
 <script type="text/javascript">
     $(function(){
         static_function();
-        menu_kcdList_staticFunc();
+
+        if(sessionStorage.getItem("mainPage") !== 'null'){
+            pageRuting(sessionStorage.getItem('mainPage'));
+            sessionStorage.setItem('mainPage', null);
+        }else{
+            pageRuting('kcdListPage');
+        }
+
+
+        // menu_kcdList_staticFunc();
         // menu_medicineList_staticFunc();
     });
 </script>
