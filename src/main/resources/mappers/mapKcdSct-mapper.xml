@@ -56,7 +56,7 @@
     </delete>
 
     <delete id="deleteMapKcdSctInfo_medi" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
-        DELETE FROM MAP_KCD_SCT2 WHERE ORI_CD = #{oriCd} AND SCT_CD = #{sctId};
+        DELETE FROM MAP_KCD_SCT2 WHERE ORI_CD = #{oriCd} AND SCT_ID = #{sctId};
     </delete>
 
 </mapper>

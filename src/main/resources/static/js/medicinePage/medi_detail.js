@@ -418,9 +418,9 @@ function deleteMediList_req(){
             sctId: sctIdArr.join(',')
         },
         success:function(){
-            //get_kcdDetail_list();
+            get_mediDetail_list();
             //search_req();
-            //medi_autoRuleSet();
+            medi_autoRuleSet();
         }
     });
 }
