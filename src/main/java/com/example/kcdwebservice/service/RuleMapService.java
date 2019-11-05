@@ -125,7 +125,7 @@ public class RuleMapService {
 
 
 
-    if(ruleTp.substring(1,1).equals("1")){
+    if(ruleTp.substring(1,2).equals("1")){
       if ( strUnit.equals("g") && cm.getAmount1()<1){
         strUnit="mg";
         dblAmount=dblAmount*1000;
@@ -146,7 +146,7 @@ public class RuleMapService {
       strAmount=dblAmount+"";
     }
     
-    if(ruleTp.substring(1,1).equals("2")){
+    if(ruleTp.substring(1,2).equals("2")){
       if(strUnit.equals("mg")){
         strUnit="milligram";
       }else if(strUnit.equals("g")){
@@ -192,10 +192,11 @@ public class RuleMapService {
     }
 
 
-    if(!ruleTp.substring(1,1).equals("3")){
+    if(!ruleTp.substring(1,2).equals("3")){
       strQuery+= " "+ cm.getRtOfAdmin();
     }
 
+    strQuery=strQuery.replace(",", "");
 
       System.out.println("Term query : "+ strQuery);
       String ecl="<763158003";
