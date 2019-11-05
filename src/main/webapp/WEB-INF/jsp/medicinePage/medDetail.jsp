@@ -13,9 +13,11 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="mediListPage">
     <div class="alert alert-primary" role="alert">
+        <%--
         <div class="pull-left">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_prev" data-btntype="prev"><<<<</button>
         </div>
+        --%>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
            <div>
                <a href="/">메인으로</a>
@@ -27,9 +29,11 @@
                 <div><b>영문명 : </b><span id="mediEng"></span></div>
             </div>
         </div>
+        <%--
         <div class="pull-right">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_next" data-btntype="next">>>>></button>
         </div>
+        --%>
     </div>
     <div class="row">
         <div class="alert">
@@ -58,7 +62,7 @@
             <tbody></tbody>
         </table>
         <div id="removeBtnDiv" class="save-btn-div">
-            <button id="removeBtn" class="btn btn-lg btn-danger" disabled onclick="deleteKcdList_req()">삭제</button>
+            <button id="mediRemoveBtn" class="btn btn-lg btn-danger" disabled onclick="deleteMediList_req()">삭제</button>
         </div>
     </div>
     <div class="alert alert-primary" role="alert">
@@ -101,7 +105,7 @@
             <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
-            <button id="saveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
+            <button id="mediSaveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>

@@ -3,7 +3,7 @@ function medi_detail_static_func(){
     get_mediObject_req();
     get_mediDetail_list();
     //termSynonym();
-    //autoRuleSet();
+    medi_autoRuleSet();
     //kcdDetail_prevBtn_ajaxReq();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
@@ -37,17 +37,17 @@ function medi_detail_static_func(){
     });
 
     //검색목록 쪽 전체선택
-    $('#searchResultAllSelect').on('click', function(){
+    $('#mediSearchResultAllSelect').on('click', function(){
         if($(this).prop('checked')){
-            $('input[name="searchResultSaveCheckbox"]').prop('checked', true);
+            $('input[name="mediSearchResultSaveCheckbox"]').prop('checked', true);
         }else{
-            $('input[name="searchResultSaveCheckbox"]').prop('checked', false);
+            $('input[name="mediSearchResultSaveCheckbox"]').prop('checked', false);
         }
 
-        if($('input[name="searchResultSaveCheckbox"]:checked').length > 0){
-            $('#saveBtn').prop('disabled', false);
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').prop('disabled', false);
         }else{
-            $('#saveBtn').prop('disabled', true);
+            $('#mediSaveBtn').prop('disabled', true);
         }
     });
 
@@ -146,11 +146,11 @@ function medi_detail_static_func(){
 }
 
 function medi_detail_dynamic_func(){
-    $('input[name="sctListCheck"]').on('change', function(e){
-        if($('input[name="sctListCheck"]:checked').length > 0){
-            $('#removeBtn').prop('disabled', false);
+    $('input[name="medi_sctListCheck"]').on('change', function(e){
+        if($('input[name="medi_sctListCheck"]:checked').length > 0){
+            $('#mediRemoveBtn').prop('disabled', false);
         }else{
-            $('#removeBtn').prop('disabled', true);
+            $('#mediRemoveBtn').prop('disabled', true);
         }
     });
 
@@ -345,8 +345,8 @@ function medi_search_req(){
 /*
  * 저장 버튼 이벤트
  */
-function saveBtn_req(){
-    var currentSelected = $('input[name="searchResultSaveCheckbox"]:checked');
+function medi_saveBtn_req(){
+    var currentSelected = $('input[name="mediSearchResultSaveCheckbox"]:checked');
     var sctIdArr = [];
 
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
@@ -391,24 +391,23 @@ function saveBtn_req(){
 /**
  * medi 목록 삭제 이벤트.
  */
-function deleteKcdList_req(){
-    var currentSelected = $('input[name="sctListCheck"]:checked');
+function deleteMediList_req(){
+    var currentSelected = $('input[name="medi_sctListCheck"]:checked');
     var sctIdArr = [];
     for(var i = 0; i<currentSelected.length; i++){
         sctIdArr.push(currentSelected[i].value);
     }
-    
    $.ajax({
-        url:'/deleteKcdList',
+        url:'/deleteMediList',
         type:'post',
         data:{
-            oriCd: $('#kcdCd').text(),
+            oriCd: $('#kdCd').text(),
             sctId: sctIdArr.join(',')
         },
         success:function(){
-            get_kcdDetail_list();
-            search_req();
-            autoRuleSet();
+            //get_kcdDetail_list();
+            //search_req();
+            //medi_autoRuleSet();
         }
     });
 }
@@ -446,17 +445,17 @@ function termSynonym(){
 /**
  * 자동룰 반영
  */
-function autoRuleSet(){
+function medi_autoRuleSet(){
     var param = new Object();
-    param.term = $('#term').val();
+    param.term = $('#mediTerm').val();
 
-    if($('input[name="defaultRule"]:checked').val()){
-        param.ecl = $('input[name="defaultRule"]:checked').val();
+    if($('input[name="mediDefaultRule"]:checked').val()){
+        param.ecl = $('input[name="mediDefaultRule"]:checked').val();
     }else{
-        param.ecl = $('#ecl').val();
+        param.ecl = $('#mediEcl').val();
     }
       $.ajax({
-        url:'/autoRuleSet',
+        url:'/mediAutoRuleSet',
         type:'post',
         async:false,
         data:param,
@@ -464,6 +463,7 @@ function autoRuleSet(){
         success:function(data){
             console.log(data);
             $('#searchResultTable tbody').empty();
+            /*
             for(var q = 0; q<data.length; q++){
 
                 if(data[q].status === "true"){
@@ -527,6 +527,7 @@ function autoRuleSet(){
                     }
                 }
             }
+            */
         }
     });
 }
@@ -534,14 +535,14 @@ function autoRuleSet(){
 /**
  * 유사도기준 검색 ajax
  */
-function similaritySearch(){
+function medi_similaritySearch(){
     var param = new Object();
-    param.term = $('#term').val();
+    param.term = $('#mediTerm').val();
 
-    if($('input[name="defaultRule"]:checked').val()){
-        param.ecl = $('input[name="defaultRule"]:checked').val();
+    if($('input[name="mediDefaultRule"]:checked').val()){
+        param.ecl = $('input[name="mediDefaultRule"]:checked').val();
     }else{
-        param.ecl = $('#ecl').val();
+        param.ecl = $('#mediEcl').val();
     }
 
     $.ajax({
@@ -564,12 +565,12 @@ function similaritySearch(){
                         });
                     }
                 }
-                kcd.searchList = JSON.parse(JSON.stringify(items));
+                medi.searchList = JSON.parse(JSON.stringify(items));
 
-                $('#searchResultTable tbody').empty();
+                $('#mediSearchResultTable tbody').empty();
                 for(var i = 0; i<items.length; i++){
                     var itemVal = items[i];
-                    if($('#searchResultTable tbody').children('#' + itemVal.conceptId).length > 0){
+                    if($('#mediSearchResultTable tbody').children('#' + itemVal.conceptId).length > 0){
                         
                     }else{
                         var $tr = $('<tr>', {id:itemVal.conceptId}).append(
@@ -594,9 +595,9 @@ function similaritySearch(){
                         );
                     }
 
-                    $('#searchResultTable tbody').append($tr);
+                    $('#mediSearchResultTable tbody').append($tr);
                 }
-                kcd_detail_dynamic_func();
+                medi_detail_dynamic_func();
             }else{
                 console.log("데이터 없음");
                 console.log(data);

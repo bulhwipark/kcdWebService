@@ -50,6 +50,10 @@ public class CmMediService {
         String totalCnt = null;
         if(mappingStatus.equals("All")){
             totalCnt = cmMediDao.medi_totalCnt(cmMedicineVo);
+        }else if(mappingStatus.equals("Mapping")){
+
+        }else if(mappingStatus.equals("NoMapping")){
+
         }
         return totalCnt;
     }
