@@ -171,7 +171,6 @@ function kcd_detail_dynamic_func(){
         );
         $('#sctId').val($(this).text());
     });
-
 }
 
 /**
@@ -733,7 +732,15 @@ function textSearchForm_setting(currentNum){
             console.log('enter');
             attrValTextSearch_request(currentNum);
         }
-    })
+    });
+
+   $('.textSelect').on('change', function(){
+       console.log($(this));
+        if($(this).children('select').val()){
+            $('#attrSaveBtn').attr('disabled', false);
+        }
+   });
+
 }
 
 function attrValTextSearch_request(currentNum){
