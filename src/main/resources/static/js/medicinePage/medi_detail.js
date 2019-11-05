@@ -4,7 +4,7 @@ function medi_detail_static_func(){
     get_mediDetail_list();
     //termSynonym();
     medi_autoRuleSet();
-    //kcdDetail_prevBtn_ajaxReq();
+    mediDetail_prevBtn_ajaxReq();
 
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#mediEcl').on('click',function(){
@@ -72,75 +72,75 @@ function medi_detail_static_func(){
    });
 
     /**
-     * kcd 상세화면 다음버튼 이벤트
-     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     * medi 상세화면 다음버튼 이벤트
+     * sessionStorage 정보를 이용하여 medi리스트에서 kdcd코드로 다음것을 찾음.
      */
-   $('#kcdList_next').on('click', function(){
-       if(parseInt(sessionStorage.getItem("index")) === 49){
+   $('#mediList_next').on('click', function(){
+       if(parseInt(sessionStorage.getItem("medi_index")) === 49){
           sessionStorage.setItem(
-              'offset', parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
+              'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) + parseInt(sessionStorage.getItem("medi_limit"))
           );
-           kcdDetail_prevBtn_ajaxReq();
-           sessionStorage.setItem("index", 0);
+           mediDetail_prevBtn_ajaxReq();
+           sessionStorage.setItem("medi_index", 0);
        }
-       var index = parseInt(sessionStorage.getItem("index"));
+       var index = parseInt(sessionStorage.getItem("medi_index"));
        var result = null;
        var checkIdx = null;
-       for(var i = index ; i<kcd.mainKcdList.length; i++){
-           if(sessionStorage.getItem("kcdCd") !== kcd.mainKcdList[i].kcdCd){
-               result = JSON.parse(JSON.stringify(kcd.mainKcdList[i]));
+       for(var i = index ; i<medi.mainMedList.length; i++){
+           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
+               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
                checkIdx = i;
                break;
            }else{
                if(i == 49){
-                   result = JSON.parse(JSON.stringify(kcd.mainKcdList[49]));
+                   result = JSON.parse(JSON.stringify(medi.mainMedList[49]));
                    checkIdx = 49;
                    break;
                }
            }
        }
-       sessionStorage.setItem("kcdCd", result.kcdCd);
-       sessionStorage.setItem("index", checkIdx);
-       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
+       sessionStorage.setItem("medi_kdCd", result.kdCd);
+       sessionStorage.setItem("medi_index", checkIdx);
+       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
    });
 
     /**
      * kcd 상세화면 이전버튼 이벤트
      * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
      */
-   $('#kcdList_prev').on('click', function(){
-       if(parseInt(sessionStorage.getItem("index")) === 0){
-           if(sessionStorage.getItem("offset") > 0){
+   $('#mediList_prev').on('click', function(){
+       if(parseInt(sessionStorage.getItem("medi_index")) === 0){
+           if(sessionStorage.getItem("medi_offset") > 0){
                sessionStorage.setItem(
-                   'offset', parseInt(sessionStorage.getItem("offset")) - parseInt(sessionStorage.getItem("limit"))
+                   'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) - parseInt(sessionStorage.getItem("medi_limit"))
                );
-               kcdDetail_prevBtn_ajaxReq();
-               sessionStorage.setItem("index", kcd.mainKcdList.length-1);
+               mediDetail_prevBtn_ajaxReq();
+               sessionStorage.setItem("medi_index", medi.mainMedList.length-1);
            }else{
               //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
                $(this).attr('disabled', true);
                return;
            }
        }
-       var index = parseInt(sessionStorage.getItem("index"));
+       var index = parseInt(sessionStorage.getItem("medi_index"));
        var result = null;
        var checkIdx = null;
        for(var i = index ; i>=0; i--){
-           if(sessionStorage.getItem("kcdCd") !== kcd.mainKcdList[i].kcdCd){
-               result = JSON.parse(JSON.stringify(kcd.mainKcdList[i]));
+           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
+               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
                checkIdx = i;
                break;
            }else{
                if(i == 0){
-                   result = JSON.parse(JSON.stringify(kcd.mainKcdList[0]));
+                   result = JSON.parse(JSON.stringify(medi.mainMedList[0]));
                    checkIdx = 0;
                    break;
                }
            }
        }
-       sessionStorage.setItem("kcdCd", result.kcdCd);
-       sessionStorage.setItem("index", checkIdx);
-       location.href = "/kcdDetailPage?kcdCd="+ result.kcdCd + "&mapVer=0";
+       sessionStorage.setItem("medi_kdCd", result.kdCd);
+       sessionStorage.setItem("medi_index", checkIdx);
+       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
    })
 
 }
@@ -910,21 +910,21 @@ function StringMatch_func(str, matchStr){
 }
 
 //KCD목록 조회.
-function kcdDetail_prevBtn_ajaxReq(){
+function mediDetail_prevBtn_ajaxReq(){
     $.ajax({
-        url: "/select"+sessionStorage.getItem("listOption"),
+        url: "/medicine/select/"+sessionStorage.getItem("medi_listOption"),
         type:'get',
         data:{
-            mapVer:sessionStorage.getItem("mapVer"),
-            mapStatCd:sessionStorage.getItem("mapStatCd"),
-            kcdCd:sessionStorage.getItem("searchToKcdCd").toUpperCase(),
-            limit:sessionStorage.getItem("limit"),
-            offset:parseInt(sessionStorage.getItem("offset"))
+            mapVer:sessionStorage.getItem("medi_mapVer"),
+            mapStatCd:sessionStorage.getItem("medi_mapStatCd"),
+            kcdCd:sessionStorage.getItem("medi_searchToKdCd").toUpperCase(),
+            limit:sessionStorage.getItem("medi_limit"),
+            offset:parseInt(sessionStorage.getItem("medi_offset"))
         },
         dataType:'json',
         async:false,
         success:function(data){
-            kcd.mainKcdList = JSON.parse(JSON.stringify(data));
+            medi.mainMedList = JSON.parse(JSON.stringify(data));
         }
     })
 }

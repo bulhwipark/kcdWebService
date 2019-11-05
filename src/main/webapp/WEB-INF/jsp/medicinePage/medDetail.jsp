@@ -13,11 +13,9 @@
 <input type="text" id="sctId" hidden>
 <div class="container-fluid content" id="mediListPage">
     <div class="alert alert-primary" role="alert">
-        <%--
         <div class="pull-left">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_prev" data-btntype="prev"><<<<</button>
         </div>
-        --%>
         <div style="margin-left: 135px;margin-right: 135px;display: inline-block;">
            <div>
                <a href="/">메인으로</a>
@@ -29,11 +27,9 @@
                 <div><b>영문명 : </b><span id="mediEng"></span></div>
             </div>
         </div>
-        <%--
         <div class="pull-right">
             <button class="btn btn-lg btn-danger detailRoutingBtn" id="mediList_next" data-btntype="next">>>>></button>
         </div>
-        --%>
     </div>
     <div class="row">
         <div class="alert">

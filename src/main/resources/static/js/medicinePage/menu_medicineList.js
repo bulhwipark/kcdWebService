@@ -1,4 +1,12 @@
 function menu_medicineList_staticFunc() {
+    //초기 실행
+    if(sessionStorage.getItem("medi_storageCheck")){
+        $('#medListOption').val(sessionStorage.getItem("medi_listOption"));
+        $('#searchToKdCd').val(sessionStorage.getItem("medi_searchToKcdCd"));
+        medi.limit = parseInt(sessionStorage.getItem("medi_limit"));
+        medi.currentOffset = parseInt(sessionStorage.getItem("medi_offset"));
+        sessionStorage.clear();
+    }
     medicineTotalCnt_req();
     medicineList_req();
 
@@ -53,19 +61,17 @@ function menu_medicineList_dynamicFunc() {
     $('.medDetail').on('click', function(){
         console.log($(this));
         //상세화면에서의 페이징을 위해 세팅.
-        /*
-        sessionStorage.setItem("storageCheck", true);
-        sessionStorage.setItem("limit", kcd.limit);
-        sessionStorage.setItem("offset", kcd.currentOffset);
-        sessionStorage.setItem("totalCnt", kcd.totalCnt);
-        sessionStorage.setItem("listOption", $('#listOption option:selected').val());
-        sessionStorage.setItem("sctId", $(this).data('sctid'));
-        sessionStorage.setItem("kcdCd", $(this).text());
-        sessionStorage.setItem("index", $(this).data('index'));
-        sessionStorage.setItem("searchToKcdCd", $('#searchToKcdCd').val());
-        sessionStorage.setItem("mapVer", $('#version').val());
-        sessionStorage.setItem("mapStatCd", $('#mapStatCd').val());
-        */
+        sessionStorage.setItem("medi_storageCheck", true);
+        sessionStorage.setItem("medi_limit", medi.limit);
+        sessionStorage.setItem("medi_offset", medi.currentOffset);
+        sessionStorage.setItem("medi_totalCnt", medi.totalCnt);
+        sessionStorage.setItem("medi_listOption", $('#medListOption option:selected').val());
+        sessionStorage.setItem("medi_sctId", $(this).data('sctid'));
+        sessionStorage.setItem("medi_kdCd", $(this).text());
+        sessionStorage.setItem("medi_index", $(this).data('index'));
+        sessionStorage.setItem("medi_searchToKdCd", $('#searchToKdCd').val());
+        sessionStorage.setItem("medi_mapVer", $('#medVersion').val());
+        sessionStorage.setItem("medi_mapStatCd", $('#medMapStatCd').val());
         location.href = '/medDetailPage?kdCd=' + $(this).text() + '&mapVer=' + $('#medVersion').val();
     });
 
