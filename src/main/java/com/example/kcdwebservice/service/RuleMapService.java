@@ -109,13 +109,13 @@ public class RuleMapService {
       double dblAmount=0.0;
       String strAmount="";
 
-    if(ruleTp.substring(0,1).equals("2") && dblAmount!=0){
+    if(ruleTp.substring(0,1).equals("2") && cm.getAmount3()!=0){
       strUnit=cm.getUnit3();
       dblAmount=cm.getAmount3();
-    }else  if(ruleTp.substring(0,1).equals("3") && dblAmount!=0){
+    }else  if(ruleTp.substring(0,1).equals("3") && cm.getAmount2()!=0){
       strUnit=cm.getUnit2();
       dblAmount=cm.getAmount2();
-    }else  if(ruleTp.substring(0,1).equals("4") && dblAmount!=0){
+    }else  if(ruleTp.substring(0,1).equals("4") && cm.getAmount3()!=0){
       strUnit=cm.getUnit3();
       dblAmount=cm.getAmount3();
     }else{
@@ -179,16 +179,23 @@ public class RuleMapService {
 
     String strQuery="";
 
+    String strMedDoseFrm=cm.getMedDoseFrm();
+    if (strMedDoseFrm.indexOf("film-coated tablet")>=0){
+      strMedDoseFrm="tablet";
+    }if (strMedDoseFrm.indexOf("syrup")>=0){
+      strMedDoseFrm="oral suspension";
+    }
+
     if(ruleTp.substring(0,1).equals("1") ||ruleTp.substring(0,1).equals("2") ){
-      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
     }else if(ruleTp.substring(0,1).equals("3") ||ruleTp.substring(0,1).equals("4") ){
-      strQuery=cm.getEftSubstNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+      strQuery=cm.getEftSubstNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
     }else  if(ruleTp.substring(0,1).equals("5")){
       strQuery="only "+cm.getSubstanceNm();
     }else  if(ruleTp.substring(0,1).equals("6")){
       strQuery="only "+cm.getEftSubstNm();
     }else {
-       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ cm.getMedDoseFrm();
+       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
     }
 
 
