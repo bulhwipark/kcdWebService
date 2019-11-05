@@ -35,10 +35,6 @@
         }else{
             pageRuting('kcdListPage');
         }
-
-
-        // menu_kcdList_staticFunc();
-        // menu_medicineList_staticFunc();
     });
 </script>
 </html>
