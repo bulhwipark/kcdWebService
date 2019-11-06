@@ -54,7 +54,7 @@
                         ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
         <where>
             <if test="kdCd != '' and kdCd != null">
-                M.KD_CD = #{kdCd}
+                MAP2.ORI_CD = #{kdCd}
             </if>
         </where>
         <if test="limit != '' and limit != null and offset != '' and offset != null">

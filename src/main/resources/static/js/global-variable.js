@@ -24,5 +24,6 @@ var medi = {
     limit: 50,
     currentOffset: 0,
     mainMedList: null,
-    mediDetailList:[]
+    mediDetailList:[],
+    currentMediInfo:null
 };

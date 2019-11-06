@@ -2,6 +2,7 @@ package com.example.kcdwebservice.service;
 
 import com.example.kcdwebservice.util.AutoRules;
 import com.example.kcdwebservice.util.HttpRestCall;
+import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.SearchVo;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -32,7 +33,6 @@ public class SearchService {
     public List<JSONObject> autoRuleRequest(SearchVo searchVo) {
         AutoRules autoRules = new AutoRules();
         List<JSONObject> list = new ArrayList<>();
-        JSONObject result = null;
         try {
            /*
            result = autoRules.autoRule_1(searchVo);
@@ -84,6 +84,17 @@ public class SearchService {
 
     public String searchConceptId(String valSctId) {
         return new AutoRules().autoRuleRequest(valSctId);
+    }
+
+    public List<JSONObject> medi_autoRuleRequest(CmMedicineVo cmMedicineVo) {
+        AutoRules autoRules = new AutoRules();
+        List<JSONObject> list = new ArrayList<>();
+        try {
+            list.add(autoRules.medi_autoRule_1(cmMedicineVo));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
 

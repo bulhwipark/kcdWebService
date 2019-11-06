@@ -3,6 +3,7 @@ package com.example.kcdwebservice.controller;
 import com.example.kcdwebservice.service.CmMediService;
 import com.example.kcdwebservice.service.MapKcdSctService;
 import com.example.kcdwebservice.service.RuleMapService;
+import com.example.kcdwebservice.service.SearchService;
 import com.example.kcdwebservice.util.AutoRules;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
@@ -26,7 +27,7 @@ public class MedicineController {
     @Autowired
     private MapKcdSctService mapKcdSctService;
     @Autowired
-    private RuleMapService ruleMapService;
+    SearchService searchService;
 
     /**
      * 리스트 조회.
@@ -137,17 +138,14 @@ public class MedicineController {
     }
 
     /**
-     * 룰
-     *
-     * @param searchVo
+     * medi AUTO RULE
+     * @param cmMedicineVo
      */
     @RequestMapping(value = "/mediAutoRuleSet")
     @ResponseBody
-    public void mediAutoRuleSet(SearchVo searchVo) {
-        System.out.println(searchVo.getEcl());
-//        List<String> list = ruleMapService.searchTerm(searchVo.getTerm());
-//        List<CmMedicineVo> list = ruleMapService.selectMediList("20");
-//        System.out.println(list.toString());
+    public ResponseEntity<String> mediAutoRuleSet(CmMedicineVo cmMedicineVo) {
+        List<JSONObject> list = searchService.medi_autoRuleRequest(cmMedicineVo);
+        return new ResponseEntity<>(list.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value="/mediExcelDownload.xlsx")

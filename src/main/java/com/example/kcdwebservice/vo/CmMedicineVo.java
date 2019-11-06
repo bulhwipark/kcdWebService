@@ -27,6 +27,7 @@ public class CmMedicineVo {
     private String medDoseFrm;
     private String rtOfAdmin;
 
+    private String strAmount;
     private String udtDt;
     private String sctId;
     private String sctTerm;
@@ -35,6 +36,7 @@ public class CmMedicineVo {
     private String mapVer;
     private String medListOption;
     private String mapStatNm;
+    private String ecl;
     private String limit;
     private String offset;
     

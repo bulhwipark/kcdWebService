@@ -12,10 +12,12 @@ function menu_medicineList_staticFunc() {
     medicineList_req();
 
     $('#medListOption').on('change', function () {
+        medicineTotalCnt_req();
         medicineList_req();
     });
 
     $('#searchToKdCd').on('keyup', function () {
+        medicineTotalCnt_req();
         medicineList_req();
     });
 

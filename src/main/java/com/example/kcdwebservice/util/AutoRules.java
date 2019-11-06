@@ -1,5 +1,6 @@
 package com.example.kcdwebservice.util;
 
+import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.SearchVo;
 
 import org.apache.http.HttpEntity;
@@ -16,6 +17,9 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * 'medi_' : 약제 쪽 룰.
+ */
 public class AutoRules {
     /**
      * snowstrom api 호출.
@@ -29,6 +33,18 @@ public class AutoRules {
         paramMap.put("activeFilter", "true");
         paramMap.put("termActive", "true");
         paramMap.put("ecl", searchVo.getEcl());
+        paramMap.put("term", searchVo.getTerm());
+        result = HttpRestCall.callGet(URL, paramMap);
+        return result;
+    }
+
+    public String medi_autoRuleRequest(SearchVo searchVo) {
+        String result = null;
+        String URL = "http://1.224.169.78:8095/MAIN/concepts?";
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("activeFilter", "true");
+        paramMap.put("termActive", "true");
+//        paramMap.put("ecl", searchVo.getEcl());
         paramMap.put("term", searchVo.getTerm());
         result = HttpRestCall.callGet(URL, paramMap);
         return result;
@@ -373,6 +389,76 @@ public class AutoRules {
         }
        return returnJSON;
     }
+
+    /**
+     * 약제 룰 1
+     * @param cmMedicineVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject medi_autoRule_1(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+
+        SearchVo searchVo = new SearchVo();
+        searchVo.setEcl(cmMedicineVo.getEcl());
+        searchVo.setTerm(
+                cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount1() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+        );
+        result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() == 0){
+            if(cmMedicineVo.getUnit1().equals("g") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("mg");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }else if(cmMedicineVo.getUnit1().equals("mg") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("mcg");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }else if(cmMedicineVo.getUnit1().equals("mcg") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("nanogram");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }
+            searchVo.setEcl(cmMedicineVo.getEcl());
+            searchVo.setTerm(
+                    cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+            );
+            System.out.println("term : " + searchVo.getTerm());
+            System.out.println("ecl : " + searchVo.getEcl());
+            result = medi_autoRuleRequest(searchVo);
+        }
+
+        checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+        }
+        System.out.println("-------------medi rule_1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
 
 
 }

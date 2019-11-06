@@ -13,7 +13,7 @@ function medi_detail_static_func(){
     });
 
     //disorder, clinicalfinding 클릭시 좌측 ecl 인풋에 텍스트는 삭제.
-    $('input[name="defaultRule"]').on('click', function(){
+    $('input[name="mediDefaultRule"]').on('click', function(){
         $('#mediEcl').val('');
     });
 
@@ -195,6 +195,7 @@ function get_mediObject_req(){
         dataType:'json',
         success:function(data){
             if(data){
+                medi.currentMediInfo = JSON.parse(JSON.stringify(data));
                 $('#mediKor').text(data.drugNmKor);
                 $('#mediEng').text(data.drugNmEng);
                 $('#mediTerm').val(data.drugNmEng);
@@ -460,7 +461,7 @@ function termSynonym(){
  */
 function medi_autoRuleSet(){
     var param = new Object();
-    param.term = $('#mediTerm').val();
+    param = JSON.parse(JSON.stringify(medi.currentMediInfo));
 
     if($('input[name="mediDefaultRule"]:checked').val()){
         param.ecl = $('input[name="mediDefaultRule"]:checked').val();
@@ -475,8 +476,7 @@ function medi_autoRuleSet(){
         dataType:'json',
         success:function(data){
             console.log(data);
-            $('#searchResultTable tbody').empty();
-            /*
+            $('#mediSearchResultTable tbody').empty();
             for(var q = 0; q<data.length; q++){
 
                 if(data[q].status === "true"){
@@ -485,22 +485,22 @@ function medi_autoRuleSet(){
                         var items = res['items'];
 
                         //중복제거.
-                        if(kcd.kcdDetailList){
-                            for(var i = 0; i<kcd.kcdDetailList.length; i++){
+                        if(medi.mediDetailList){
+                            for(var i = 0; i<medi.mediDetailList.length; i++){
                                 items = items.filter(function(item, idx, arr){
-                                    if(item.conceptId != kcd.kcdDetailList[i].sctId){
+                                    if(item.conceptId != medi.mediDetailList[i].sctId){
                                         return item;
                                     }
                                 });
                             }
                         }
-                        kcd.searchList = JSON.parse(JSON.stringify(items));
+                        medi.searchList = JSON.parse(JSON.stringify(items));
 
-                        $('#searchResultAllSelect').prop("checked", false);
+                        $('#mediSearchResultTable').prop("checked", false);
                         for(var i = 0; i<items.length; i++){
-                            if($('#searchResultTable tbody').children('#' + items[i].conceptId).length > 0){
-                                $('#searchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
-                                    $('#searchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
+                            if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
+                                $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
+                                    $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
                                 )
                             }else{
                                 var $tr = $('<tr>',{id:items[i].conceptId}).append(
@@ -512,7 +512,7 @@ function medi_autoRuleSet(){
                                     //term
                                     $('<td>',{
                                        // text:items[i]['fsn']['term']
-                                        html:StringMatch_func(items[i]['fsn']['term'], $('#term').val())
+                                        html:StringMatch_func(items[i]['fsn']['term'], $('#mediTerm').val())
                                     }),
                                     $('<td>',{
                                         class:'autoRuleCol',
@@ -528,19 +528,18 @@ function medi_autoRuleSet(){
                                         })
                                     )
                                 );
-                                $('#searchResultTable tbody').append($tr);
+                                $('#mediSearchResultTable tbody').append($tr);
                             }
                         }
                         $('#saveBtnDiv').removeClass('displayNone');
                         $('.autoRuleCol').removeClass('displayNone');
-                        kcd_detail_dynamic_func();
+                        medi_detail_dynamic_func();
                   }else{
                         //status false;
                         console.log(data[q].status);
                     }
                 }
             }
-            */
         }
     });
 }
