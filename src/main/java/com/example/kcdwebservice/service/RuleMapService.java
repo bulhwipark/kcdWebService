@@ -180,10 +180,16 @@ public class RuleMapService {
     String strQuery="";
 
     String strMedDoseFrm=cm.getMedDoseFrm();
-    if (strMedDoseFrm.indexOf("film-coated tablet")>=0){
+    if (strMedDoseFrm.indexOf("tablet")>=0){
       strMedDoseFrm="tablet";
-    }if (strMedDoseFrm.indexOf("syrup")>=0){
+    }else if (strMedDoseFrm.indexOf("syrup")>=0){
       strMedDoseFrm="oral suspension";
+    }else if (strMedDoseFrm.indexOf("capsule")>=0){
+      strMedDoseFrm="capsule";
+    }else if (strMedDoseFrm.indexOf("gastro-resistant capsule")>=0){
+      strMedDoseFrm="gastro-resistant capsule";
+    }else if (strMedDoseFrm.indexOf("prolonged-release capsule")>=0){
+      strMedDoseFrm="prolonged-release capsule";
     }
 
     if(ruleTp.substring(0,1).equals("1") ||ruleTp.substring(0,1).equals("2") ){

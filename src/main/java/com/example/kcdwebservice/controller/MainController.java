@@ -197,7 +197,7 @@ public class MainController {
 
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody
-    public String autoMapKcdRule2(@PathVariable("id") String ruleTp) {
+    public String autoMapMediRule1(@PathVariable("id") String ruleTp) {
         ruleMapService.selectMediList(ruleTp);
 
     //     ruleMapService.selectMediList("10");
@@ -225,7 +225,7 @@ public class MainController {
 
     @GetMapping(value="/mediRule2")
     @ResponseBody
-    public String autoMapKcdRule3(@PathVariable("id") String ruleTp) {
+    public String autoMapMediRule2(@PathVariable("id") String ruleTp) {
        //ruleMapService.selectMediList(ruleTp);
 
         ruleMapService.selectMediList("10");
