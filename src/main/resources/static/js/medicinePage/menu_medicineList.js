@@ -6,6 +6,7 @@ function menu_medicineList_staticFunc() {
         medi.limit = parseInt(sessionStorage.getItem("medi_limit"));
         medi.currentOffset = parseInt(sessionStorage.getItem("medi_offset"));
         sessionStorage.clear();
+        sessionStorage.setItem('mainPage', 'medicinePage');
     }
     medicineTotalCnt_req();
     medicineList_req();

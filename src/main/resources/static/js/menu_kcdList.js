@@ -6,6 +6,7 @@ function menu_kcdList_staticFunc(){
         kcd.limit = parseInt(sessionStorage.getItem("limit"));
         kcd.currentOffset = parseInt(sessionStorage.getItem("offset"));
         sessionStorage.clear();
+        sessionStorage.setItem('mainPage', 'kcdListPage');
     }
     //kcdList_getMappingStatusCd();
     kcdList_totalCount_req();

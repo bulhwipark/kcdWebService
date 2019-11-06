@@ -29,11 +29,11 @@
     $(function(){
         static_function();
 
-        if(sessionStorage.getItem("mainPage") !== 'null'){
-            pageRuting(sessionStorage.getItem('mainPage'));
-            sessionStorage.setItem('mainPage', null);
-        }else{
+        if(!sessionStorage.getItem("mainPage") || sessionStorage.getItem("mainPage") === 'null'){
             pageRuting('kcdListPage');
+        }else{
+            pageRuting(sessionStorage.getItem('mainPage'));
+            // sessionStorage.setItem('mainPage', null);
         }
     });
 </script>
