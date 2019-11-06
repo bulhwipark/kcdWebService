@@ -175,7 +175,6 @@ function kcdList_totalCount_req(){
         },
         dataType:'json',
         success:function(data){
-            console.log(data);
             kcd.kcdTotalCnt = data.kcdTotalCnt;
             kcd.totalCnt = data.totalCnt;
             $('#kcdTotalCnt').text(data.kcdTotalCnt?data.kcdTotalCnt:'-');
@@ -187,6 +186,7 @@ function kcdList_totalCount_req(){
 /**
  * 매핑상태코드.
  */
+/*
 function kcdList_getMappingStatusCd(){
     $.ajax({
         url:'/getMappingStatusCd',
@@ -217,3 +217,4 @@ function kcdList_getMappingStatusCd(){
         }
     })
 }
+*/

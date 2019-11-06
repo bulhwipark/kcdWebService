@@ -28,12 +28,11 @@
 <script type="text/javascript">
     $(function(){
         static_function();
-
+        //상단메뉴
         if(!sessionStorage.getItem("mainPage") || sessionStorage.getItem("mainPage") === 'null'){
             pageRuting('kcdListPage');
         }else{
             pageRuting(sessionStorage.getItem('mainPage'));
-            // sessionStorage.setItem('mainPage', null);
         }
     });
 </script>
