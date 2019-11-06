@@ -91,6 +91,7 @@ public class SearchService {
         List<JSONObject> list = new ArrayList<>();
         try {
             list.add(autoRules.medi_autoRule_1(cmMedicineVo));
+            list.add(autoRules.medi_autoRule_2(cmMedicineVo));
         } catch (JSONException e) {
             e.printStackTrace();
         }

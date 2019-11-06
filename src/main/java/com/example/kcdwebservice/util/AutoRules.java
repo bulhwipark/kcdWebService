@@ -459,6 +459,74 @@ public class AutoRules {
         return returnJSON;
     }
 
+    /**
+     * 약제 룰 2
+     * @param cmMedicineVo
+     * @return
+     */
+    public JSONObject medi_autoRule_2(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+        SearchVo searchVo = new SearchVo();
+        searchVo.setEcl(cmMedicineVo.getEcl());
+        searchVo.setTerm(
+           cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+        );
+        result = medi_autoRuleRequest(searchVo);
 
+        JSONObject checkJSON = new JSONObject(result);
 
+        if(checkJSON.getJSONArray("items").length() == 0){
+            if(cmMedicineVo.getUnit3().equals("mg")){
+                cmMedicineVo.setUnit3("milligram");
+            }else if(cmMedicineVo.getUnit3().equals("g")){
+                cmMedicineVo.setUnit3("gram");
+            }else if(cmMedicineVo.getUnit3().equals("μg")){
+                cmMedicineVo.setUnit3("microgram");
+            }else if(cmMedicineVo.getUnit3().equals("KI.U")){
+                cmMedicineVo.setUnit3("KIU");
+            }else if(cmMedicineVo.getUnit3().equals("MI.U")){
+                cmMedicineVo.setUnit3("MIU");
+            }else if(cmMedicineVo.getUnit3().equals("L")){
+                cmMedicineVo.setUnit3("liter");
+            }else if(cmMedicineVo.getUnit3().equals("cm2")){
+                cmMedicineVo.setUnit3("square centimeter");
+            }else if(cmMedicineVo.getUnit3().equals("mm")){
+                cmMedicineVo.setUnit3("milimeter");
+            }else if(cmMedicineVo.getUnit3().equals("mL/g")){
+                cmMedicineVo.setUnit3("milliliter/gram");
+            }else if(cmMedicineVo.getUnit3().equals("mL/mL")){
+                cmMedicineVo.setUnit3("milliliter/milliliter");
+            }else if(cmMedicineVo.getUnit3().equals("mL")){
+                cmMedicineVo.setUnit3("milimeter");
+            }else if(cmMedicineVo.getUnit3().equals("mg/mL")){
+                cmMedicineVo.setUnit3("milligram/1 milliliter");
+            }
+            searchVo.setEcl(cmMedicineVo.getEcl());
+            searchVo.setTerm(
+                    cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+            );
+            result = medi_autoRuleRequest(searchVo);
+        }
+
+        checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "2");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "2");
+        }
+        System.out.println("-------------medi rule_2-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
 }
