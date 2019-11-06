@@ -225,7 +225,7 @@ public class MainController {
 
     @GetMapping(value="/mediRule2")
     @ResponseBody
-    public String autoMapMediRule2(@PathVariable("id") String ruleTp) {
+    public String autoMapMediRule2() {
        //ruleMapService.selectMediList(ruleTp);
 
         ruleMapService.selectMediList("10");
