@@ -529,4 +529,72 @@ public class AutoRules {
 
         return returnJSON;
     }
+
+    /**
+     * 약제 룰 3
+     * @param cmMedicineVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject medi_autoRule_3(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+
+        SearchVo searchVo = new SearchVo();
+        searchVo.setEcl(cmMedicineVo.getEcl());
+        searchVo.setTerm(
+                cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getAmount2() + " " + cmMedicineVo.getUnit2() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+        );
+        result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() == 0){
+            if(cmMedicineVo.getUnit1().equals("g") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("mg");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }else if(cmMedicineVo.getUnit1().equals("mg") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("mcg");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }else if(cmMedicineVo.getUnit1().equals("mcg") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("nanogram");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }
+            searchVo.setEcl(cmMedicineVo.getEcl());
+            searchVo.setTerm(
+                    cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+            );
+            result = medi_autoRuleRequest(searchVo);
+        }
+
+        checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "3");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "3");
+        }
+        System.out.println("-------------medi rule_3-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
 }
