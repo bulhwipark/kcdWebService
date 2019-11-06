@@ -43,11 +43,9 @@
                             <button class="btn btn-light" id="medi_next">>></button>
                         </span>
                     </div>
-                    <%--
                     <div style="display: inline-block; margin-top: 20px;">
                         <button class="btn btn-outline-danger" id="medExcelDownloadBtn">Excel Download</button>
                     </div>
-                    --%>
 
                 </div>
             </div>

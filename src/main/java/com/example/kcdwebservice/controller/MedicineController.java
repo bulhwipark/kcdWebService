@@ -13,6 +13,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -149,12 +150,22 @@ public class MedicineController {
 //        System.out.println(list.toString());
     }
 
-    /*
     @PostMapping(value="/mediExcelDownload.xlsx")
     public String mediExcelDownload(CmMedicineVo cmMedicineVo, Model model){
-        System.out.println(cmMedicineVo.getKdCd());
-        return "";
+        List<CmMedicineVo> list = null;
+        if (cmMedicineVo.getMedListOption().equals("All")) {
+            list = cmMediService.medi_selectAll(cmMedicineVo);
+        } else if (cmMedicineVo.getMedListOption().equals("Mapping")) {
+            list = cmMediService.medi_selectMapping(cmMedicineVo);
+        } else {
+            list = cmMediService.medi_selectNoMapping(cmMedicineVo);
+        }
+
+        model.addAttribute("list", list);
+        model.addAttribute("sheetNm", "제약 목록");
+        model.addAttribute("headerNmArr", new String[]{"KDCD코드", "한글명/영문명", "SCTID", "Snomed CT Term", "매핑상태", "매핑일자" });
+
+        return "MediExcelDownload";
     }
-    */
 
 }
