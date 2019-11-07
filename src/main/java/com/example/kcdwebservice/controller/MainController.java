@@ -1,22 +1,25 @@
 package com.example.kcdwebservice.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import com.example.kcdwebservice.service.CmKcdService;
 import com.example.kcdwebservice.service.CmSnomedCtService;
 import com.example.kcdwebservice.service.DicKcdSynonymService;
+import com.example.kcdwebservice.service.DicSnomedctAttValService;
 import com.example.kcdwebservice.service.MCodeService;
+import com.example.kcdwebservice.service.MapKcdSctAftCatService;
 import com.example.kcdwebservice.service.MapKcdSctService;
 import com.example.kcdwebservice.service.RuleMapService;
 import com.example.kcdwebservice.service.SearchService;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmSnomedCtVo;
 import com.example.kcdwebservice.vo.DicKcdSynonymVo;
+import com.example.kcdwebservice.vo.DicSnomedctAttValVo;
 import com.example.kcdwebservice.vo.MCodeVo;
+import com.example.kcdwebservice.vo.MapKcdSctAftCatVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
 import com.example.kcdwebservice.vo.SearchVo;
-import com.example.kcdwebservice.service.*;
-import com.example.kcdwebservice.vo.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -24,7 +27,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -198,6 +206,7 @@ public class MainController {
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody
     public String autoMapMediRule1(@PathVariable("id") String ruleTp) {
+        long during=System.currentTimeMillis();
         ruleMapService.selectMediList(ruleTp);
 
     //     ruleMapService.selectMediList("10");
@@ -219,8 +228,8 @@ public class MainController {
     //    ruleMapService.selectMediList("5");
     //    ruleMapService.selectMediList("6");
 
-    
-       return "자동룰매핑종료"+System.currentTimeMillis();
+    during=System.currentTimeMillis()-during;
+       return "자동룰매핑종료 매핑시간:"+during;
     }
 
     @GetMapping(value="/mediRule2")
