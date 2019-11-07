@@ -93,6 +93,7 @@ public class SearchService {
             list.add(autoRules.medi_autoRule_1(cmMedicineVo));
             list.add(autoRules.medi_autoRule_2(cmMedicineVo));
             list.add(autoRules.medi_autoRule_3(cmMedicineVo));
+            list.add(autoRules.medi_autoRule_4(cmMedicineVo));
         } catch (JSONException e) {
             e.printStackTrace();
         }
