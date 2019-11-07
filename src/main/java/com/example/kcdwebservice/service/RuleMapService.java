@@ -109,8 +109,7 @@ public class RuleMapService {
         return;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
-    }
-    if (ruleTp.substring(0, 1).equals("3")) {
+    }else  if (ruleTp.substring(0, 1).equals("3")) {
       if (cm.getAmount2() == 0)
         return;
       strUnit = cm.getUnit2();
