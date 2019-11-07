@@ -410,6 +410,14 @@ public class AutoRules {
         searchVo.setTerm(
                 cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount1() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
         );
+
+        if(cmMedicineVo.getSubstanceNm().trim().equals("")){
+            returnJSON.put("status", "substanceNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+            return returnJSON;
+        }
+
         result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
@@ -487,6 +495,14 @@ public class AutoRules {
         searchVo.setTerm(
            cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
         );
+
+        if(cmMedicineVo.getSubstanceNm().trim().equals("")){
+            returnJSON.put("status", "substanceNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+            return returnJSON;
+        }
+
         result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
@@ -571,6 +587,14 @@ public class AutoRules {
         searchVo.setTerm(
                 cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getAmount2() + " " + cmMedicineVo.getUnit2() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
         );
+
+        if(cmMedicineVo.getEftSubstNm().trim().equals("")){
+            returnJSON.put("status", "eftSubstNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+            return returnJSON;
+        }
+
         result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
@@ -648,6 +672,14 @@ public class AutoRules {
         searchVo.setTerm(
                 cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
         );
+
+        if(cmMedicineVo.getEftSubstNm().trim().equals("")){
+            returnJSON.put("status", "eftSubstNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "1");
+            return returnJSON;
+        }
+
         result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);

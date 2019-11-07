@@ -25,5 +25,6 @@ var medi = {
     currentOffset: 0,
     mainMedList: null,
     mediDetailList:[],
-    currentMediInfo:null
+    currentMediInfo:null,
+    autoRuleLog:null
 };

@@ -83,8 +83,13 @@
             <div>
                 <label for="mediTerm"><b>term : </b></label>
                 <input type="text" id="mediTerm" style="width: 500px;">
+                <%--
                 <label for="mediSynonym" style="margin-left: 20px;"><b>동의어 : </b></label>
                 <select class="form-control" name="" id="mediSynonym" style="display: inline-block; width: 700px;">
+                </select>
+                --%>
+                <label for="mediSearchTermSelect" style="margin-left: 20px;"><b>search term : </b></label>
+                <select class="form-control" name="" id="mediSearchTermSelect" style="display: inline-block; width: 700px;">
                 </select>
             </div>
             <%--

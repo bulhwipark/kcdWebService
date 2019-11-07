@@ -5,7 +5,7 @@ function medi_detail_static_func(){
     //termSynonym();
     medi_autoRuleSet();
     mediDetail_prevBtn_ajaxReq();
-
+    mediSearchTerm_setting();
     //ecl 클릭시 disorder, clinicalFinding 체크해제.
     $('#mediEcl').on('click',function(){
         $('#mediDisorder').prop('checked', false);
@@ -456,6 +456,20 @@ function termSynonym(){
     })
 }
 
+//search term selectbox setting
+function mediSearchTerm_setting(){
+    $('#mediSearchTermSelect').empty();
+    for(var i = 0; i<medi.autoRuleLog.length; i++){
+        var logInfo = medi.autoRuleLog[i];
+        if(logInfo.status == 'true' || logInfo.status == 'false'){
+            var $option = $('<option>',{
+                text:logInfo.searchTerm
+            });
+            $('#mediSearchTermSelect').append($option);
+        }
+    }
+}
+
 /**
  * 자동룰 반영
  */
@@ -476,6 +490,7 @@ function medi_autoRuleSet(){
         dataType:'json',
         success:function(data){
             console.log(data);
+            medi.autoRuleLog = JSON.parse(JSON.stringify(data));
             $('#mediSearchResultTable tbody').empty();
             for(var q = 0; q<data.length; q++){
 
