@@ -38,13 +38,18 @@ public class AutoRules {
         return result;
     }
 
+    /**
+     * 약제 snowstorm req
+     * @param searchVo
+     * @return
+     */
     public String medi_autoRuleRequest(SearchVo searchVo) {
         String result = null;
         String URL = "http://1.224.169.78:8095/MAIN/concepts?";
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("activeFilter", "true");
         paramMap.put("termActive", "true");
-//        paramMap.put("ecl", searchVo.getEcl());
+        paramMap.put("ecl", "<763158003");
         paramMap.put("term", searchVo.getTerm());
         result = HttpRestCall.callGet(URL, paramMap);
         return result;
@@ -550,28 +555,28 @@ public class AutoRules {
         JSONObject checkJSON = new JSONObject(result);
 
         if(checkJSON.getJSONArray("items").length() == 0){
-            if(cmMedicineVo.getUnit1().equals("g") && cmMedicineVo.getAmount1() < 1){
-                cmMedicineVo.setUnit1("mg");
-                cmMedicineVo.setAmount1(
-                        cmMedicineVo.getAmount1() * 1000
+            if(cmMedicineVo.getUnit2().equals("g") && cmMedicineVo.getAmount2() < 1){
+                cmMedicineVo.setUnit2("mg");
+                cmMedicineVo.setAmount2(
+                        cmMedicineVo.getAmount2() * 1000
                 );
                 cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
-            }else if(cmMedicineVo.getUnit1().equals("mg") && cmMedicineVo.getAmount1() < 1){
-                cmMedicineVo.setUnit1("mcg");
-                cmMedicineVo.setAmount1(
-                        cmMedicineVo.getAmount1() * 1000
+            }else if(cmMedicineVo.getUnit2().equals("mg") && cmMedicineVo.getAmount2() < 1){
+                cmMedicineVo.setUnit2("mcg");
+                cmMedicineVo.setAmount2(
+                        cmMedicineVo.getAmount2() * 1000
                 );
-                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
-            }else if(cmMedicineVo.getUnit1().equals("mcg") && cmMedicineVo.getAmount1() < 1){
-                cmMedicineVo.setUnit1("nanogram");
-                cmMedicineVo.setAmount1(
-                        cmMedicineVo.getAmount1() * 1000
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount2()));
+            }else if(cmMedicineVo.getUnit2().equals("mcg") && cmMedicineVo.getAmount2() < 1){
+                cmMedicineVo.setUnit2("nanogram");
+                cmMedicineVo.setAmount2(
+                        cmMedicineVo.getAmount2() * 1000
                 );
-                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount2()));
             }
             searchVo.setEcl(cmMedicineVo.getEcl());
             searchVo.setTerm(
-                    cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+                    cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit2() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
             );
             result = medi_autoRuleRequest(searchVo);
         }
@@ -589,6 +594,72 @@ public class AutoRules {
             returnJSON.put("ruleCode", "3");
         }
         System.out.println("-------------medi rule_3-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 4
+     * @param cmMedicineVo
+     * @return
+     */
+    public JSONObject medi_autoRule_4(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+
+        SearchVo searchVo = new SearchVo();
+        searchVo.setEcl(cmMedicineVo.getEcl());
+        searchVo.setTerm(
+                cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+        );
+        result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() == 0){
+            if(cmMedicineVo.getUnit3().equals("g") && cmMedicineVo.getAmount3() < 1){
+                cmMedicineVo.setUnit3("mg");
+                cmMedicineVo.setAmount3(
+                        cmMedicineVo.getAmount3() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount3()));
+            }else if(cmMedicineVo.getUnit3().equals("mg") && cmMedicineVo.getAmount3() < 1){
+                cmMedicineVo.setUnit3("mcg");
+                cmMedicineVo.setAmount3(
+                        cmMedicineVo.getAmount3() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount3()));
+            }else if(cmMedicineVo.getUnit3().equals("mcg") && cmMedicineVo.getAmount3() < 1){
+                cmMedicineVo.setUnit3("nanogram");
+                cmMedicineVo.setAmount3(
+                        cmMedicineVo.getAmount3() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount3()));
+            }
+            searchVo.setEcl(cmMedicineVo.getEcl());
+            searchVo.setTerm(
+                    cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
+            );
+            result = medi_autoRuleRequest(searchVo);
+        }
+
+        checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "4");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "4");
+        }
+        System.out.println("-------------medi rule_4-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
