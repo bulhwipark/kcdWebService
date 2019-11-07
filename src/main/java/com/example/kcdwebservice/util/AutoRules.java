@@ -3,6 +3,7 @@ package com.example.kcdwebservice.util;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.SearchVo;
 
+import com.sun.corba.se.spi.activation.ServerAlreadyRegisteredHelper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -404,7 +405,6 @@ public class AutoRules {
     public JSONObject medi_autoRule_1(CmMedicineVo cmMedicineVo) throws JSONException {
         JSONObject returnJSON = new JSONObject();
         String result = null;
-
         SearchVo searchVo = new SearchVo();
         searchVo.setEcl(cmMedicineVo.getEcl());
         searchVo.setTerm(
@@ -441,6 +441,14 @@ public class AutoRules {
 
             searchVo.getTerm().replace(",", "");
             searchVo.getTerm().replace("/", " ");
+
+            //
+            if(cmMedicineVo.getAmount1() == 0){
+                returnJSON.put("status", "amount1 not valid");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "1");
+                return returnJSON;
+            }
 
             result = medi_autoRuleRequest(searchVo);
         }
@@ -517,6 +525,13 @@ public class AutoRules {
             searchVo.getTerm().replace(",", "");
             searchVo.getTerm().replace("/", " ");
 
+            if(cmMedicineVo.getAmount3() == 0){
+                returnJSON.put("status", "amount3 not valid");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "2");
+                return returnJSON;
+            }
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -588,6 +603,13 @@ public class AutoRules {
             searchVo.getTerm().replace(",", "");
             searchVo.getTerm().replace("/", " ");
 
+            if(cmMedicineVo.getAmount2() == 0){
+                returnJSON.put("status", "amount2 not valid");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "3");
+                return returnJSON;
+            }
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -658,6 +680,13 @@ public class AutoRules {
             searchVo.getTerm().replace(",", "");
             searchVo.getTerm().replace("/", " ");
 
+            if(cmMedicineVo.getAmount3() == 0){
+                returnJSON.put("status", "amount not valid");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "4");
+                return returnJSON;
+            }
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -679,6 +708,257 @@ public class AutoRules {
         System.out.println(returnJSON.toString());
         System.out.println("-------------------------------------------");
 
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 5
+     * @return
+     */
+    public JSONObject medi_autoRule_5(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+        SearchVo searchVo = new SearchVo();
+        searchVo.setTerm(
+                "only " + cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getRtOfAdmin().trim()
+        );
+
+        searchVo.getTerm().replace(",", "");
+        searchVo.getTerm().replace("/", " ");
+
+        if(cmMedicineVo.getSubstanceNm().trim().equals("")){
+            returnJSON.put("status", "substanceNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "5");
+            return returnJSON;
+        }else if(cmMedicineVo.getRtOfAdmin().trim().equals("")){
+            returnJSON.put("status", "route of adminStration not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "5");
+            return returnJSON;
+        }
+
+        result = medi_autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() <= 0){
+            searchVo.setTerm(
+               searchVo.getTerm().replace("only ", "")
+            );
+            result = medi_autoRuleRequest(searchVo);
+
+            checkJSON = new JSONObject(result);
+            if(checkJSON.getJSONArray("items").length() > 0 ){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", result);
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "5");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "5");
+            }
+
+        }else{
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "5");
+        }
+
+        System.out.println("-------------medi rule_5-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 6
+     * @param cmMedicineVo
+     * @return
+     */
+    public JSONObject medi_autoRule_6(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+        SearchVo searchVo = new SearchVo();
+
+        searchVo.setTerm(
+              "only " + cmMedicineVo.getEftSubstNm() + cmMedicineVo.getRtOfAdmin().trim()
+        );
+
+        searchVo.getTerm().replace(",", "");
+        searchVo.getTerm().replace("/", " ");
+
+        if(cmMedicineVo.getEftSubstNm().trim().equals("")){
+            returnJSON.put("status", "substanceNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "6");
+            return returnJSON;
+        }else if(cmMedicineVo.getRtOfAdmin().trim().equals("")){
+            returnJSON.put("status", "route of adminStration not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "6");
+            return returnJSON;
+        }
+
+        result = medi_autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() <= 0){
+            searchVo.setTerm(
+                    searchVo.getTerm().replace("only ", "")
+            );
+            result = medi_autoRuleRequest(searchVo);
+
+            checkJSON = new JSONObject(result);
+            if(checkJSON.getJSONArray("items").length() > 0 ){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", result);
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "6");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "6");
+            }
+
+        }else{
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "6");
+        }
+
+        System.out.println("-------------medi rule_6-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 7
+     * @param cmMedicineVo
+     * @return
+     */
+    public JSONObject medi_autoRule_7(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+        SearchVo searchVo = new SearchVo();
+
+        searchVo.setTerm(
+                "only " + cmMedicineVo.getSubstanceNm()
+        );
+
+        searchVo.getTerm().replace(",", "");
+        searchVo.getTerm().replace("/", " ");
+
+        if(cmMedicineVo.getSubstanceNm().trim().equals("")){
+            returnJSON.put("status", "substanceNm not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "7");
+            return returnJSON;
+        }
+
+        result = medi_autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() <= 0){
+            searchVo.setTerm(
+                    searchVo.getTerm().replace("only ", "")
+            );
+            result = medi_autoRuleRequest(searchVo);
+
+            checkJSON = new JSONObject(result);
+            if(checkJSON.getJSONArray("items").length() > 0 ){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", result);
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "7");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "7");
+            }
+
+        }else{
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "7");
+        }
+
+        System.out.println("-------------medi rule_7-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 8
+     * @param cmMedicineVo
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject medi_autoRule_8(CmMedicineVo cmMedicineVo) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
+        String result = null;
+        SearchVo searchVo = new SearchVo();
+
+        searchVo.setTerm(
+                "only " + cmMedicineVo.getEftSubstNm()
+        );
+
+        searchVo.getTerm().replace(",", "");
+        searchVo.getTerm().replace("/", " ");
+
+        if(cmMedicineVo.getEftSubstNm().trim().equals("")){
+            returnJSON.put("status", "route of adminStration not valid");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "5");
+            return returnJSON;
+        }
+
+        result = medi_autoRuleRequest(searchVo);
+        JSONObject checkJSON = new JSONObject(result);
+
+        if(checkJSON.getJSONArray("items").length() <= 0){
+            searchVo.setTerm(
+                    searchVo.getTerm().replace("only ", "")
+            );
+            result = medi_autoRuleRequest(searchVo);
+
+            checkJSON = new JSONObject(result);
+            if(checkJSON.getJSONArray("items").length() > 0 ){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", result);
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "8");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo.getTerm());
+                returnJSON.put("ruleCode", "8");
+            }
+
+        }else{
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "8");
+        }
+
+        System.out.println("-------------medi rule_8-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
         return returnJSON;
     }
 
