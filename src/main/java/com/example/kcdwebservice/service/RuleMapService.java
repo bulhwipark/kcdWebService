@@ -20,12 +20,11 @@ import org.springframework.stereotype.Service;
 public class RuleMapService {
   @Autowired
   private CmKcdService cmKcdService;
-  
+
   @Autowired
   CmMediDao cmMediDao;
   @Autowired
   MapKcdSctDao mapKcdSctDao;
-  
 
   public void automap1(String ecl) {
 
@@ -33,7 +32,7 @@ public class RuleMapService {
     MapKcdSctVo mvo = null;
     for (CmKcdVo ck : lck) {
 
-      List<String> lsctcd = searchTerm(ck.getKcdEng(),ecl);
+      List<String> lsctcd = searchTerm(ck.getKcdEng(), ecl);
 
       for (String sctcd : lsctcd) {
         mvo = new MapKcdSctVo();
@@ -46,13 +45,14 @@ public class RuleMapService {
     }
 
   }
+
   public List<String> searchTerm(String term) {
-    String ecl="<64572001"; //Disease (disorder)
-    return searchTerm(term,ecl);
-    //String ecl="<404684003"; //clinical finding(finding)
+    String ecl = "<64572001"; // Disease (disorder)
+    return searchTerm(term, ecl);
+    // String ecl="<404684003"; //clinical finding(finding)
   }
 
-  public List<String> searchTerm(String term,String ecl) {
+  public List<String> searchTerm(String term, String ecl) {
     ArrayList<String> arrSctid = new ArrayList<String>();
 
     String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
@@ -98,158 +98,162 @@ public class RuleMapService {
 
   }
 
-  public List<CmMedicineVo> selectMediList(String ruleTp) {
+  public void serarchAndInsert(CmMedicineVo cm, String ruleTp) {
 
-    
-    List<CmMedicineVo> list = cmMediDao.selectAll();
-    
-    MapKcdSctVo mvo = null;
-    for (CmMedicineVo cm : list) {
-      String strUnit="";
-      double dblAmount=0.0;
-      String strAmount="";
+    String strUnit = "";
+    double dblAmount = 0.0;
+    String strAmount = "";
 
-    if(ruleTp.substring(0,1).equals("2") ){
-      if(cm.getAmount3()==0)
-        break;
-      strUnit=cm.getUnit3();
-      dblAmount=cm.getAmount3();
+    if (ruleTp.substring(0, 1).equals("2")) {
+      if (cm.getAmount3() == 0)
+        return;
+      strUnit = cm.getUnit3();
+      dblAmount = cm.getAmount3();
     }
-    if(ruleTp.substring(0,1).equals("3") ){
-      if( cm.getAmount2()==0)
-        break;
-      strUnit=cm.getUnit2();
-      dblAmount=cm.getAmount2();
-    }else  if(ruleTp.substring(0,1).equals("4") ){
-      if(cm.getAmount3()==0)
-        break;
-      strUnit=cm.getUnit3();
-      dblAmount=cm.getAmount3();
-    }else{
-      strUnit=cm.getUnit1();
-      dblAmount=cm.getAmount1();
+    if (ruleTp.substring(0, 1).equals("3")) {
+      if (cm.getAmount2() == 0)
+        return;
+      strUnit = cm.getUnit2();
+      dblAmount = cm.getAmount2();
+    } else if (ruleTp.substring(0, 1).equals("4")) {
+      if (cm.getAmount3() == 0)
+        return;
+      strUnit = cm.getUnit3();
+      dblAmount = cm.getAmount3();
+    } else {
+      strUnit = cm.getUnit1();
+      dblAmount = cm.getAmount1();
     }
 
+    if (ruleTp.substring(1, 2).equals("1")) {
+      if (strUnit.equals("g") && cm.getAmount1() < 1) {
+        strUnit = "mg";
+        dblAmount = dblAmount * 1000;
+        strAmount = String.format("%.0f", dblAmount);
+      } else if (strUnit.equals("mg") && cm.getAmount1() < 1) {
+        strUnit = "mcg";
+        dblAmount = dblAmount * 1000;
+        strAmount = String.format("%.0f", dblAmount);
+      } else if (strUnit.equals("mcg") && cm.getAmount1() < 1) {
+        strUnit = "nanogram";
+        dblAmount = dblAmount * 1000;
+        strAmount = String.format("%.0f", dblAmount);
+      } else {
 
-
-    if(ruleTp.substring(1,2).equals("1")){
-      if ( strUnit.equals("g") && cm.getAmount1()<1){
-        strUnit="mg";
-        dblAmount=dblAmount*1000;
-        strAmount=String.format("%.0f", dblAmount);  
-      }else if( strUnit.equals("mg") && cm.getAmount1()<1){
-        strUnit="mcg";
-        dblAmount=dblAmount*1000;
-        strAmount=String.format("%.0f", dblAmount);  
-      }else if( strUnit.equals("mcg") && cm.getAmount1()<1){
-        strUnit="nanogram";
-        dblAmount=dblAmount*1000;
-        strAmount=String.format("%.0f", dblAmount);  
-      }else {
-       
-        strAmount=dblAmount+"";  
+        strAmount = dblAmount + "";
       }
-    }else{
-      strAmount=dblAmount+"";
+    } else {
+      strAmount = dblAmount + "";
     }
-    
-    if(ruleTp.substring(1,2).equals("2")){
-      if(strUnit.equals("mg")){
-        strUnit="milligram";
-      }else if(strUnit.equals("g")){
-        strUnit="gram";
-      }else if(strUnit.equals("μg")){
-        strUnit="microgram";
-      }else if(strUnit.equals("KI.U")){
-        strUnit="KIU";
-      }else if(strUnit.equals("MI.U")){
-        strUnit="MIU";
-      }else if(strUnit.equals("L")){
-        strUnit="liter";
-      }else if(strUnit.equals("cm2")){
-        strUnit="square centimeter";
-      }else if(strUnit.equals("mm")){
-        strUnit="milimeter";
-      }else if(strUnit.equals("mL/g")){
-        strUnit="milliliter/gram";
-      }else if(strUnit.equals("mL/mL")){
-        strUnit="milliliter/milliliter";
-      }else if(strUnit.equals("mL")){
-        strUnit="milimeter";
-      }else if(strUnit.equals("mg/mL")){
-        strUnit="milligram/1 milliliter";
+
+    if (ruleTp.substring(1, 2).equals("2")) {
+      if (strUnit.equals("mg")) {
+        strUnit = "milligram";
+      } else if (strUnit.equals("g")) {
+        strUnit = "gram";
+      } else if (strUnit.equals("μg")) {
+        strUnit = "microgram";
+      } else if (strUnit.equals("KI.U")) {
+        strUnit = "KIU";
+      } else if (strUnit.equals("MI.U")) {
+        strUnit = "MIU";
+      } else if (strUnit.equals("L")) {
+        strUnit = "liter";
+      } else if (strUnit.equals("cm2")) {
+        strUnit = "square centimeter";
+      } else if (strUnit.equals("mm")) {
+        strUnit = "milimeter";
+      } else if (strUnit.equals("mL/g")) {
+        strUnit = "milliliter/gram";
+      } else if (strUnit.equals("mL/mL")) {
+        strUnit = "milliliter/milliliter";
+      } else if (strUnit.equals("mL")) {
+        strUnit = "milimeter";
+      } else if (strUnit.equals("mg/mL")) {
+        strUnit = "milligram/1 milliliter";
       }
     }
-    
-    if(dblAmount*10%10==0){
-      strAmount=String.format("%.0f", dblAmount);  
+
+    if (dblAmount * 10 % 10 == 0) {
+      strAmount = String.format("%.0f", dblAmount);
     }
 
-    String strQuery="";
-    
-    String strMedDoseFrm=cm.getMedDoseFrm();
-    if (strMedDoseFrm.indexOf("tablet")>=0){
-      strMedDoseFrm="tablet";
-    }else if (strMedDoseFrm.indexOf("syrup")>=0){
-      strMedDoseFrm="oral suspension";
-    }else if (strMedDoseFrm.indexOf("capsule")>=0){
-      strMedDoseFrm="capsule";
-    }else if (strMedDoseFrm.indexOf("gastro-resistant capsule")>=0){
-      strMedDoseFrm="gastro-resistant capsule";
-    }else if (strMedDoseFrm.indexOf("prolonged-release capsule")>=0){
-      strMedDoseFrm="prolonged-release capsule";
+    String strQuery = "";
+
+    String strMedDoseFrm = cm.getMedDoseFrm();
+    if (strMedDoseFrm.indexOf("tablet") >= 0) {
+      strMedDoseFrm = "tablet";
+    } else if (strMedDoseFrm.indexOf("syrup") >= 0) {
+      strMedDoseFrm = "oral suspension";
+    } else if (strMedDoseFrm.indexOf("capsule") >= 0) {
+      strMedDoseFrm = "capsule";
+    } else if (strMedDoseFrm.indexOf("gastro-resistant capsule") >= 0) {
+      strMedDoseFrm = "gastro-resistant capsule";
+    } else if (strMedDoseFrm.indexOf("prolonged-release capsule") >= 0) {
+      strMedDoseFrm = "prolonged-release capsule";
     }
 
-    if(ruleTp.substring(0,1).equals("1") ||ruleTp.substring(0,1).equals("2") ){
-      strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
-    }else if(ruleTp.substring(0,1).equals("3") ||ruleTp.substring(0,1).equals("4") ){
-      if (cm.getEftSubstNm()=="")
-        break;
-      strQuery=cm.getEftSubstNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
-    }else  if(ruleTp.substring(0,1).equals("5")){
-      strQuery="only "+cm.getSubstanceNm();
-    }else  if(ruleTp.substring(0,1).equals("6")){
-      strQuery="only "+cm.getEftSubstNm();
-    }else {
-       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
+    if (ruleTp.substring(0, 1).equals("1") || ruleTp.substring(0, 1).equals("2")) {
+      strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+    } else if (ruleTp.substring(0, 1).equals("3") || ruleTp.substring(0, 1).equals("4")) {
+      if (cm.getEftSubstNm().equals(""))
+        return;
+      strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+    } else if (ruleTp.substring(0, 1).equals("5")) {
+      if (cm.getSubstanceNm().equals(""))
+        return;
+      strQuery = "only " + cm.getSubstanceNm();
+    } else if (ruleTp.substring(0, 1).equals("6")) {
+      if (cm.getEftSubstNm().equals(""))
+        return;
+      strQuery = "only " + cm.getEftSubstNm();
+    } else {
+      strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     }
 
-
-    if(!ruleTp.substring(1,2).equals("3")){
-      strQuery+= " "+ cm.getRtOfAdmin();
+    if (!ruleTp.substring(1, 2).equals("3")) {
+      if ((ruleTp.substring(0, 1).equals("6") || ruleTp.substring(0, 1).equals("5")) && cm.getRtOfAdmin().equals(""))
+        return;
+      strQuery += " " + cm.getRtOfAdmin();
     }
 
-    strQuery=strQuery.replace(",", "");
-    strQuery=strQuery.replace("/", " ");
+    strQuery = strQuery.replace(",", "");
+    strQuery = strQuery.replace("/", " ");
 
-      System.out.println("Term query : "+ strQuery);
-      String ecl="<763158003";
-      List<String> lsctcd = searchTerm(strQuery,ecl);
-
-      for (String sctcd : lsctcd) {
-        mvo = new MapKcdSctVo();
-        mvo.setOriCd(cm.getKdCd());
-        mvo.setSctId(sctcd);
-        mvo.setMapVer("0");
-        mvo.setMapStatCd(ruleTp);
-        cmMediDao.insertAutoMap2(mvo);
-      }
-
+    System.out.println("Term query : " + strQuery);
+    String ecl = "<763158003";
+    List<String> lsctcd = searchTerm(strQuery, ecl);
+    MapKcdSctVo mvo = new MapKcdSctVo();
+    for (String sctcd : lsctcd) {
+      mvo = new MapKcdSctVo();
+      mvo.setOriCd(cm.getKdCd());
+      mvo.setSctId(sctcd);
+      mvo.setMapVer("0");
+      mvo.setMapStatCd(ruleTp);
+      cmMediDao.insertAutoMap2(mvo);
     }
 
-
-
-    return list;
+    return;
 
   }
 
+
+
+  public void selectMediList(String ruleTp) {
+
+    List<CmMedicineVo> list = cmMediDao.selectAll();
+
+    for (CmMedicineVo cm : list) {
+      serarchAndInsert(cm, ruleTp);
+    }
+    return;
+
+  }
 
   // http://localhost:8080/RESTfulExample/json/product/get
   public static void main(String[] args) {
 
     RuleMapService rs = new RuleMapService();
-
-    
 
     System.out.println(rs.searchTerm("Heart Attack").toString());
 
