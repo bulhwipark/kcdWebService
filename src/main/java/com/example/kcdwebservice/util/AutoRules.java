@@ -438,8 +438,10 @@ public class AutoRules {
             searchVo.setTerm(
                     cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit1() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
             );
-            System.out.println("term : " + searchVo.getTerm());
-            System.out.println("ecl : " + searchVo.getEcl());
+
+            searchVo.getTerm().replace(",", "");
+            searchVo.getTerm().replace("/", " ");
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -511,6 +513,10 @@ public class AutoRules {
             searchVo.setTerm(
                     cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getAmount3() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
             );
+
+            searchVo.getTerm().replace(",", "");
+            searchVo.getTerm().replace("/", " ");
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -578,6 +584,10 @@ public class AutoRules {
             searchVo.setTerm(
                     cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit2() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
             );
+
+            searchVo.getTerm().replace(",", "");
+            searchVo.getTerm().replace("/", " ");
+
             result = medi_autoRuleRequest(searchVo);
         }
 
@@ -644,6 +654,10 @@ public class AutoRules {
             searchVo.setTerm(
                     cmMedicineVo.getEftSubstNm() + " " + cmMedicineVo.getStrAmount() + " " + cmMedicineVo.getUnit3() + " " + cmMedicineVo.getRtOfAdmin().trim() + " " + cmMedicineVo.getMedDoseFrm()
             );
+
+            searchVo.getTerm().replace(",", "");
+            searchVo.getTerm().replace("/", " ");
+
             result = medi_autoRuleRequest(searchVo);
         }
 
