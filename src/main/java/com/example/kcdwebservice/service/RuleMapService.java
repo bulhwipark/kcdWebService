@@ -109,13 +109,20 @@ public class RuleMapService {
       double dblAmount=0.0;
       String strAmount="";
 
-    if(ruleTp.substring(0,1).equals("2") && cm.getAmount3()!=0){
+    if(ruleTp.substring(0,1).equals("2") ){
+      if(cm.getAmount3()==0)
+        break;
       strUnit=cm.getUnit3();
       dblAmount=cm.getAmount3();
-    }else  if(ruleTp.substring(0,1).equals("3") && cm.getAmount2()!=0){
+    }
+    if(ruleTp.substring(0,1).equals("3") ){
+      if( cm.getAmount2()==0)
+        break;
       strUnit=cm.getUnit2();
       dblAmount=cm.getAmount2();
-    }else  if(ruleTp.substring(0,1).equals("4") && cm.getAmount3()!=0){
+    }else  if(ruleTp.substring(0,1).equals("4") ){
+      if(cm.getAmount3()==0)
+        break;
       strUnit=cm.getUnit3();
       dblAmount=cm.getAmount3();
     }else{
@@ -173,12 +180,13 @@ public class RuleMapService {
         strUnit="milligram/1 milliliter";
       }
     }
+    
     if(dblAmount*10%10==0){
       strAmount=String.format("%.0f", dblAmount);  
     }
 
     String strQuery="";
-
+    
     String strMedDoseFrm=cm.getMedDoseFrm();
     if (strMedDoseFrm.indexOf("tablet")>=0){
       strMedDoseFrm="tablet";
@@ -195,6 +203,8 @@ public class RuleMapService {
     if(ruleTp.substring(0,1).equals("1") ||ruleTp.substring(0,1).equals("2") ){
       strQuery=cm.getSubstanceNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
     }else if(ruleTp.substring(0,1).equals("3") ||ruleTp.substring(0,1).equals("4") ){
+      if (cm.getEftSubstNm()=="")
+        break;
       strQuery=cm.getEftSubstNm()+" "+strAmount+" "+strUnit + " "+ strMedDoseFrm;
     }else  if(ruleTp.substring(0,1).equals("5")){
       strQuery="only "+cm.getSubstanceNm();
@@ -210,6 +220,7 @@ public class RuleMapService {
     }
 
     strQuery=strQuery.replace(",", "");
+    strQuery=strQuery.replace("/", " ");
 
       System.out.println("Term query : "+ strQuery);
       String ecl="<763158003";
