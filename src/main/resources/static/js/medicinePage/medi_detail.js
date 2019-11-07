@@ -55,9 +55,16 @@ function medi_detail_static_func(){
     $('#synonym').on('change', function () {
         $('#term').val($('#synonym option:selected').val());
     })
-        .on('click', function () {
-            $('#term').val($('#synonym option:selected').val());
-        });
+    .on('click', function () {
+        $('#term').val($('#synonym option:selected').val());
+    });
+
+    $('#mediSearchTermSelect').on('change', function () {
+        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+    })
+    .on('click', function () {
+        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+    });
 
    $('.attrSelect').on('change', function(){
        getValueList($(this).data('num'));
