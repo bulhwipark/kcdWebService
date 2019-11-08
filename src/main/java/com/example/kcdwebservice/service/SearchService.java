@@ -52,13 +52,30 @@ public class SearchService {
                 }
             }
             */
-           list.add(autoRules.autoRule_1(searchVo));
-           list.add(autoRules.autoRule_2(searchVo));
-           list.add(autoRules.autoRule_3(searchVo));
-           list.add(autoRules.autoRule_4(searchVo));
-           list.add(autoRules.autoRule_5(searchVo));
-           //list.add(autoRules.autoRule_6(searchVo));
-           /*list.add(autoRules.autoRule_7(searchVo));*/
+            String[] rulesArr = searchVo.getRules().split(",");
+            for (int i = 0; i < rulesArr.length; i++) {
+                if (rulesArr[i].equals("1")) {
+                    list.add(autoRules.autoRule_1(searchVo));
+                }
+
+                if (rulesArr[i].equals("2")) {
+                    list.add(autoRules.autoRule_2(searchVo));
+                }
+
+                if (rulesArr[i].equals("3")) {
+                    list.add(autoRules.autoRule_3(searchVo));
+                }
+
+                if (rulesArr[i].equals("4")) {
+                    list.add(autoRules.autoRule_4(searchVo));
+                }
+
+                if (rulesArr[i].equals("5")) {
+                    list.add(autoRules.autoRule_5(searchVo));
+                }
+                //list.add(autoRules.autoRule_6(searchVo));
+                /*list.add(autoRules.autoRule_7(searchVo));*/
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

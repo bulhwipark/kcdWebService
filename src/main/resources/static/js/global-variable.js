@@ -14,7 +14,8 @@ var kcd = {
     kcdTotalCnt: 0,
     totalCnt: 0,
     limit: 50,
-    currentOffset: 0
+    currentOffset: 0,
+    rules:[1,2,3,4,5]
 };
 
 //약제 전역변수
@@ -26,5 +27,6 @@ var medi = {
     mainMedList: null,
     mediDetailList:[],
     currentMediInfo:null,
-    autoRuleLog:null
+    autoRuleLog:null,
+    rules:[2,3,4]
 };

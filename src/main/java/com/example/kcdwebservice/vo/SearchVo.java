@@ -15,4 +15,5 @@ public class SearchVo {
     private String disorder;
     private String clinicalFinding;
     private String term;
+    private String rules;
 }

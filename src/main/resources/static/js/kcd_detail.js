@@ -455,6 +455,7 @@ function termSynonym() {
 function autoRuleSet() {
     var param = new Object();
     param.term = $('#term').val();
+    param.rules = kcd.rules.join(',');
 
     if ($('input[name="defaultRule"]:checked').val()) {
         param.ecl = $('input[name="defaultRule"]:checked').val();
