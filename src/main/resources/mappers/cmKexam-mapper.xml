@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.kcdwebservice.dao.CmKexamDao">
+
+    <select id="kexam_selectAll" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+        select KEX_CD     kexCd,
+               KEX_TP_CD  kexTpCd,
+               KEX_GRP_CD kexGrpCd,
+               KEX_KOR    kexKor,
+               KEX_ENG    kexEng,
+               KEX_PRICE  kexPrice
+        from CM_KEXAM
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset}
+        </if>
+        ;
+    </select>
+
+
+</mapper>

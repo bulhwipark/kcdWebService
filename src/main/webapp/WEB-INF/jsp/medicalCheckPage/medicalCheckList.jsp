@@ -9,7 +9,7 @@
         </div>
         <form id="searchForm" method="post" action="/excelDownload.xlsx">
             <div class="row" style="margin-bottom: 10px;">
-                <input type="hidden" name="mapVer" id="version" value="0">
+                <input type="hidden" name="kexMapVer" id="kexMapVer" value="0">
                 <!--div class="form-inline col-xl-3">
                     <label for="version">ver : </label>
                     <select class="form-control kcdSearchOption" name="mapVer" id="version" style="width: 300px;">
@@ -18,12 +18,12 @@
                     </select>
                 </div-->
                 <div class="form-inline col-xl-3">
-                    <label for="listOption">매핑상태 : </label>
-                    <select class="form-control kcdSearchOption" name="listOption" id="listOption" style="width: 90px;">
+                    <label for="medicalCheck_listOption">매핑상태 : </label>
+                    <select class="form-control kcdSearchOption" name="medicalCheck_listOption" id="medicalCheck_listOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
-                        <option value="IcdNotMapping" selected>ICD 비매핑</option>
+                        <%--<option value="IcdNotMapping">ICD 비매핑</option>--%>
                     </select>
                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
-                        <span><b>KCD 코드기준 Total : </b></span>
+                        <span><b>KEX 코드기준 Total : </b></span>
                         <span id="kcdTotalCnt"></span>
                     </div>
                     <div>
@@ -70,8 +70,8 @@
         <table class="table table-striped" id="mediCheckListTable">
             <thead>
             <tr>
-                <th scope="col">KCD코드</th>
-                <th scope="col">KCD 한글명/영문명</th>
+                <th scope="col">KEX코드</th>
+                <th scope="col">KEX 한글명/영문명</th>
                 <th scope="col">Snomed ID</th>
                 <th scope="col">Snomed CT Term</th>
                 <th scope="col">매핑상태</th>

@@ -8,7 +8,7 @@
     text-align: right;
     font-size: 25px;
 }
-.kcdDetail:hover, .medDetail:hover, .sctIdDetail:hover, .mediSctIdDetail:hover, .medi-sctIdDetail:hover{
+.kcdDetail:hover, .medDetail:hover, .sctIdDetail:hover, .mediSctIdDetail:hover, .medi-sctIdDetail:hover, .mediCheckDetail:hover{
     cursor: pointer;
     background-color: #007bff;
     color: white;
