@@ -60,6 +60,7 @@ function medi_detail_static_func(){
         $('#term').val($('#synonym option:selected').val());
     });
 
+    //serach Term 이벤트.
     $('#mediSearchTermSelect').on('change', function () {
         $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
     })
@@ -665,7 +666,7 @@ function medi_autoRuleSet(){
  */
 function medi_similaritySearch(){
     var param = new Object();
-    param.term = $('#mediTerm').val();
+    param.term = $('#mediTerm').val().replace("/", "");
 
     if($('input[name="mediDefaultRule"]:checked').val()){
         param.ecl = $('input[name="mediDefaultRule"]:checked').val();

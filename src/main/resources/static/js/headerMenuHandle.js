@@ -16,7 +16,11 @@ function pageRuting(pageNm){
         menu_kcdList_staticFunc();
     }else if(pageNm === 'medicinePage'){
         menu_medicineList_staticFunc();
-    }else{
+    }else if(pageNm === 'medicalProcedurePage'){
+        menu_medicalProcedureList_staticFunc();
+    }else if(pageNm === 'medicalCheckPage'){
+        menu_medicalCheckList_staticFunc();
+    }else {
         console.log('page not found');
     }
 

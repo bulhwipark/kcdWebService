@@ -17,6 +17,8 @@
 <%@ include file="/WEB-INF/jsp/header/headerMenu.jsp" %>
 <%@ include file="/WEB-INF/jsp/DiagnosisNamePage/kcdList.jsp" %>
 <%@include file="/WEB-INF/jsp/medicinePage/medList.jsp" %>
+<%@include file="/WEB-INF/jsp/medicalProcedurePage/medicalProcedureList.jsp" %>
+<%@include file="/WEB-INF/jsp/medicalCheckPage/medicalCheckList.jsp" %>
 </body>
 
 <script src="/static/lib/jQuery-3.4.1.min.js"></script>
@@ -25,6 +27,8 @@
 <script src="/static/js/headerMenuHandle.js"></script>
 <script src="/static/js/menu_kcdList.js"></script>
 <script src="/static/js/medicinePage/menu_medicineList.js"></script>
+<script src="/static/js/medicalProcedurePage/menu_medicalProcedureList.js"></script>
+<script src="/static/js/medicalCheckPage/menu_medicalCheckList.js"></script>
 <script type="text/javascript">
     $(function(){
         static_function();

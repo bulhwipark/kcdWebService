@@ -8,7 +8,10 @@
             <a class="nav-link headerMenu" data-menu="medicinePage" id="medicinePage_a"> 약제 </a>
         </li>
         <li class="nav-item menuLi">
-            <a class="nav-link headerMenu" data-menu="default2"> - </a>
+            <a class="nav-link headerMenu" data-menu="medicalProcedurePage" id="medicalProcedurePage_a"> 처치 및 시술 </a>
+        </li>
+        <li class="nav-item menuLi">
+            <a class="nav-link headerMenu" data-menu="medicalCheckPage" id="medicalCheckPage_a"> 검사 </a>
         </li>--%>
     </ul>
 </nav>

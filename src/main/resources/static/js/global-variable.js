@@ -30,3 +30,29 @@ var medi = {
     autoRuleLog:null,
     rules:[2,3,4]
 };
+
+//처치및시술 전역변수
+var medi_procedure = {
+    procTotalCnt: 0,
+    totalCnt: 0,
+    limit: 50,
+    currentOffset: 0,
+    mainProcList: null,
+    procDetailList:[],
+    currentProcInfo:null,
+    autoRuleLog:null,
+    rules:[2,3,4]
+};
+
+//검사 전역변수
+var medi_check = {
+    mediCheckTotalCnt: 0,
+    totalCnt: 0,
+    limit: 50,
+    currentOffset: 0,
+    mainMediCheckList: null,
+    mediCheckDetailList:[],
+    currentMediCheckInfo:null,
+    autoRuleLog:null,
+    rules:[2,3,4]
+}
