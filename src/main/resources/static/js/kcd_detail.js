@@ -632,7 +632,8 @@ function attr_val_modalSetting(sctId) {
             url: '/getKcdAttrList',
             type: 'post',
             data: {
-                sctId: sctId
+                sctId: sctId,
+                oriTpCd:'KCD'
             },
             dataType: 'json',
             async: false,

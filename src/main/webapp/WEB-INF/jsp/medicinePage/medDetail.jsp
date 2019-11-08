@@ -21,7 +21,7 @@
                <a href="/">메인으로</a>
            </div>
             <input type="hidden" value="${mapVer}" id="mapVer">
-            <span><b>KCD코드 : </b><span id="kdCd">${kdCd}</span></span>
+            <span><b>KD코드 : </b><span id="kdCd">${kdCd}</span></span>
             <div>
                 <div><b>한글명 : </b><span id="mediKor"></span></div>
                 <div><b>영문명 : </b><span id="mediEng"></span></div>

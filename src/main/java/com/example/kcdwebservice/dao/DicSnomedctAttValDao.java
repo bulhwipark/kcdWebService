@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 @Mapper
 public interface DicSnomedctAttValDao {
-    List<DicSnomedctAttValVo> getAttrList();
+    List<DicSnomedctAttValVo> getAttrList(String oriTpCd);
 
     List<DicSnomedctAttValVo> getValList(String sctId);
 }

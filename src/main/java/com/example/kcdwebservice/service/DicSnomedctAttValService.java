@@ -13,8 +13,8 @@ public class DicSnomedctAttValService {
     private DicSnomedctAttValDao dicSnomedctAttValDao;
 
 
-    public List<DicSnomedctAttValVo> getAttrList() {
-        return dicSnomedctAttValDao.getAttrList();
+    public List<DicSnomedctAttValVo> getAttrList(String oriTpCd) {
+        return dicSnomedctAttValDao.getAttrList(oriTpCd);
     }
 
     public List<DicSnomedctAttValVo> getValList(String sctId) {

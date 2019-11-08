@@ -30,12 +30,12 @@
                     <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
                     <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
                         <label for="searchToKcdCd">검색: </label>
-                        <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
+                        <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="코드 검색.">
                     </div>
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
-                        <span><b>KCD 코드기준 Total : </b></span>
+                        <span><b>코드기준 Total : </b></span>
                         <span id="kcdTotalCnt"></span>
                     </div>
                     <div>
@@ -70,8 +70,8 @@
         <table class="table table-striped" id="procListTable">
             <thead>
             <tr>
-                <th scope="col">KCD코드</th>
-                <th scope="col">KCD 한글명/영문명</th>
+                <th scope="col">코드</th>
+                <th scope="col">한글명/영문명</th>
                 <th scope="col">Snomed ID</th>
                 <th scope="col">Snomed CT Term</th>
                 <th scope="col">매핑상태</th>
