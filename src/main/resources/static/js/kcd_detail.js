@@ -470,6 +470,7 @@ function autoRuleSet() {
         dataType: 'json',
         success: function (data) {
             console.log(data);
+            kcd.autoRuleLog = JSON.parse(JSON.stringify(data));
             $('#searchResultTable tbody').empty();
             for (var q = 0; q < data.length; q++) {
 

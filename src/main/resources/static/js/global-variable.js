@@ -15,6 +15,7 @@ var kcd = {
     totalCnt: 0,
     limit: 50,
     currentOffset: 0,
+    autoRuleLog:null,
     rules:[1,2,3,4,5]
 };
 
