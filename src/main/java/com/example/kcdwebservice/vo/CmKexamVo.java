@@ -10,7 +10,7 @@ import lombok.ToString;
 public class CmKexamVo {
     private String kexCd;
     private String kexTpCd;
-    private String kexGrpCd;
+    private String kexGrp;
     private String kexKor;
     private String kexEng;
     private String kexPrice;

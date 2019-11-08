@@ -8,7 +8,7 @@
     <select id="kexam_selectAll" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
         select KEX_CD     kexCd,
                KEX_TP_CD  kexTpCd,
-               KEX_GRP_CD kexGrpCd,
+               KEX_GRP kexGrp,
                KEX_KOR    kexKor,
                KEX_ENG    kexEng,
                KEX_PRICE  kexPrice
