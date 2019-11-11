@@ -98,6 +98,7 @@ public class RuleMapService {
 
   }
 
+ 
   public void serarchAndInsert(CmMedicineVo cm, String ruleTp) {
 
     String strUnit = "";
@@ -109,13 +110,13 @@ public class RuleMapService {
         return;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
-    }else  if (ruleTp.substring(0, 1).equals("3")) {
-      if (cm.getAmount2() == 0)
+    }else  if (ruleTp.substring(0, 1).equals("3") ) {
+      if (cm.getAmount2() == 0|| cm.getUnit2().equals(""))
         return;
       strUnit = cm.getUnit2();
       dblAmount = cm.getAmount2();
     } else if (ruleTp.substring(0, 1).equals("4")) {
-      if (cm.getAmount3() == 0)
+      if (cm.getAmount3() == 0 || cm.getUnit3().equals(""))
         return;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
@@ -124,16 +125,16 @@ public class RuleMapService {
       dblAmount = cm.getAmount1();
     }
 
-    if (ruleTp.substring(1, 2).equals("1")) {
+    if (ruleTp.substring(1, 2).equals("1") || ruleTp.substring(1, 2).equals("2")) {
       if (strUnit.equals("g") && cm.getAmount1() < 1) {
         strUnit = "mg";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
       } else if (strUnit.equals("mg") && cm.getAmount1() < 1) {
-        strUnit = "mcg";
+        strUnit = "microgram";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
-      } else if (strUnit.equals("mcg") && cm.getAmount1() < 1) {
+      } else if (strUnit.equals("μg") && cm.getAmount1() < 1) {
         strUnit = "nanogram";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
@@ -195,15 +196,15 @@ public class RuleMapService {
     if (ruleTp.substring(0, 1).equals("1") || ruleTp.substring(0, 1).equals("2")) {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     } else if (ruleTp.substring(0, 1).equals("3") || ruleTp.substring(0, 1).equals("4")) {
-      if (cm.getEftSubstNm().equals(""))
+      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
         return;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     } else if (ruleTp.substring(0, 1).equals("5")) {
-      if (cm.getSubstanceNm().equals(""))
+      if (cm.getSubstanceNm().length()<2)
         return;
       strQuery = "only " + cm.getSubstanceNm();
     } else if (ruleTp.substring(0, 1).equals("6")) {
-      if (cm.getEftSubstNm().equals(""))
+      if (cm.getEftSubstNm().length()<2)
         return;
       strQuery = "only " + cm.getEftSubstNm();
     } else {
