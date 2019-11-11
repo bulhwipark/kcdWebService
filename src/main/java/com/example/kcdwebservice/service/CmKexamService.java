@@ -17,4 +17,8 @@ public class CmKexamService {
     public List<CmKexamVo> kexam_selectAll(CmKexamVo cmKexamVo) {
         return cmKexamDao.kexam_selectAll(cmKexamVo);
     }
+
+    public CmKexamVo selectKexCdInfo(String kexCd) {
+        return cmKexamDao.selectKexCdInfo(kexCd);
+    }
 }

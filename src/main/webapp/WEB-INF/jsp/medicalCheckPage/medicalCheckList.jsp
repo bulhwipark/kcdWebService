@@ -18,43 +18,43 @@
                     </select>
                 </div-->
                 <div class="form-inline col-xl-3">
-                    <label for="medicalCheck_listOption">매핑상태 : </label>
-                    <select class="form-control kcdSearchOption" name="medicalCheck_listOption" id="medicalCheck_listOption" style="width: 90px;">
+                    <label for="mediCheck_listOption">매핑상태 : </label>
+                    <select class="form-control medicalCheckSearchOption" name="mediCheck_listOption" id="mediCheck_listOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
                         <%--<option value="IcdNotMapping">ICD 비매핑</option>--%>
                     </select>
-                    <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
+                    <input type="hidden" name="mediCheck_mapStatCd" id="mediCheck_mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
                     <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
                     <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
-                        <label for="searchToKcdCd">검색: </label>
-                        <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
+                        <label for="mediCheck_searchToKexCd">검색: </label>
+                        <input name="kexCd" id="mediCheck_searchToKexCd" class="form-control" type="text" placeholder="KEX코드 검색.">
                     </div>
                 </div>
                 <div class="totalCnt-css col-xl-3">
                     <div>
                         <span><b>KEX 코드기준 Total : </b></span>
-                        <span id="kcdTotalCnt"></span>
+                        <span id="kexTotalCnt"></span>
                     </div>
                     <div>
                         <span><b>매핑 Total : </b></span>
-                        <span id="totalCnt"></span>
+                        <span id="mediCheck_totalCnt"></span>
                     </div>
                 </div>
 
                 <div class="col-xl-3">
                     <div style="display: inline-block; margin-top: 20px;">
                         <span style="width: 50px; display: inherit;">
-                            <button class="btn btn-light" id="prev">
-                                <<</button> </span> <span id="currentPage"></span>
+                            <button class="btn btn-light" id="mediCheck_prev">
+                                <<</button> </span> <span id="mediCheck_currentPage"></span>
                         <span style="width: 50px; display: inherit;">
-                            <button class="btn btn-light" id="next">>></button>
+                            <button class="btn btn-light" id="mediCheck_next">>></button>
                         </span>
                     </div>
                     <div style="display: inline-block; margin-top: 20px;">
-                        <button class="btn btn-outline-danger" id="excelDownloadBtn">Excel Download</button>
+                        <button class="btn btn-outline-danger" id="mediCheck_excelDownloadBtn">Excel Download</button>
                     </div>
 
                 </div>
@@ -66,8 +66,8 @@
             <input type="text" hidden name="offset" id="offset">
         </form>
     </div>
-    <div class="mediCheckListTableDiv">
-        <table class="table table-striped" id="mediCheckListTable">
+    <div class="mediCheck_listTableDiv">
+        <table class="table table-striped" id="mediCheck_listTable">
             <thead>
             <tr>
                 <th scope="col">KEX코드</th>

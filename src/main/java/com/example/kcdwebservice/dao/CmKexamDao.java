@@ -11,4 +11,6 @@ import java.util.List;
 public interface CmKexamDao {
 
     List<CmKexamVo> kexam_selectAll(CmKexamVo cmKexamVo);
+
+    CmKexamVo selectKexCdInfo(String kexCd);
 }

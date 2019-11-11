@@ -19,5 +19,20 @@
         ;
     </select>
 
+    <select id="selectKexCdInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+        select KEX_CD     kexCd,
+               KEX_TP_CD  kexTpCd,
+               KEX_GRP kexGrp,
+               KEX_KOR    kexKor,
+               KEX_ENG    kexEng,
+               KEX_PRICE  kexPrice
+        from CM_KEXAM
+        <where>
+            <if test="kexCd != '' and kexCd != null">
+                KEX_CD = #{kexCd};
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

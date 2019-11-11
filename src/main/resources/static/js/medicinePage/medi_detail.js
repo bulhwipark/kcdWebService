@@ -115,7 +115,7 @@ function medi_detail_static_func(){
 
     /**
      * kcd 상세화면 이전버튼 이벤트
-     * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
+     * sessionStorage 정보를 이용하여 medi리스트에서 MEDI코드로 다음것을 찾음.
      */
    $('#mediList_prev').on('click', function(){
        if(parseInt(sessionStorage.getItem("medi_index")) === 0){
@@ -1026,7 +1026,7 @@ function StringMatch_func(str, matchStr){
     }
 }
 
-//KCD목록 조회.
+//MEDI목록 조회.
 function mediDetail_prevBtn_ajaxReq(){
     $.ajax({
         url: "/medicine/select/"+sessionStorage.getItem("medi_listOption"),

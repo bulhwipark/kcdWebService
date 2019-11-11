@@ -21,10 +21,10 @@
                <a href="/">메인으로</a>
            </div>
             <input type="hidden" value="${mapVer}" id="mapVer">
-            <span><b>KD코드 : </b><span id="kdCd">${kdCd}</span></span>
+            <span><b>Kex코드 : </b><span id="kexCd">${kexCd}</span></span>
             <div>
-                <div><b>한글명 : </b><span id="mediKor"></span></div>
-                <div><b>영문명 : </b><span id="mediEng"></span></div>
+                <div><b>한글명 : </b><span id="mediCheck_kor"></span></div>
+                <div><b>영문명 : </b><span id="mediCheck_eng"></span></div>
             </div>
         </div>
         <div class="pull-right">
@@ -83,8 +83,8 @@
                 --%>
             </div>
             <div>
-                <label for="mediTerm"><b>term : </b></label>
-                <input type="text" id="mediTerm" style="width: 500px;">
+                <label for="mediCheck_term"><b>term : </b></label>
+                <input type="text" id="mediCheck_term" style="width: 500px;">
                 <%--
                 <label for="mediSynonym" style="margin-left: 20px;"><b>동의어 : </b></label>
                 <select class="form-control" name="" id="mediSynonym" style="display: inline-block; width: 700px;">
@@ -136,13 +136,13 @@
 <script src="/static/lib/bootstrap.min.js"></script>
 <script src="/static/lib/bootstrap-select.min.js"></script>
 <script src="/static/js/global-variable.js"></script>
-<script src="/static/js/medicinePage/medi_detail.js"></script>
+<script src="/static/js/medicalCheckPage/mediCheck_detail.js"></script>
 <script type="text/javascript">
     $(function(){
-        medi.mapVer = '${mapVer}';
-        medi.limit = '${limit}';
-        medi.currentOffset = '${offset}';
-        medi_detail_static_func();
+        medi_check.mapVer = '${mapVer}';
+        medi_check.limit = '${limit}';
+        medi_check.currentOffset = '${offset}';
+        mediCheck_detail_static_func();
     })
 </script>
 </html>
