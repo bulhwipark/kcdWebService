@@ -260,7 +260,7 @@
         from EMR.CM_KCD K 
             left outer join EMR.MAP_KCD_SCT M
             on K.KCD_CD=M.ORI_CD
-            AND M.ORI_TP_CD='KCD'
+            AND M.ORI_TP_CD=#{oriTpCd}
             left outer join EMR.CM_SNOMEDCT S
             on M.SCT_ID=S.SCT_ID
             left outer join EMR.MCODE CD

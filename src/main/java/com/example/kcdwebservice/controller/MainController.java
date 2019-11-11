@@ -64,8 +64,6 @@ public class MainController {
      */
     @RequestMapping(value="/")
     public String main(@RequestParam(value = "limit", required = false)String limit, @RequestParam(value="offset", required = false)String offset){
-        System.out.println(limit);
-        System.out.println(offset);
         return "/index";
     }
 
@@ -335,10 +333,6 @@ public class MainController {
      */
     @PostMapping("/excelDownload.xlsx")
     public String excelDownload(CmKcdVo cmKcdVo, Model model){
-        /*
-        cmKcdVo.setLimit("300");
-        cmKcdVo.setOffset("0");
-        */
         List<CmKcdVo> list = null;
         if(cmKcdVo.getListOption().equals("All")){
             list = cmKcdService.selectAll(cmKcdVo);
@@ -455,8 +449,6 @@ public class MainController {
     @RequestMapping(value="/getTextSearchResult")
     @ResponseBody
     public ResponseEntity<String> getTextSearchResult(SearchVo searchVo){
-        System.out.println(searchVo.getEcl());
-        System.out.println(searchVo.getTerm());
         String result = null;
         try {
             result = searchService.searchReqeust(searchVo);

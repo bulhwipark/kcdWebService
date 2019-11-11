@@ -58,9 +58,17 @@ public class MedicalCheckController {
     @RequestMapping(value="/getMediCheckInfo")
     @ResponseBody
     public ResponseEntity<CmKexamVo> getMediCheckInfo(@RequestParam("kexCd")String kexCd){
-        System.out.println(kexCd);
         CmKexamVo cmKexamVo = kexamService.selectKexCdInfo(kexCd);
         return new ResponseEntity<>(cmKexamVo, HttpStatus.OK);
     }
+
+    /*
+    @RequestMapping(value="/getMediCheckDetailList")
+    @ResponseBody
+    public void getMediCheckDetailList(){
+
+    }
+    */
+
 
 }

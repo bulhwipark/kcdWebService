@@ -23,3 +23,16 @@ function get_mediCheckObject_req() {
         }
     });
 }
+
+//kexam 리스트 조회
+function get_mediCheckDetail_list() {
+    $.ajax({
+        url:'/getMediCheckDetailList',
+        type:'post',
+        data:{},
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+        }
+    })
+}

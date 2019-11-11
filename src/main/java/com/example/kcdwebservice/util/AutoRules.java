@@ -19,6 +19,10 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * 1~:진단명
+ * 2~:약제
+ * 3~:처치및시술
+ * 4~:검사
  * 'medi_' : 약제 쪽 룰.
  */
 public class AutoRules {
@@ -95,11 +99,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "91");
+            returnJSON.put("ruleCode", "11");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "91");
+            returnJSON.put("ruleCode", "11");
         }
         System.out.println("-------------rule_1-------------------------");
         System.out.println(result);
@@ -125,11 +129,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "92");
+            returnJSON.put("ruleCode", "12");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "92");
+            returnJSON.put("ruleCode", "12");
         }
         System.out.println("-------------rule_2-------------------------");
         System.out.println(result);
@@ -155,11 +159,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "93");
+            returnJSON.put("ruleCode", "13");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "93");
+            returnJSON.put("ruleCode", "13");
         }
         System.out.println("-------------rule_3-------------------------");
         System.out.println(result);
@@ -173,8 +177,8 @@ public class AutoRules {
      * 룰 4
      * @param searchVo
      * @return
-     * 검색결과 있을때 : {"status":"false","result":[],"searchTerm":"", "ruleCode":"91"}
-     * 없을때 : {"status":"false","ruleCode":"91"}
+     * 검색결과 있을때 : {"status":"false","result":[],"searchTerm":"", "ruleCode":"11"}
+     * 없을때 : {"status":"false","ruleCode":"11"}
      * @throws JSONException
      */
     public JSONObject autoRule_4(SearchVo searchVo) throws JSONException {
@@ -222,11 +226,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "94");
+            returnJSON.put("ruleCode", "14");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "94");
+            returnJSON.put("ruleCode", "14");
         }
 
         System.out.println("-------------rule_4-------------------");
@@ -267,11 +271,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "95");
+            returnJSON.put("ruleCode", "15");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "95");
+            returnJSON.put("ruleCode", "15");
         }
         
         System.out.println("-------------rule_5-------------------------");
@@ -308,11 +312,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "96");
+            returnJSON.put("ruleCode", "16");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "96");
+            returnJSON.put("ruleCode", "16");
         }
         System.out.println("-------------rule_6-------------------------");
         System.out.println(result);
@@ -378,11 +382,11 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", checkJSON.toString());
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "97");
+                returnJSON.put("ruleCode", "17");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "97");
+                returnJSON.put("ruleCode", "17");
             }
 
             System.out.println("-------------rule_7-------------------------");
@@ -414,7 +418,7 @@ public class AutoRules {
         if(cmMedicineVo.getSubstanceNm().trim().equals("")){
             returnJSON.put("status", "substanceNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "1");
+            returnJSON.put("ruleCode", "21");
             return returnJSON;
         }
 
@@ -454,7 +458,7 @@ public class AutoRules {
             if(cmMedicineVo.getAmount1() == 0){
                 returnJSON.put("status", "amount1 not valid");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "1");
+                returnJSON.put("ruleCode", "21");
                 return returnJSON;
             }
 
@@ -471,7 +475,7 @@ public class AutoRules {
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "1");
+            returnJSON.put("ruleCode", "21");
         }
         System.out.println("-------------medi rule_1-------------------------");
         System.out.println(result);
@@ -499,7 +503,7 @@ public class AutoRules {
         if(cmMedicineVo.getSubstanceNm().trim().equals("")){
             returnJSON.put("status", "substanceNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "1");
+            returnJSON.put("ruleCode", "21");
             return returnJSON;
         }
 
@@ -544,7 +548,7 @@ public class AutoRules {
             if(cmMedicineVo.getAmount3() == 0){
                 returnJSON.put("status", "amount3 not valid");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "2");
+                returnJSON.put("ruleCode", "22");
                 return returnJSON;
             }
 
@@ -557,11 +561,11 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "2");
+            returnJSON.put("ruleCode", "22");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "2");
+            returnJSON.put("ruleCode", "22");
         }
         System.out.println("-------------medi rule_2-------------------------");
         System.out.println(result);
@@ -591,7 +595,7 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "eftSubstNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "1");
+            returnJSON.put("ruleCode", "21");
             return returnJSON;
         }
 
@@ -630,7 +634,7 @@ public class AutoRules {
             if(cmMedicineVo.getAmount2() == 0){
                 returnJSON.put("status", "amount2 not valid");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "3");
+                returnJSON.put("ruleCode", "23");
                 return returnJSON;
             }
 
@@ -643,13 +647,13 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "3");
+            returnJSON.put("ruleCode", "23");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "3");
+            returnJSON.put("ruleCode", "23");
         }
-        System.out.println("-------------medi rule_3-------------------------");
+        System.out.println("-------------medi rule_23-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -676,7 +680,7 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "eftSubstNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "1");
+            returnJSON.put("ruleCode", "21");
             return returnJSON;
         }
 
@@ -715,7 +719,7 @@ public class AutoRules {
             if(cmMedicineVo.getAmount3() == 0){
                 returnJSON.put("status", "amount not valid");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "4");
+                returnJSON.put("ruleCode", "24");
                 return returnJSON;
             }
 
@@ -732,9 +736,9 @@ public class AutoRules {
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "4");
+            returnJSON.put("ruleCode", "24");
         }
-        System.out.println("-------------medi rule_4-------------------------");
+        System.out.println("-------------medi rule_24-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -761,12 +765,12 @@ public class AutoRules {
         if(cmMedicineVo.getSubstanceNm().trim().equals("")){
             returnJSON.put("status", "substanceNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "5");
+            returnJSON.put("ruleCode", "25");
             return returnJSON;
         }else if(cmMedicineVo.getRtOfAdmin().trim().equals("")){
             returnJSON.put("status", "route of adminStration not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "5");
+            returnJSON.put("ruleCode", "25");
             return returnJSON;
         }
 
@@ -788,17 +792,17 @@ public class AutoRules {
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "5");
+                returnJSON.put("ruleCode", "25");
             }
 
         }else{
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "5");
+            returnJSON.put("ruleCode", "25");
         }
 
-        System.out.println("-------------medi rule_5-------------------------");
+        System.out.println("-------------medi rule_25-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -827,12 +831,12 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "substanceNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "6");
+            returnJSON.put("ruleCode", "26");
             return returnJSON;
         }else if(cmMedicineVo.getRtOfAdmin().trim().equals("")){
             returnJSON.put("status", "route of adminStration not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "6");
+            returnJSON.put("ruleCode", "26");
             return returnJSON;
         }
 
@@ -850,21 +854,21 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", result);
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "6");
+                returnJSON.put("ruleCode", "26");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "6");
+                returnJSON.put("ruleCode", "26");
             }
 
         }else{
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "6");
+            returnJSON.put("ruleCode", "26");
         }
 
-        System.out.println("-------------medi rule_6-------------------------");
+        System.out.println("-------------medi rule_26-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -893,7 +897,7 @@ public class AutoRules {
         if(cmMedicineVo.getSubstanceNm().trim().equals("")){
             returnJSON.put("status", "substanceNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "7");
+            returnJSON.put("ruleCode", "27");
             return returnJSON;
         }
 
@@ -911,21 +915,21 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", result);
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "7");
+                returnJSON.put("ruleCode", "27");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "7");
+                returnJSON.put("ruleCode", "27");
             }
 
         }else{
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "7");
+            returnJSON.put("ruleCode", "27");
         }
 
-        System.out.println("-------------medi rule_7-------------------------");
+        System.out.println("-------------medi rule_27-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());
@@ -954,7 +958,7 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "route of adminStration not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "5");
+            returnJSON.put("ruleCode", "28");
             return returnJSON;
         }
 
@@ -972,21 +976,21 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", result);
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "8");
+                returnJSON.put("ruleCode", "28");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "8");
+                returnJSON.put("ruleCode", "28");
             }
 
         }else{
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "8");
+            returnJSON.put("ruleCode", "28");
         }
 
-        System.out.println("-------------medi rule_8-------------------------");
+        System.out.println("-------------medi rule_28-------------------------");
         System.out.println(result);
         System.out.println(returnJSON);
         System.out.println(returnJSON.toString());

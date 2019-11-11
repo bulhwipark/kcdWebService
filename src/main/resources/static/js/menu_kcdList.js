@@ -96,7 +96,8 @@ function kcdList_req(){
             mapStatCd:$('#mapStatCd').val(),
             kcdCd:$('#searchToKcdCd').val().toUpperCase(),
             limit:kcd.limit,
-            offset:kcd.currentOffset
+            offset:kcd.currentOffset,
+            oriTpCd:'KCD'
         },
         dataType:'json',
         success:function(data){

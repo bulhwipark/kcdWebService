@@ -16,6 +16,7 @@ public class CmKcdVo{
     private String dispOdr;
     private String udtDt;
     private String sctId;
+    private String oriTpCd;
 
     private String mapVer;
     private String mapStatCd;
