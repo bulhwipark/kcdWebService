@@ -3,7 +3,14 @@ function menu_medicalCheckList_staticFunc(){
 
     //매핑상태 이벤트.
     $('#mediCheck_listOption').on('change', function(){
-        medi_check.limit = 0;
+        medi_check.limit = 50;
+        medi_check.currentOffset = 0;
+        medicalCheckList_req();
+    });
+
+    $('#mediCheck_searchToKexCd').on('change', function(){
+        console.log($(this).val());
+        medi_check.limit = 50;
         medi_check.currentOffset = 0;
         medicalCheckList_req();
     });
@@ -27,14 +34,14 @@ function menu_mediKexamList_dynamicFunc(){
         sessionStorage.setItem("mediCheck_mapStatCd", $('#mediCheck_mapStatCd').val());
         location.href = '/mediCheckDetailPage?kexCd=' + $(this).text() + '&mapVer=' + $('#kexMapVer').val();
     });
-}
+};
 
 function medicalCheckList_req(){
     $.ajax({
         url:'/kexam/select/' + $('#mediCheck_listOption option:selected').val(),
         type:'post',
         data:{
-            kexamCd:'',
+            kexCd:$('#mediCheck_searchToKexCd').val(),
             limit: medi_check.limit,
             offset: medi_check.currentOffset
         },

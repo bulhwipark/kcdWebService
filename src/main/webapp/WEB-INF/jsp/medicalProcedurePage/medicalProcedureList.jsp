@@ -20,10 +20,9 @@
                 <div class="form-inline col-xl-3">
                     <label for="listOption">매핑상태 : </label>
                     <select class="form-control kcdSearchOption" name="listOption" id="listOption" style="width: 90px;">
-                        <option value="All">전체</option>
+                        <option value="All" selected>전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
-                        <option value="IcdNotMapping" selected>ICD 비매핑</option>
                     </select>
                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
@@ -66,8 +65,8 @@
             <input type="text" hidden name="offset" id="offset">
         </form>
     </div>
-    <div class="procListTableDiv">
-        <table class="table table-striped" id="procListTable">
+    <div class="mediProc_listTableDiv">
+        <table class="table table-striped" id="mediProc_procListTable">
             <thead>
             <tr>
                 <th scope="col">코드</th>

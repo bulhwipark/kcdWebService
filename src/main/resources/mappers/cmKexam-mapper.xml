@@ -13,6 +13,11 @@
                KEX_ENG    kexEng,
                KEX_PRICE  kexPrice
         from CM_KEXAM
+        <where>
+            <if test="kexCd != '' and kexCd != null ">
+                KEX_CD = #{kexCd}
+            </if>
+        </where>
         <if test="limit != '' and limit != null and offset != '' and offset != null">
             limit ${limit} offset ${offset}
         </if>

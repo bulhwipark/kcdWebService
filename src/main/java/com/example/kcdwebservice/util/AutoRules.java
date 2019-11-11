@@ -3,7 +3,6 @@ package com.example.kcdwebservice.util;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.SearchVo;
 
-import com.sun.corba.se.spi.activation.ServerAlreadyRegisteredHelper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -54,7 +53,7 @@ public class AutoRules {
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("activeFilter", "true");
         paramMap.put("termActive", "true");
-        paramMap.put("ecl", "<763158003");
+        paramMap.put("ecl", searchVo.getEcl());
         paramMap.put("term", searchVo.getTerm());
         result = HttpRestCall.callGet(URL, paramMap);
         return result;
@@ -595,7 +594,7 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "eftSubstNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "21");
+            returnJSON.put("ruleCode", "23");
             return returnJSON;
         }
 
@@ -680,7 +679,7 @@ public class AutoRules {
         if(cmMedicineVo.getEftSubstNm().trim().equals("")){
             returnJSON.put("status", "eftSubstNm not valid");
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "21");
+            returnJSON.put("ruleCode", "24");
             return returnJSON;
         }
 
@@ -732,7 +731,7 @@ public class AutoRules {
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
             returnJSON.put("searchTerm", searchVo.getTerm());
-            returnJSON.put("ruleCode", "4");
+            returnJSON.put("ruleCode", "24");
         }else{
             returnJSON.put("status", "false");
             returnJSON.put("searchTerm", searchVo.getTerm());
@@ -755,6 +754,11 @@ public class AutoRules {
         JSONObject returnJSON = new JSONObject();
         String result = null;
         SearchVo searchVo = new SearchVo();
+
+        if(cmMedicineVo.getEcl() != null){
+            searchVo.setEcl(cmMedicineVo.getEcl());
+        }
+
         searchVo.setTerm(
                 "only " + cmMedicineVo.getSubstanceNm() + " " + cmMedicineVo.getRtOfAdmin().trim()
         );
@@ -788,7 +792,7 @@ public class AutoRules {
                 returnJSON.put("status", "true");
                 returnJSON.put("result", result);
                 returnJSON.put("searchTerm", searchVo.getTerm());
-                returnJSON.put("ruleCode", "5");
+                returnJSON.put("ruleCode", "25");
             }else{
                 returnJSON.put("status", "false");
                 returnJSON.put("searchTerm", searchVo.getTerm());
@@ -820,6 +824,8 @@ public class AutoRules {
         JSONObject returnJSON = new JSONObject();
         String result = null;
         SearchVo searchVo = new SearchVo();
+
+        searchVo.setEcl(cmMedicineVo.getEcl());
 
         searchVo.setTerm(
               "only " + cmMedicineVo.getEftSubstNm() + cmMedicineVo.getRtOfAdmin().trim()
@@ -886,7 +892,7 @@ public class AutoRules {
         JSONObject returnJSON = new JSONObject();
         String result = null;
         SearchVo searchVo = new SearchVo();
-
+        searchVo.setEcl(cmMedicineVo.getEcl());
         searchVo.setTerm(
                 "only " + cmMedicineVo.getSubstanceNm()
         );
@@ -947,7 +953,7 @@ public class AutoRules {
         JSONObject returnJSON = new JSONObject();
         String result = null;
         SearchVo searchVo = new SearchVo();
-
+        searchVo.setEcl(cmMedicineVo.getEcl());
         searchVo.setTerm(
                 "only " + cmMedicineVo.getEftSubstNm()
         );
