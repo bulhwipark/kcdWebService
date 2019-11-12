@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="alert alert-primary" role="alert">
-        <h4>search menu</h4>
+        <h4 style="display: inline-block; margin-bottom: 20px;">search menu</h4> <button class="btn btn-warning" onclick="button_medi_autoRuleSet();">약제 룰 기반 검색</button>
         <div>
             <div>
                 <span>
@@ -106,7 +106,7 @@
             </div>
             --%>
             <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="button_medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <%--<button class="btn btn-lg btn-primary" onclick="button_medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;--%>
             <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
             <button id="mediSaveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>

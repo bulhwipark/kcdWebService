@@ -3,7 +3,7 @@ function medi_detail_static_func(){
     get_mediObject_req();
     get_mediDetail_list();
     //termSynonym();
-    medi_autoRuleSet();
+    button_medi_autoRuleSet();
     mediDetail_prevBtn_ajaxReq();
     mediSearchTerm_setting();
 
@@ -487,15 +487,15 @@ function mediSearchTerm_setting(){
 function button_medi_autoRuleSet(){
     var param = new Object();
     param.term = $('#mediTerm').val();
-    param.rules = medi.rules.join(',');
-
+    // param.rules = medi.rules.join(',');
+    param = JSON.parse(JSON.stringify(medi.currentMediInfo));
     if ($('input[name="mediDefaultRule"]:checked').val()) {
         param.ecl = $('input[name="mediDefaultRule"]:checked').val();
     } else {
         param.ecl = $('#mediEcl').val();
     }
     $.ajax({
-        url: '/autoRuleSet',
+        url: '/mediAutoRuleSet',
         type: 'post',
         async: false,
         data: param,
@@ -570,10 +570,11 @@ function button_medi_autoRuleSet(){
         }
     });
 }
+/*
 
-/**
+/!**
  * 자동룰 반영
- */
+ *!/
 function medi_autoRuleSet(){
     var param = new Object();
     param = JSON.parse(JSON.stringify(medi.currentMediInfo));
@@ -660,6 +661,7 @@ function medi_autoRuleSet(){
         }
     });
 }
+*/
 
 /**
  * 유사도기준 검색 ajax
@@ -807,7 +809,6 @@ function attr_val_modalSetting(sctId){
         $('#div'+ (i+1) +' .textSelect .filter-option-inner-inner').text(JSON.parse(infoList[i].valSctIdInfo).fsn.term);
         $('#attr_remove'+(i+1)).show();
     }
-    console.log('test');
 }
 
 function getValueList(currentNum){
@@ -922,7 +923,7 @@ function attr_val_save(){
         },
         success:function(){
             console.log("save");
-            get_kcdDetail_list();
+            get_mediDetail_list();
         }
     })
 }
