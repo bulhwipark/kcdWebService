@@ -31,9 +31,9 @@ function medi_detail_static_func(){
         }
 
         if($('input[name="medi_sctListCheck"]:checked').length > 0){
-            $('#removeBtn').prop('disabled', false);
+            $('#mediRemoveBtn').prop('disabled', false);
         }else{
-            $('#removeBtn').prop('disabled', true);
+            $('#mediRemoveBtn').prop('disabled', true);
         }
     });
 
@@ -163,11 +163,11 @@ function medi_detail_dynamic_func(){
         }
     });
 
-    $('input[name="searchResultSaveCheckbox"]').on('change', function(e){
-        if($('input[name="searchResultSaveCheckbox"]:checked').length > 0){
-            $('#saveBtn').prop('disabled', false);
+    $('input[name="mediSearchResultSaveCheckbox"]').on('change', function(e){
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').prop('disabled', false);
         }else{
-            $('#saveBtn').prop('disabled', true);
+            $('#mediSaveBtn').prop('disabled', true);
         }
     });
 
@@ -343,7 +343,7 @@ function medi_search_req(){
                         $('<td>').append(
                             $('<input>',{
                                 type:'checkbox',
-                                name:'searchResultSaveCheckbox',
+                                name:'mediSearchResultSaveCheckbox',
                                 value:items[i].conceptId
                             })
                         )
@@ -430,7 +430,8 @@ function deleteMediList_req(){
         success:function(){
             get_mediDetail_list();
             //search_req();
-            medi_autoRuleSet();
+            button_medi_autoRuleSet();
+            $('#mediRemoveBtn').attr('disabled', true);
         }
     });
 }
@@ -550,7 +551,7 @@ function button_medi_autoRuleSet(){
                                     $('<td>').append(
                                         $('<input>',{
                                             type:'checkbox',
-                                            name:'searchResultSaveCheckbox',
+                                            name:'mediSearchResultSaveCheckbox',
                                             value:items[i].conceptId
                                         })
                                     )
