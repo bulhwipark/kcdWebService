@@ -235,24 +235,29 @@ public class MainController {
     public String autoMapMediRule2() {
        //ruleMapService.selectMediList(ruleTp);
 
-        ruleMapService.selectMediList("10");
-        ruleMapService.selectMediList("11");
-        ruleMapService.selectMediList("12");
-         ruleMapService.selectMediList("13");
-        ruleMapService.selectMediList("20");
-        ruleMapService.selectMediList("21");
-        ruleMapService.selectMediList("22");
-        ruleMapService.selectMediList("23");
-        ruleMapService.selectMediList("30");
-        ruleMapService.selectMediList("31");
-        ruleMapService.selectMediList("32");
-        ruleMapService.selectMediList("33");
-        ruleMapService.selectMediList("40");
-        ruleMapService.selectMediList("41");
-        ruleMapService.selectMediList("42");
-        ruleMapService.selectMediList("43");
-       ruleMapService.selectMediList("5");
-       ruleMapService.selectMediList("6");
+        // ruleMapService.selectMediList("10");
+        // ruleMapService.selectMediList("11");
+        // ruleMapService.selectMediList("12");
+        //  ruleMapService.selectMediList("13");
+        // ruleMapService.selectMediList("20");
+        // ruleMapService.selectMediList("21");
+        // ruleMapService.selectMediList("22");
+        // ruleMapService.selectMediList("23");
+        // ruleMapService.selectMediList("30");
+        // ruleMapService.selectMediList("31");
+        // ruleMapService.selectMediList("32");
+        // ruleMapService.selectMediList("33");
+        // ruleMapService.selectMediList("40");
+        // ruleMapService.selectMediList("41");
+        // ruleMapService.selectMediList("42");
+        // ruleMapService.selectMediList("43");
+        // ruleMapService.selectMediList("50");
+        // ruleMapService.selectMediList("60");
+        ruleMapService.selectMediList("73");
+        ruleMapService.selectMediList("83");
+        ruleMapService.selectMediList("93");
+        ruleMapService.selectMediList("A3");
+         
 
     
        return "자동룰매핑종료"+System.currentTimeMillis();

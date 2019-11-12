@@ -199,20 +199,29 @@ public class RuleMapService {
       if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
         return;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if (ruleTp.substring(0, 1).equals("5")) {
+    } else if (ruleTp.substring(0, 1).equals("5") ||ruleTp.substring(0, 1).equals("7")) {
       if (cm.getSubstanceNm().length()<2)
         return;
       strQuery = "only " + cm.getSubstanceNm();
-    } else if (ruleTp.substring(0, 1).equals("6")) {
+    } else if (ruleTp.substring(0, 1).equals("6") || ruleTp.substring(0, 1).equals("8")) {
       if (cm.getEftSubstNm().length()<2)
         return;
-      strQuery = "only " + cm.getEftSubstNm();
+      strQuery =  cm.getEftSubstNm();
+    } else if (ruleTp.substring(0, 1).equals("9")) {
+      if (cm.getSubstanceNm().length()<2)
+        return;
+      strQuery = cm.getSubstanceNm();
+    } else if (ruleTp.substring(0, 1).equals("A") ) {
+      if (cm.getEftSubstNm().length()<2)
+        return;
+      strQuery =  cm.getEftSubstNm();
     } else {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     }
 
+    
     if (!ruleTp.substring(1, 2).equals("3")) {
-      if ((ruleTp.substring(0, 1).equals("6") || ruleTp.substring(0, 1).equals("5")) && cm.getRtOfAdmin().equals(""))
+      if ( cm.getRtOfAdmin().equals(""))
         return;
       strQuery += " " + cm.getRtOfAdmin();
     }
@@ -251,12 +260,12 @@ public class RuleMapService {
   }
 
   // http://localhost:8080/RESTfulExample/json/product/get
-  public static void main(String[] args) {
+  // public static void main(String[] args) {
 
-    RuleMapService rs = new RuleMapService();
+  //   RuleMapService rs = new RuleMapService();
 
-    System.out.println(rs.searchTerm("Heart Attack").toString());
+  //   System.out.println(rs.searchTerm("Heart Attack").toString());
 
-  }
+  // }
 
 }
