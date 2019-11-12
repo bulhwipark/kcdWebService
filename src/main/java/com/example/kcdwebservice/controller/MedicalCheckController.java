@@ -1,15 +1,16 @@
 package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.CmKexamService;
+import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmKexamVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -36,9 +37,9 @@ public class MedicalCheckController {
         if (option.equals("All")) {
             list = kexamService.kexam_selectAll(cmKexamVo);
         } else if (option.equals("Mapping")) {
-//            list = kexamService.medi_selectMapping(cmMedicineVo);
+            list = kexamService.kexam_selectMapping(cmKexamVo);
         } else {
-//            list = kexamService.medi_selectNoMapping(cmMedicineVo);
+            list = kexamService.medi_selectNoMapping(cmKexamVo);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -62,13 +63,30 @@ public class MedicalCheckController {
         return new ResponseEntity<>(cmKexamVo, HttpStatus.OK);
     }
 
-    /*
-    @RequestMapping(value="/getMediCheckDetailList")
+    @RequestMapping(value="/getMedicalCheckTotalCnt")
     @ResponseBody
-    public void getMediCheckDetailList(){
-
+    public ResponseEntity<String> getMedicalCheckTotalCnt(@RequestParam("mappingStatus")String mappingStatus, CmKexamVo cmKexamVo){
+        String kexTotalCnt = kexamService.kexam_totalCnt(mappingStatus, cmKexamVo);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("kexTotalCnt", kexTotalCnt);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
-    */
 
+    @PostMapping("/mediCheckExcelDownload.xlsx")
+    public String mediCheckExcelDownload(CmKexamVo cmKexamVo, Model model){
+        List<CmKexamVo> list = null;
+        if(cmKexamVo.getListOption().equals("All")){
+            list = kexamService.kexam_selectAll(cmKexamVo);
+        }
+
+        model.addAttribute("list", list);
+        model.addAttribute("sheetNm", "검사 목록");
+        model.addAttribute("headerNmArr", new String[]{"KEX코드", "한글명/영문명", "SCTID", "Snomed CT Term", "매핑상태", "매핑일자" });
+        return "mediCheckExcelDownload";
+    }
 
 }

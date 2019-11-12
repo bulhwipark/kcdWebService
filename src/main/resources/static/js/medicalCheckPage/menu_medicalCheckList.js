@@ -1,4 +1,5 @@
 function menu_medicalCheckList_staticFunc(){
+    medicalCheck_totalCnt_req();
     medicalCheckList_req();
 
     //매핑상태 이벤트.
@@ -9,10 +10,18 @@ function menu_medicalCheckList_staticFunc(){
     });
 
     $('#mediCheck_searchToKexCd').on('change', function(){
-        console.log($(this).val());
         medi_check.limit = 50;
         medi_check.currentOffset = 0;
         medicalCheckList_req();
+    })
+    .on('keyup', function(){
+        medi_check.limit = 50;
+        medi_check.currentOffset = 0;
+        medicalCheckList_req();
+    });
+
+    $('#mediCheck_excelDownloadBtn').on('click', function(){
+      $('#mediCheck_searchForm')[0].submit();
     });
 
 };
@@ -32,9 +41,25 @@ function menu_mediKexamList_dynamicFunc(){
         sessionStorage.setItem("mediCheck_searchToKdCd", $('#mediCheck_searchToKdCd').val());
         sessionStorage.setItem("mediCheck_mapVer", $('#mediCheck_version').val());
         sessionStorage.setItem("mediCheck_mapStatCd", $('#mediCheck_mapStatCd').val());
-        location.href = '/mediCheckDetailPage?kexCd=' + $(this).text() + '&mapVer=' + $('#kexMapVer').val();
+        location.href = '/mediCheckDetailPage?kexCd=' + $(this).text() + '&mapVer=' + $('#mediCheck_mapVer').val();
     });
 };
+
+function medicalCheck_totalCnt_req(){
+    $.ajax({
+        url:'/getMedicalCheckTotalCnt',
+        type:'post',
+        data:{
+            mappingStatus:$('#mediCheck_listOption option:selected').val(),
+            mapVer:$('#mediCheck_mapVer').val(),
+            mapStatCd: $('#mediCheck_mapStatCd').val()
+        },
+        dataType:'json',
+        success:function(data){
+            $('#kexTotalCnt').text(data.kexTotalCnt?data.kexTotalCnt:'-');
+        }
+    })
+}
 
 function medicalCheckList_req(){
     $.ajax({

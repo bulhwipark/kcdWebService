@@ -12,7 +12,7 @@
         </li>
         <li class="nav-item menuLi">
             <a class="nav-link headerMenu" data-menu="medicalCheckPage" id="medicalCheckPage_a"> 검사 </a>
-        </li>--%>
+        </li>
     </ul>
 </nav>
 
