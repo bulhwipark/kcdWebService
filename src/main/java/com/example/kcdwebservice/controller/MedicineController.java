@@ -2,12 +2,9 @@ package com.example.kcdwebservice.controller;
 
 import com.example.kcdwebservice.service.CmMediService;
 import com.example.kcdwebservice.service.MapKcdSctService;
-import com.example.kcdwebservice.service.RuleMapService;
 import com.example.kcdwebservice.service.SearchService;
-import com.example.kcdwebservice.util.AutoRules;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
-import com.example.kcdwebservice.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;

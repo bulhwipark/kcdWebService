@@ -15,7 +15,7 @@
         from CM_KEXAM
         <where>
             <if test="kexCd != '' and kexCd != null ">
-                KEX_CD = #{kexCd}
+                KEX_CD like concat('%', #{kexCd}, '%')
             </if>
         </where>
         <if test="limit != '' and limit != null and offset != '' and offset != null">
@@ -37,6 +37,10 @@
                 KEX_CD = #{kexCd};
             </if>
         </where>
+    </select>
+
+    <select id="kexam_totalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+        SELECT COUNT(*) FROM CM_KEXAM
     </select>
 
 

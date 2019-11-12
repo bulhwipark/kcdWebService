@@ -14,7 +14,9 @@ public class CmKexamVo {
     private String kexKor;
     private String kexEng;
     private String kexPrice;
-
+    private String mapVer;
+    private String mapStatCd;
+    private String listOption;
     private String limit;
     private String offset;
 }

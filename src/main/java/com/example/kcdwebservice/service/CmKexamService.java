@@ -21,4 +21,16 @@ public class CmKexamService {
     public CmKexamVo selectKexCdInfo(String kexCd) {
         return cmKexamDao.selectKexCdInfo(kexCd);
     }
+
+    public List<CmKexamVo> kexam_selectMapping(CmKexamVo cmKexamVo) {
+        return cmKexamDao.kexam_selectMapping(cmKexamVo);
+    }
+
+    public List<CmKexamVo> medi_selectNoMapping(CmKexamVo cmKexamVo) {
+        return cmKexamDao.kexam_selectNoMapping(cmKexamVo);
+    }
+
+    public String kexam_totalCnt(String mappingStatus, CmKexamVo cmKexamVo) {
+        return cmKexamDao.kexam_totalCnt(mappingStatus, cmKexamVo);
+    }
 }
