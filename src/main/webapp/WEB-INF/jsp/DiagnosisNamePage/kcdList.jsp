@@ -35,7 +35,7 @@
                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
                     <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
-                    <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
+                    <div class="form-inline" style="padding-left: 15px;">
                         <label for="searchToKcdCd">검색: </label>
                         <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
                     </div>

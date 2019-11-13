@@ -27,7 +27,7 @@
                     <input type="hidden" name="mapStatCd" id="mediProc_mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
                     <select class="form-control kcdSearchOption" name="mapStatCd" id="mapStatCd" style="width: 170px;"></select-->
-                    <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
+                    <div class="form-inline" style="padding-left: 15px;">
                         <label for="mediProc_searchToKcdCd">검색: </label>
                         <input name="kcdCd" id="mediProc_searchToKcdCd" class="form-control" type="text" placeholder="코드 검색.">
                     </div>

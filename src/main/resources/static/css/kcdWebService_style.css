@@ -8,7 +8,14 @@
     text-align: right;
     font-size: 25px;
 }
-.kcdDetail:hover, .medDetail:hover, .sctIdDetail:hover, .mediSctIdDetail:hover, .medi-sctIdDetail:hover, .mediCheckDetail:hover{
+.kcdDetail:hover,
+.medDetail:hover,
+.sctIdDetail:hover,
+.mediSctIdDetail:hover,
+.medi-sctIdDetail:hover,
+.mediCheckDetail:hover,
+.mediProcDetail:hover,
+.mediProcSctIdDetail:hover {
     cursor: pointer;
     background-color: #007bff;
     color: white;

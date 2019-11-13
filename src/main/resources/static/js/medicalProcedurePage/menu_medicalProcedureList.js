@@ -2,10 +2,14 @@ function menu_medicalProcedureList_staticFunc() {
     //초기 실행
     mediProcList_req();
 
+
+    $('#mediProc_listOption').on('change', function(){
+        mediProcList_req();
+    });
 }
 
-function menu_medicineList_dynamicFunc() {
-    $('.mediSctIdDetail').on('click', function () {
+function menu_medicalProcedureList_dynamicFunc() {
+    $('.mediProcSctIdDetail').on('click', function () {
         window.open(
             'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1=' + $(this).text(),
             'Detail',
@@ -14,7 +18,7 @@ function menu_medicineList_dynamicFunc() {
         $('#sctId').val($(this).text());
     });
 
-    $('.medDetail').on('click', function(){
+    $('.mediProcDetail').on('click', function(){
         console.log($(this));
         //상세화면에서의 페이징을 위해 세팅.
         sessionStorage.setItem("mediProc_storageCheck", true);
@@ -51,7 +55,7 @@ function mediProcList_req() {
                 for (var i = 0; i < data.length; i++) {
                     var $tr = $('<tr>').append(
                         $('<td>', {
-                            class: 'medDetail',
+                            class: 'mediProcDetail',
                             text: data[i].kdCd,
                             'data-kdCd': data[i].kdCd,
                             //'data-sctid':!data[i].sctId?'-':data[i].sctId,
@@ -66,7 +70,7 @@ function mediProcList_req() {
                             })
                         ),
                         $('<td>', {
-                            class: 'mediSctIdDetail',
+                            class: 'mediProcSctIdDetail',
                             text: data[i].sctId ? data[i].sctId : '-'
                         }),
                         $('<td>', {
@@ -96,6 +100,7 @@ function mediProcList_req() {
                 }
 
                 $('#mediProc_currentPage').text((medi_proc.currentOffset+1) + '/' + medi_proc.totalCnt);
+                menu_medicalProcedureList_dynamicFunc();
             }
         }
     })

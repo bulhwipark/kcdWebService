@@ -17,7 +17,7 @@
                         <option value="NotMapping">비매핑</option>
                     </select>
                     <input type="hidden" name="medMapStatCd" id="medMapStatCd" value="All">
-                    <div class="form-inline" style="padding-left: 15px; margin-bottom: 10px;">
+                    <div class="form-inline" style="padding-left: 15px;">
                         <label for="searchToKdCd">검색: </label>
                         <input name="kdCd" id="searchToKdCd" class="form-control" type="text" placeholder="KD코드 검색.">
                     </div>
