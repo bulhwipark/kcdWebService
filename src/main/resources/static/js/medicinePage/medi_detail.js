@@ -356,6 +356,7 @@ function medi_search_req(){
             }else{
                 console.log("자료 없음 처리.");
             }
+            alert_timeout();
         }
     })
 }
@@ -568,6 +569,7 @@ function button_medi_autoRuleSet(){
                     }
                 }
             }
+            alert_timeout();
         }
     });
 }
@@ -734,6 +736,7 @@ function medi_similaritySearch(){
                 console.log("데이터 없음");
                 console.log(data);
             }
+            alert_timeout();
         }
     });
 }
@@ -1048,11 +1051,14 @@ function mediDetail_prevBtn_ajaxReq(){
     })
 }
 
-function alert_timeout(){
-    $('#saveAlert').removeClass('displayNone');
-    var timer = setTimeout(function(){
-        if(!$('#saveAlert').hasClass('displayNone')){
-            $('#saveAlert').addClass('displayNone');
+/**
+ * 검색, 룰기반검색, 유사도 기반검색 완료알림 관련 함수.
+ */
+function alert_timeout() {
+    $('.searchAlert').removeClass('displayNone');
+    var timer = setTimeout(function () {
+        if (!$('.searchAlert').hasClass('displayNone')) {
+            $('.searchAlert').addClass('displayNone');
         }
-    }, 500);
+    }, 1000);
 }

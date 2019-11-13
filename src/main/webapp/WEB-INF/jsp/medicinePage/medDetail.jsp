@@ -94,22 +94,17 @@
                 <select class="form-control" name="" id="mediSearchTermSelect" style="display: inline-block; width: 700px;">
                 </select>
             </div>
-            <%--
             <div>
-                <label>and :</label> <input type="checkbox" value="and" name="searchMenu"> |
-                <label>with :</label> <input type="checkbox" value="with" name="searchMenu"> |
-                <label>other :</label> <input type="checkbox" value="other" name="searchMenu"> |
-                <label>unspecified :</label> <input type="checkbox" value="unspecified" name="searchMenu"> |
-                <label>alone :</label> <input type="checkbox" value="alone" name="searchMenu"> |
-                <label>without complication :</label> <input type="checkbox" value="without complication" name="searchMenu"> |
-                <label>single :</label> <input type="checkbox" value="single" name="searchMenu"> |
+                <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
+                <%--<button class="btn btn-lg btn-primary" onclick="button_medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;--%>
+                <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
+                <div id="" class="searchAlert displayNone alertCss">
+                    <span>
+                        검색이 완료 되었습니다.
+                    </span>
+                </div>
+                <button id="mediSaveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
             </div>
-            --%>
-            <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
-            <%--<button class="btn btn-lg btn-primary" onclick="button_medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;--%>
-            <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
-            <button id="mediSaveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
-           <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
         </div>
     </div>
     <div class="row" id="mediSearchResultTableDiv">

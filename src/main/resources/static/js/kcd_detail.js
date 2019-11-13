@@ -339,6 +339,7 @@ function search_req() {
             } else {
                 console.log("자료 없음 처리.");
             }
+            alert_timeout();
         }
     })
 }
@@ -529,6 +530,7 @@ function autoRuleSet() {
                         $('#saveBtnDiv').removeClass('displayNone');
                         $('.autoRuleCol').removeClass('displayNone');
                         kcd_detail_dynamic_func();
+                        alert_timeout();
                     } else {
                         //status false;
                         console.log(data[q].status);
@@ -607,6 +609,7 @@ function similaritySearch() {
                 console.log("데이터 없음");
                 console.log(data);
             }
+            alert_timeout();
         }
     });
 }
@@ -931,11 +934,14 @@ function kcdDetail_prevBtn_ajaxReq() {
     })
 }
 
+/**
+ * 검색, 룰기반검색, 유사도 기반검색 완료알림 관련 함수.
+ */
 function alert_timeout() {
-    $('#saveAlert').removeClass('displayNone');
+    $('.searchAlert').removeClass('displayNone');
     var timer = setTimeout(function () {
-        if (!$('#saveAlert').hasClass('displayNone')) {
-            $('#saveAlert').addClass('displayNone');
+        if (!$('.searchAlert').hasClass('displayNone')) {
+            $('.searchAlert').addClass('displayNone');
         }
-    }, 500);
+    }, 1000);
 }
