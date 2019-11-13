@@ -17,7 +17,7 @@ function pageRuting(pageNm){
     }else if(pageNm === 'medicinePage'){
         menu_medicineList_staticFunc();
     }else if(pageNm === 'medicalProcedurePage'){
-        // menu_medicalProcedureList_staticFunc();
+        menu_medicalProcedureList_staticFunc();
     }else if(pageNm === 'medicalCheckPage'){
         menu_medicalCheckList_staticFunc();
     }else {

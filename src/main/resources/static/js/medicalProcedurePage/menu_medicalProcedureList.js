@@ -1,54 +1,6 @@
-/*
 function menu_medicalProcedureList_staticFunc() {
     //초기 실행
-    if(sessionStorage.getItem("medi_storageCheck")){
-        $('#medListOption').val(sessionStorage.getItem("medi_listOption"));
-        $('#searchToKdCd').val(sessionStorage.getItem("medi_searchToKcdCd"));
-        medi.limit = parseInt(sessionStorage.getItem("medi_limit"));
-        medi.currentOffset = parseInt(sessionStorage.getItem("medi_offset"));
-        sessionStorage.clear();
-        sessionStorage.setItem('mainPage', 'medicinePage');
-    }
-    medicineTotalCnt_req();
-    medicineList_req();
-
-    $('#medListOption').on('change', function () {
-        medicineTotalCnt_req();
-        medicineList_req();
-    });
-
-    $('#searchToKdCd').on('keyup', function () {
-        medicineTotalCnt_req();
-        medicineList_req();
-    });
-
-    //다음 버튼
-    $('#medi_next').on('click', function (e) {
-        e.preventDefault();
-        if ((medi.currentOffset + medi.limit) >= medi.totalCnt) {
-            medi.currentOffset = (medi.totalCnt - 1);
-        } else {
-            medi.currentOffset = medi.currentOffset + medi.limit;
-        }
-        medicineList_req();
-    });
-
-    //이전 버튼
-    $('#medi_prev').on('click', function (e) {
-        e.preventDefault();
-        if ((medi.currentOffset - medi.limit) <= 0) {
-            medi.currentOffset = 0
-        } else {
-            medi.currentOffset = medi.currentOffset - medi.limit
-        }
-        medicineList_req();
-    });
-
-    //excel download
-    $('#medExcelDownloadBtn').on('click', function(e){
-        e.preventDefault();
-        $('#mediSearchForm')[0].submit();
-    });
+    mediProcList_req();
 
 }
 
@@ -81,39 +33,19 @@ function menu_medicineList_dynamicFunc() {
 
 }
 
-function medicineTotalCnt_req() {
-    $.ajax({
-        url: '/getMediTotalCount',
-        type: 'post',
-        data: {
-            mappingStatus: $('#medListOption option:selected').val(),
-            mapVer: $('#version').val(),
-            mapStatCd: $('#mapStatCd').val()
-        },
-        dataType: 'json',
-        async:false,
-        success: function (data) {
-            console.log(data);
-            medi.mediTotalCnt = data.mediTotalCnt;
-            medi.totalCnt = data.totalCnt;
-            $('#medi_kdTotalCnt').text(data.mediTotalCnt ? data.mediTotalCnt : '-');
-            $('#medi_totalCnt').text(data.totalCnt ? data.totalCnt : '-');
-        }
-    });
-}
 
-function medicineList_req() {
+function mediProcList_req() {
     $.ajax({
-        url: '/medicine/select/' + $('#medListOption option:selected').val(),
+        url: '/medicine/select/' + $('#mediProc_listOption option:selected').val(),
         type: 'post',
         data: {
             kdCd: $('#searchToKdCd').val(),
-            limit: medi.limit,
-            offset: medi.currentOffset
+            limit: medi_proc.limit,
+            offset: medi_proc.currentOffset
         },
         dataType: 'json',
         success: function (data) {
-            medi.mainMedList = JSON.parse(JSON.stringify(data));
+            medi_proc.mainMedList = JSON.parse(JSON.stringify(data));
             if (data.length > 0) {
                 $('#mediProc_procListTable tbody').empty();
                 for (var i = 0; i < data.length; i++) {
@@ -149,22 +81,22 @@ function medicineList_req() {
                     );
                     $('#mediProc_procListTable tbody').append($tr);
                 }
-                menu_medicineList_dynamicFunc();
+               // menu_medicineList_dynamicFunc();
 
-                if(medi.currentOffset == 0){
-                    $('#medi_prev').addClass('displayNone');
+                if(medi_proc.currentOffset == 0){
+                    $('#mediProc_prev').addClass('displayNone');
                 }else{
-                    $('#medi_prev').removeClass('displayNone');
+                    $('#mediProc_prev').removeClass('displayNone');
                 }
 
-                if(medi.currentOffset == medi.totalCnt){
-                    $('#medi_next').addClass('displayNone');
+                if(medi_proc.currentOffset == medi_proc.totalCnt){
+                    $('#mediProc_next').addClass('displayNone');
                 }else{
-                    $('#medi_next').removeClass('displayNone');
+                    $('#mediProc_next').removeClass('displayNone');
                 }
 
-                $('#medi_currentPage').text((medi.currentOffset+1) + '/' + medi.totalCnt);
+                $('#mediProc_currentPage').text((medi_proc.currentOffset+1) + '/' + medi_proc.totalCnt);
             }
         }
     })
-}*/
+}

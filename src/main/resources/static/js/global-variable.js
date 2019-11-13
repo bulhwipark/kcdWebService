@@ -33,7 +33,7 @@ var medi = {
 };
 
 //처치및시술 전역변수
-var medi_procedure = {
+var medi_proc = {
     procTotalCnt: 0,
     totalCnt: 0,
     limit: 50,
