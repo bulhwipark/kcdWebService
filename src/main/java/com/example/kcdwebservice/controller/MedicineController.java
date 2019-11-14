@@ -95,9 +95,9 @@ public class MedicineController {
      */
     @RequestMapping(value = "/getMediInfo")
     @ResponseBody
-    public ResponseEntity<CmMedicineVo> getMediInfo(@RequestParam("kdCd") String kdCd) {
-        CmMedicineVo cmMedicineVo = cmMediService.getMediInfo(kdCd);
-        return new ResponseEntity<>(cmMedicineVo, HttpStatus.OK);
+    public ResponseEntity<CmMedicineVo> getMediInfo(CmMedicineVo cmMedicineVo) {
+        CmMedicineVo cmMedicineVoInfo = cmMediService.getMediInfo(cmMedicineVo);
+        return new ResponseEntity<>(cmMedicineVoInfo, HttpStatus.OK);
     }
 
     /**
@@ -141,7 +141,9 @@ public class MedicineController {
     @RequestMapping(value = "/mediAutoRuleSet")
     @ResponseBody
     public ResponseEntity<String> mediAutoRuleSet(CmMedicineVo cmMedicineVo) {
-        List<JSONObject> list = searchService.medi_autoRuleRequest(cmMedicineVo);
+        List<CmMedicineVo> mediInfoList = cmMediService.getMediInfoList(cmMedicineVo.getKdCd());
+        List<JSONObject> list = searchService.medi_autoRuleRequest(cmMedicineVo, mediInfoList);
+
         return new ResponseEntity<>(list.toString(), HttpStatus.OK);
     }
 

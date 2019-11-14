@@ -58,11 +58,15 @@ public class CmMediService {
         return totalCnt;
     }
 
-    public CmMedicineVo getMediInfo(String kdCd) {
-        return cmMediDao.getMediInfo(kdCd);
+    public CmMedicineVo getMediInfo(CmMedicineVo cmMedicineVo) {
+        return cmMediDao.getMediInfo(cmMedicineVo);
     }
 
     public List<CmMedicineVo> mediDetailList(String kdCd) {
         return cmMediDao.mediDetailList(kdCd);
+    }
+
+    public List<CmMedicineVo> getMediInfoList(String kdCd) {
+        return cmMediDao.getMediInfoList(kdCd);
     }
 }

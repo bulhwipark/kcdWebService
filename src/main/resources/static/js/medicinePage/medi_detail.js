@@ -199,7 +199,8 @@ function get_mediObject_req(){
         type:'post',
         async:false,
         data:{
-            kdCd:$('#kdCd').text()
+            kdCd:$('#kdCd').text(),
+            subAltKey:sessionStorage.getItem("medi_subAltKey")
         },
         dataType:'json',
         success:function(data){

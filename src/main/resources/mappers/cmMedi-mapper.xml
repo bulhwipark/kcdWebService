@@ -23,7 +23,8 @@
                AMOUNT3           amount3,
                UNIT3             unit3,
                MED_DOSE_FRM      medDoseFrm,
-               RT_OF_ADMIN       rtOfAdmin
+               RT_OF_ADMIN       rtOfAdmin,
+               SUB_ALT_KEY       subAltKey
         from CM_MEDICINE
         where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2);
        
@@ -39,6 +40,7 @@
         SELECT CM.KD_CD         kdCd,
                CM.DRUG_NM_ENG   drugNmEng,
                CM.DRUG_NM_KOR   drugNmKor,
+               CM.SUB_ALT_KEY       subAltKey,
                MAP2.UDT_DT      udtDt,
                MAP2.SCT_ID      sctId,
                CS.SCT_TERM       sctTerm,
@@ -68,6 +70,7 @@
         SELECT CM.KD_CD kdCd,
                CM.DRUG_NM_ENG drugNmEng,
                CM.DRUG_NM_KOR drugNmKor,
+               CM.SUB_ALT_KEY       subAltKey,
                MAP2.UDT_DT udtDt,
                MAP2.SCT_ID sctId,
                S.SCT_TERM sctTerm,
@@ -95,7 +98,8 @@
     <select id="medi_selectNoMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
         SELECT CM.KD_CD       kdCd,
                CM.DRUG_NM_ENG drugNmEng,
-               CM.DRUG_NM_KOR drugNmKor
+               CM.DRUG_NM_KOR drugNmKor,
+               CM.SUB_ALT_KEY       subAltKey
         FROM CM_MEDICINE CM
         WHERE KD_CD NOT IN (
             SELECT DISTINCT ORI_CD
@@ -196,7 +200,30 @@
         ;
     </select>
 
-    <select id="getMediInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+    <select id="getMediInfo" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT PRINCIPAL_COMP_CD prinipalCompCd,
+               KD_CD kdCd,
+               DRUG_NM_KOR drugNmKor,
+               DRUG_MANUF drugManuf,
+               HIRA_ATC_CD hiraAtcCd,
+               HIRA_ATC_NM hiraAtcNm,
+               STD_CD stdCd,
+               DRUG_NM_ENG drugNmEng,
+               SUBSTANCE_NM substanceNm,
+               AMOUNT1 amount1,
+               UNIT1 unit1,
+               EFT_SUBST_NM eftSubstNm,
+               AMOUNT2 amount2,
+               UNIT2 unit2,
+               AMOUNT3 amount3,
+               UNIT3 unit3,
+               MED_DOSE_FRM medDoseFrm,
+               RT_OF_ADMIN rtOfAdmin
+        FROM CM_MEDICINE
+        WHERE KD_CD = #{kdCd} AND SUB_ALT_KEY = #{subAltKey};
+    </select>
+
+    <select id="getMediInfoList" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
         SELECT PRINCIPAL_COMP_CD prinipalCompCd,
                KD_CD kdCd,
                DRUG_NM_KOR drugNmKor,

@@ -1024,4 +1024,157 @@ public class AutoRules {
         return returnJSON;
     }
 
+    /**
+     * 약제 룰 5-1
+     * @param cmMedicineVo
+     * @param mediInfoList
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject medi_autoRule_5_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        SearchVo searchVo = new SearchVo();
+        String term = "";
+        for(int i = 0; i<mediInfoList.size(); i++){
+            term += (" "+mediInfoList.get(i).getSubstanceNm());
+        }
+        searchVo.setTerm(term + " " + mediInfoList.get(0).getRtOfAdmin());
+        searchVo.setEcl(cmMedicineVo.getEcl());
+
+        String result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "25-1");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "25-1");
+        }
+        System.out.println("-------------medi rule_25-1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 6-1
+     * @param cmMedicineVo
+     * @param mediInfoList
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject medi_autoRule_6_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        SearchVo searchVo = new SearchVo();
+        String term = "";
+        for(int i = 0; i<mediInfoList.size(); i++){
+            term += (" "+mediInfoList.get(i).getEftSubstNm());
+        }
+        searchVo.setTerm(term + " " + mediInfoList.get(0).getRtOfAdmin());
+        searchVo.setEcl(cmMedicineVo.getEcl());
+
+        String result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "26-1");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "26-1");
+        }
+        System.out.println("-------------medi rule_26-1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 7-1
+     * @param cmMedicineVo
+     * @param mediInfoList
+     * @return
+     */
+    public JSONObject medi_autoRule_7_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        SearchVo searchVo = new SearchVo();
+        String term = "";
+        for(int i = 0; i<mediInfoList.size(); i++){
+            term += (" "+mediInfoList.get(i).getSubstanceNm());
+        }
+        searchVo.setTerm(term);
+        searchVo.setEcl(cmMedicineVo.getEcl());
+
+        String result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "27-1");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "27-1");
+        }
+        System.out.println("-------------medi rule_27-1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
+
+    /**
+     * 약제 룰 8-1
+     * @param cmMedicineVo
+     * @param mediInfoList
+     * @return
+     */
+    public JSONObject medi_autoRule_8_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        SearchVo searchVo = new SearchVo();
+        String term = "";
+        for(int i = 0; i<mediInfoList.size(); i++){
+            term += (" "+mediInfoList.get(i).getEftSubstNm());
+        }
+        searchVo.setTerm(term);
+        searchVo.setEcl(cmMedicineVo.getEcl());
+
+        String result = medi_autoRuleRequest(searchVo);
+
+        JSONObject checkJSON = new JSONObject(result);
+        JSONObject returnJSON = new JSONObject();
+        if(checkJSON.getJSONArray("items").length() > 0){
+            returnJSON.put("status", "true");
+            returnJSON.put("result", result);
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "28-1");
+        }else{
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", searchVo.getTerm());
+            returnJSON.put("ruleCode", "28-1");
+        }
+        System.out.println("-------------medi rule_28-1-------------------------");
+        System.out.println(result);
+        System.out.println(returnJSON);
+        System.out.println(returnJSON.toString());
+        System.out.println("-------------------------------------------");
+
+        return returnJSON;
+    }
 }

@@ -72,6 +72,7 @@ function menu_medicineList_dynamicFunc() {
         sessionStorage.setItem("medi_sctId", $(this).data('sctid'));
         sessionStorage.setItem("medi_kdCd", $(this).text());
         sessionStorage.setItem("medi_index", $(this).data('index'));
+        sessionStorage.setItem("medi_subAltKey", $(this).data('subaltkey'));
         sessionStorage.setItem("medi_searchToKdCd", $('#searchToKdCd').val());
         sessionStorage.setItem("medi_mapVer", $('#medVersion').val());
         sessionStorage.setItem("medi_mapStatCd", $('#medMapStatCd').val());
@@ -121,6 +122,7 @@ function medicineList_req() {
                             class: 'medDetail',
                             text: data[i].kdCd,
                             'data-kdCd': data[i].kdCd,
+                            'data-subaltkey': data[i].subAltKey,
                             //'data-sctid':!data[i].sctId?'-':data[i].sctId,
                             'data-index': i
                         }),

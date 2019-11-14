@@ -103,18 +103,29 @@ public class SearchService {
         return new AutoRules().autoRuleRequest(valSctId);
     }
 
-    public List<JSONObject> medi_autoRuleRequest(CmMedicineVo cmMedicineVo) {
+    public List<JSONObject> medi_autoRuleRequest(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) {
         AutoRules autoRules = new AutoRules();
         List<JSONObject> list = new ArrayList<>();
         try {
-            list.add(autoRules.medi_autoRule_1(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_2(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_3(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_4(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_5(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_6(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_7(cmMedicineVo));
-            list.add(autoRules.medi_autoRule_8(cmMedicineVo));
+            if(mediInfoList.size() > 1){
+                list.add(autoRules.medi_autoRule_5_1(cmMedicineVo, mediInfoList));
+                list.add(autoRules.medi_autoRule_6_1(cmMedicineVo, mediInfoList));
+                list.add(autoRules.medi_autoRule_7_1(cmMedicineVo, mediInfoList));
+                list.add(autoRules.medi_autoRule_8_1(cmMedicineVo, mediInfoList));
+                /*
+                list.add(autoRules.medi_autoRule_9_1(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_10_1(cmMedicineVo));
+                */
+            }else{
+                list.add(autoRules.medi_autoRule_1(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_2(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_3(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_4(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_5(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_6(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_7(cmMedicineVo));
+                list.add(autoRules.medi_autoRule_8(cmMedicineVo));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
