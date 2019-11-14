@@ -350,17 +350,23 @@ function search_req() {
 function saveBtn_req() {
     var currentSelected = $('input[name="searchResultSaveCheckbox"]:checked');
     var sctIdArr = [];
-
+    var ruleCodeArr = [];
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for (var i = 0; i < currentSelected.length; i++) {
         if (kcd.searchList) {
             for (var j = 0; j < kcd.searchList.length; j++) {
                 if (kcd.searchList[j].conceptId == currentSelected[i].value) {
                     sctIdArr.push(kcd.searchList[j].conceptId);
+                    ruleCodeArr.push(
+                        $('#' + kcd.searchList[j].conceptId + '_ruleCode').text()
+                    )
                 }
             }
         } else {
             sctIdArr.push(currentSelected[i].value);
+            ruleCodeArr.push(
+                $('#' + currentSelected[i].value + '_ruleCode').text()
+            )
         }
     }
 
@@ -376,7 +382,8 @@ function saveBtn_req() {
             mapVer: kcd.mapVer,
             mapStatCd: 5,
             oriTpCd: 'kcd',
-            sctId: sctIdArr.join(",")
+            sctId: sctIdArr.join(","),
+            mapMemo: ruleCodeArr.join("_")
         },
         success: function () {
             get_kcdDetail_list();
