@@ -25,6 +25,9 @@ public class CmMedicineVo {
     private double amount3;
     private String unit3;
     private String medDoseFrm;
+    private String medDoseFrm2;
+    private String medDoseFrm3;
+
     private String rtOfAdmin;
     private String mapMemo;
     private String subAltKey;

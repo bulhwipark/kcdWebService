@@ -1,19 +1,31 @@
 package com.example.kcdwebservice.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 import com.example.kcdwebservice.dao.CmMediDao;
 import com.example.kcdwebservice.dao.MapKcdSctDao;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
+import com.example.kcdwebservice.vo.SearchVo;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.nio.entity.NStringEntity;
+import org.apache.http.util.EntityUtils;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -85,6 +97,7 @@ public class RuleMapService {
     return arrSctid;
   }
 
+
   public List<CmKcdVo> selectKcdList() {
 
     CmKcdVo ck = new CmKcdVo();
@@ -97,6 +110,63 @@ public class RuleMapService {
     return list;
 
   }
+
+ 
+  public void serarchAndInsert2(String kmCd, String strQuery) {
+
+   
+    strQuery = strQuery.replace(",", "");
+    strQuery = strQuery.replace("/", " ");
+
+    System.out.println("Term query : " +kmCd+" :" + strQuery);
+    
+    try {
+      JSONObject jsonObject = searchElastic(strQuery);
+      JSONObject hitsObj = new JSONObject(String.valueOf(jsonObject.get("hits")));
+      JSONArray jsonArray = hitsObj.getJSONArray("hits");
+
+      for(int i = 0; i<jsonArray.length(); i++){
+        JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
+        obj = new JSONObject(String.valueOf(obj.get("_source")));
+        //conceptIdList.add(String.valueOf(obj.get("conceptId")));
+        MapKcdSctVo mvo = new MapKcdSctVo();
+        mvo.setOriCd(kmCd);
+        mvo.setSctId(String.valueOf(obj.get("conceptId")));
+        mvo.setMapVer("0");
+        mvo.setMapStatCd("A1");
+
+        //cmMediDao.insertAutoMap2(mvo);
+      }
+
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    return;
+  }
+
+  public JSONObject searchElastic(String term) throws JSONException {
+    Set<String> conceptIdList = new HashSet<>();
+    JSONObject returnJSON = new JSONObject();
+    try{
+        String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \""+ term +"\"}},\"_source\": [\"conceptId\",\"term\"]}";
+        RestClient restClient = RestClient.builder(
+                new HttpHost("1.224.169.78", 9200, "http")
+        ).build();
+
+        Map<String, String> params = Collections.EMPTY_MAP;
+        HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
+        Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity );
+
+        String result = EntityUtils.toString(response.getEntity());
+        returnJSON = new JSONObject(result);
+        
+    }catch(IOException e){
+        e.printStackTrace();
+    }
+   return returnJSON;
+}
 
  
   public void serarchAndInsert(CmMedicineVo cm, String ruleTp) {
@@ -138,6 +208,10 @@ public class RuleMapService {
         strUnit = "nanogram";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
+      } if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
+        strUnit = "I.U";
+        dblAmount = dblAmount * 1000;
+        strAmount = String.format("%.0f", dblAmount);
       } else {
 
         strAmount = dblAmount + "";
@@ -171,8 +245,14 @@ public class RuleMapService {
         strUnit = "milimeter";
       } else if (strUnit.equals("mg/mL")) {
         strUnit = "milligram/1 milliliter";
+      } else if (strUnit.equals("I.U")) {
+        strUnit = "unit";
+      }else if (strUnit.equals("mg/정")) {
+        strUnit = "milligram/1 each";
       }
     }
+
+
 
     if (dblAmount * 10 % 10 == 0) {
       strAmount = String.format("%.0f", dblAmount);
@@ -181,17 +261,25 @@ public class RuleMapService {
     String strQuery = "";
 
     String strMedDoseFrm = cm.getMedDoseFrm();
-    if (strMedDoseFrm.indexOf("tablet") >= 0) {
-      strMedDoseFrm = "tablet";
-    } else if (strMedDoseFrm.indexOf("syrup") >= 0) {
-      strMedDoseFrm = "oral suspension";
-    } else if (strMedDoseFrm.indexOf("capsule") >= 0) {
-      strMedDoseFrm = "capsule";
-    } else if (strMedDoseFrm.indexOf("gastro-resistant capsule") >= 0) {
-      strMedDoseFrm = "gastro-resistant capsule";
-    } else if (strMedDoseFrm.indexOf("prolonged-release capsule") >= 0) {
-      strMedDoseFrm = "prolonged-release capsule";
+    
+    if ( cm.getMedDoseFrm3().length()>2){
+      strMedDoseFrm=cm.getMedDoseFrm3();
+    } else if(cm.getMedDoseFrm2().length()>2){
+      strMedDoseFrm=cm.getMedDoseFrm2();
+    } else {
+      strMedDoseFrm=cm.getMedDoseFrm();
     }
+    // if (strMedDoseFrm.indexOf("tablet") >= 0) {
+    //   strMedDoseFrm = "tablet";
+    // } else if (strMedDoseFrm.indexOf("syrup") >= 0) {
+    //   strMedDoseFrm = "oral suspension";
+    // } else if (strMedDoseFrm.indexOf("capsule") >= 0) {
+    //   strMedDoseFrm = "capsule";
+    // } else if (strMedDoseFrm.indexOf("gastro-resistant capsule") >= 0) {
+    //   strMedDoseFrm = "gastro-resistant capsule";
+    // } else if (strMedDoseFrm.indexOf("prolonged-release capsule") >= 0) {
+    //   strMedDoseFrm = "prolonged-release capsule";
+    // }
 
     if (ruleTp.substring(0, 1).equals("1") || ruleTp.substring(0, 1).equals("2")) {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
@@ -220,11 +308,11 @@ public class RuleMapService {
     }
 
     
-    if (!ruleTp.substring(1, 2).equals("3")) {
-      if ( cm.getRtOfAdmin().equals(""))
-        return;
-      strQuery += " " + cm.getRtOfAdmin();
-    }
+    // if (!ruleTp.substring(1, 2).equals("3")) {
+    //   if ( cm.getRtOfAdmin().equals(""))
+    //     return;
+    //   strQuery += " " + cm.getRtOfAdmin();
+    // }
 
     strQuery = strQuery.replace(",", "");
     strQuery = strQuery.replace("/", " ");
@@ -246,7 +334,35 @@ public class RuleMapService {
 
   }
 
+  public void selectMediListC(String ruleTp) {
 
+    List<CmMedicineVo> list = cmMediDao.selectCAll();
+    
+    String chkFlag="";
+    List<CmMedicineVo> list2 = new ArrayList<CmMedicineVo>();
+    String qryStr="";
+
+    for (CmMedicineVo cm : list) {
+      System.out.println("cm:"+ cm.getKdCd());
+      
+      if (!chkFlag.equals(cm.getKdCd()) && !chkFlag.equals("")){
+
+        System.out.println("test:"+ qryStr);
+        serarchAndInsert2(chkFlag,qryStr);
+        qryStr="";
+        
+      }
+
+      //list2.add(cm);
+      qryStr+=cm.getSubstanceNm()+ " " + cm.getRtOfAdmin() + " " + cm.getAmount1() + " " + cm.getUnit1() + " "+ cm.getMedDoseFrm() + " " ;
+      chkFlag=cm.getKdCd();
+    }
+
+    System.out.println("test:"+ qryStr);
+
+    return;
+
+  }
 
   public void selectMediList(String ruleTp) {
 
@@ -259,13 +375,6 @@ public class RuleMapService {
 
   }
 
-  // http://localhost:8080/RESTfulExample/json/product/get
-  // public static void main(String[] args) {
 
-  //   RuleMapService rs = new RuleMapService();
-
-  //   System.out.println(rs.searchTerm("Heart Attack").toString());
-
-  // }
 
 }
