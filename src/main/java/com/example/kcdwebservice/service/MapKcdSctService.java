@@ -24,16 +24,22 @@ public class MapKcdSctService {
 
     public void insertMapKcdSctInfo(MapKcdSctVo mapKcdSctVo) {
         List<String>sctIdList = Arrays.asList(mapKcdSctVo.getSctId().split(","));
+        List<String>ruleCodeList = Arrays.asList(mapKcdSctVo.getMapMemo().split("_"));
         for(int i = 0; i<sctIdList.size(); i++){
             mapKcdSctVo.setSctId(sctIdList.get(i));
+            mapKcdSctVo.setMapMemo(ruleCodeList.get(i));
             mapKcdSctDao.insertMapKcdSctInfo(mapKcdSctVo);
         }
     }
 
     public void insertMapKcdSctInfo_medi(MapKcdSctVo mapKcdSctVo) {
         List<String>sctIdList = Arrays.asList(mapKcdSctVo.getSctId().split(","));
+        List<String>mapMemoList = Arrays.asList(mapKcdSctVo.getMapMemo().split("_"));
         for(int i = 0; i<sctIdList.size(); i++){
             mapKcdSctVo.setSctId(sctIdList.get(i));
+            mapKcdSctVo.setMapMemo(
+                    mapMemoList.get(i)
+            );
             mapKcdSctDao.insertMapKcdSctInfo_medi(mapKcdSctVo);
         }
     }

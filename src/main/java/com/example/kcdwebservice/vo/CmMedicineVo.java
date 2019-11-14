@@ -29,6 +29,7 @@ public class CmMedicineVo {
     private String medDoseFrm3;
 
     private String rtOfAdmin;
+    private String mapMemo;
 
     private String strAmount;
     private String udtDt;

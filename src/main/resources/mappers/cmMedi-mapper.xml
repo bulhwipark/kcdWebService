@@ -71,20 +71,49 @@
                CM.DRUG_NM_KOR   drugNmKor,
                MAP2.UDT_DT      udtDt,
                MAP2.SCT_ID      sctId,
-               S.SCT_TERM       sctTerm,
+               CS.SCT_TERM       sctTerm,
                MAP2.MAP_STAT_CD mapStatCd,
                CD.CD_DSCRT      cdDscrt
-        FROM MAP_KCD_SCT2 MAP2
-               LEFT OUTER JOIN (
-               SELECT *
-               FROM CM_MEDICINE
-               ) CM ON MAP2.ORI_CD = CM.KD_CD
-                   LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
-                   LEFT OUTER JOIN MCODE CD
-                        ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        FROM CM_MEDICINE CM
+        LEFT OUTER JOIN (
+            SELECT *
+            FROM MAP_KCD_SCT2
+        WHERE ORI_TP_CD = 'MEDI'
+        ) MAP2 ON CM.KD_CD = MAP2.ORI_CD
+            LEFT OUTER JOIN CM_SNOMEDCT CS ON MAP2.SCT_ID = CS.SCT_ID
+            LEFT OUTER JOIN MCODE CD
+            ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
         <where>
-            <if test="kdCd != '' and kdCd != null">
-                MAP2.ORI_CD = #{kdCd}
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
+            </if>
+        </where>
+        <if test="limit != null and limit != '' and offset != null and offset != '' ">
+            limit ${limit} offset ${offset}
+        </if>
+        ;
+    </select>
+
+    <select id="medi_selectMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT CM.KD_CD kdCd,
+               CM.DRUG_NM_ENG drugNmEng,
+               CM.DRUG_NM_KOR drugNmKor,
+               MAP2.UDT_DT udtDt,
+               MAP2.SCT_ID sctId,
+               S.SCT_TERM sctTerm,
+               MAP2.MAP_STAT_CD mapStatCd,
+               CD.CD_DSCRT cdDscrt
+        FROM CM_MEDICINE CM
+        INNER JOIN (
+            SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0 AND ORI_TP_CD = 'MEDI'
+        ) MAP2 ON CM.KD_CD = MAP2.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
+        LEFT OUTER JOIN MCODE CD ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID
+        AND CD.CD_GRP = 'MAP_STAT_CD'
+        AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
             </if>
         </where>
         <if test="limit != '' and limit != null and offset != '' and offset != null">
@@ -93,42 +122,16 @@
         ;
     </select>
 
-    <select id="medi_selectMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
-        SELECT M.KD_CD kdCd,
-               M.DRUG_NM_ENG drugNmEng,
-               M.DRUG_NM_KOR drugNmKor,
-               M2.UDT_DT udtDt,
-               M2.SCT_ID sctId,
-               S.SCT_TERM sctTerm,
-               M2.MAP_STAT_CD mapStatCd,
-               CD.CD_DSCRT cdDscrt
-        FROM CM_MEDICINE M
-                 INNER JOIN (SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
-        ) M2 ON M.KD_CD = M2.ORI_CD
-                 LEFT OUTER JOIN CM_SNOMEDCT S ON M.STD_CD = S.SCT_ID
-                 LEFT OUTER JOIN MCODE CD ON LEFT(M2.MAP_STAT_CD, 1) = CD.CD_ID
-            AND CD.CD_GRP = 'MAP_STAT_CD'
-            AND CD.CD_STAT_CD = '0'
-        <where>
-            <if test="kdCd != '' and kdCd != null">
-                M.KD_CD = #{kdCd}
-            </if>
-        </where>
-        <if test="limit != '' and limit != null and offset != '' and offset != null">
-            limit ${limit} offset ${offset}
-        </if>
-            ;
-    </select>
-
     <select id="medi_selectNoMapping" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
-        SELECT M.KD_CD kdCd,
-               M.DRUG_NM_ENG drugNmEng,
-               M.DRUG_NM_KOR drugNmKor
-        FROM CM_MEDICINE M
+        SELECT CM.KD_CD       kdCd,
+               CM.DRUG_NM_ENG drugNmEng,
+               CM.DRUG_NM_KOR drugNmKor
+        FROM CM_MEDICINE CM
         WHERE KD_CD NOT IN (
             SELECT DISTINCT ORI_CD
-            FROM MAP_KCD_SCT2
-            WHERE MAP_VER = 0
+                FROM MAP_KCD_SCT2
+                WHERE MAP_VER = 0
+            AND ORI_TP_CD = 'MEDI'
         )
         <if test="kdCd != '' and kdCd != null ">
             and M.KD_CD = #{kdCd}
@@ -155,11 +158,9 @@
         FROM CM_MEDICINE K
         WHERE KD_CD IN (
                 SELECT ORI_CD FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
-            <where>
                 <if test="mapStatCd != null and mapStatCd != ''">
-                    MAP_STAT_CD = #{mapStatCd}
+                   AND MAP_STAT_CD = #{mapStatCd}
                 </if>
-            </where>
         )
     </select>
 
@@ -175,17 +176,6 @@
     </select>
 
     <select id="medi_totalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
-        /*
-        SELECT count(1)
-        FROM CM_MEDICINE K LEFT JOIN (
-                SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
-        ) M ON K.KD_CD = M.ORI_CD
-        LEFT OUTER JOIN CM_SNOMEDCT S ON M.SCT_ID=S.SCT_ID
-        LEFT OUTER JOIN EMR.MCODE CD
-        ON left(M.MAP_STAT_CD,1)=CD.CD_ID
-        AND CD.CD_GRP='MAP_STAT_CD'
-        AND CD.CD_STAT_CD='0';
-        */
         SELECT COUNT(1)
         FROM MAP_KCD_SCT2 MAP2
                  LEFT OUTER JOIN (
@@ -194,7 +184,46 @@
         ) CM ON MAP2.ORI_CD = CM.KD_CD
                  LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
                  LEFT OUTER JOIN MCODE CD
-                                 ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0';
+                                 ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
+            </if>
+        </where>
+        ;
+    </select>
+
+    <select id="medi_mappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
+        SELECT count(1)
+            FROM CM_MEDICINE CM
+            INNER JOIN (
+                SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0 AND ORI_TP_CD = 'MEDI'
+            ) MAP2 ON CM.KD_CD = MAP2.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
+        LEFT OUTER JOIN MCODE CD ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID
+            AND CD.CD_GRP = 'MAP_STAT_CD'
+            AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
+            </if>
+        </where>
+        ;
+    </select>
+
+    <select id="medi_noMappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
+        SELECT count(1)
+        FROM CM_MEDICINE CM
+        WHERE KD_CD NOT IN (
+            SELECT DISTINCT ORI_CD
+                FROM MAP_KCD_SCT2
+                WHERE MAP_VER = 0
+            AND ORI_TP_CD = 'MEDI'
+        )
+        <if test="kdCd != null and kdCd != '' ">
+            CM.KD_CD = #{kdCd}
+        </if>
+        ;
     </select>
 
     <select id="getMediInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">

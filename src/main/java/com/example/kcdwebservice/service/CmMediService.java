@@ -51,9 +51,9 @@ public class CmMediService {
         if(mappingStatus.equals("All")){
             totalCnt = cmMediDao.medi_totalCnt(cmMedicineVo);
         }else if(mappingStatus.equals("Mapping")){
-
+            totalCnt = cmMediDao.medi_mappingTotalCnt(cmMedicineVo);
         }else if(mappingStatus.equals("NoMapping")){
-
+            totalCnt = cmMediDao.medi_noMappingTotalCnt(cmMedicineVo);
         }
         return totalCnt;
     }

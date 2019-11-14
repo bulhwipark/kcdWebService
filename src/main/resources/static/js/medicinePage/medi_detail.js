@@ -3,7 +3,7 @@ function medi_detail_static_func(){
     get_mediObject_req();
     get_mediDetail_list();
     //termSynonym();
-    button_medi_autoRuleSet();
+    medi_autoRuleSet();
     mediDetail_prevBtn_ajaxReq();
     mediSearchTerm_setting();
 
@@ -367,23 +367,29 @@ function medi_search_req(){
 function medi_saveBtn_req(){
     var currentSelected = $('input[name="mediSearchResultSaveCheckbox"]:checked');
     var sctIdArr = [];
-
+    var ruleCodeArr = [];
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for(var i  = 0; i<currentSelected.length; i++){
         if(medi.searchList){
             for(var j = 0; j<medi.searchList.length; j++){
                 if(medi.searchList[j].conceptId == currentSelected[i].value){
                     sctIdArr.push(medi.searchList[j].conceptId);
+                    ruleCodeArr.push(
+                        $('#' + medi.searchList[j].conceptId + '_ruleCode').text()
+                    )
                 }
             }
         }else{
             sctIdArr.push(currentSelected[i].value);
+            ruleCodeArr.push(
+                $('#' + currentSelected[i] + '_ruleCode').text()
+            )
         }
     }
 
     sctIdArr = sctIdArr.filter(function(item, idx, arr){
         return arr.indexOf(item) == idx;
-    })
+    });
 
     $.ajax({
         url:'/mediInsertSearchList',
@@ -393,7 +399,8 @@ function medi_saveBtn_req(){
             mapVer : medi.mapVer,
             mapStatCd:5,
             oriTpCd:'medi',
-            sctId:sctIdArr.join(",")
+            sctId:sctIdArr.join(","),
+            mapMemo:ruleCodeArr.join("_")
         },
         success:function(){
             get_mediDetail_list();
@@ -430,8 +437,7 @@ function deleteMediList_req(){
         },
         success:function(){
             get_mediDetail_list();
-            //search_req();
-            button_medi_autoRuleSet();
+            medi_autoRuleSet();
             $('#mediRemoveBtn').attr('disabled', true);
         }
     });
@@ -481,14 +487,10 @@ function mediSearchTerm_setting(){
     }
 }
 
-/**
- * 룰기반 검색 버튼.
- * 상세화면에 최초 진입시에 실행되는 자동룰과 룰기반검색 버튼을 통해 실행되는 자동룰이 다름.
- * 버튼이벤트로 실행되는 자동 룰은 kcd와 동일한 룰이 실행됨.
- */
-function button_medi_autoRuleSet(){
+function medi_autoRuleSet(){
     var param = new Object();
     param.term = $('#mediTerm').val();
+    param.kdCd = $('#kdCd').text();
     // param.rules = medi.rules.join(',');
     param = JSON.parse(JSON.stringify(medi.currentMediInfo));
     if ($('input[name="mediDefaultRule"]:checked').val()) {
@@ -573,98 +575,6 @@ function button_medi_autoRuleSet(){
         }
     });
 }
-/*
-
-/!**
- * 자동룰 반영
- *!/
-function medi_autoRuleSet(){
-    var param = new Object();
-    param = JSON.parse(JSON.stringify(medi.currentMediInfo));
-
-    if($('input[name="mediDefaultRule"]:checked').val()){
-        param.ecl = $('input[name="mediDefaultRule"]:checked').val();
-    }else{
-        param.ecl = $('#mediEcl').val();
-    }
-      $.ajax({
-        url:'/mediAutoRuleSet',
-        //url:'/autoRuleSet',
-        type:'post',
-        async:false,
-        data:param,
-        dataType:'json',
-        success:function(data){
-            console.log(data);
-            medi.autoRuleLog = JSON.parse(JSON.stringify(data));
-            $('#mediSearchResultTable tbody').empty();
-            for(var q = 0; q<data.length; q++){
-
-                if(data[q].status === "true"){
-                    var res = JSON.parse(data[q].result);
-                    if(res['items'].length > 0){
-                        var items = res['items'];
-
-                        //중복제거.
-                        if(medi.mediDetailList){
-                            for(var i = 0; i<medi.mediDetailList.length; i++){
-                                items = items.filter(function(item, idx, arr){
-                                    if(item.conceptId != medi.mediDetailList[i].sctId){
-                                        return item;
-                                    }
-                                });
-                            }
-                        }
-                        medi.searchList = JSON.parse(JSON.stringify(items));
-
-                        $('#mediSearchResultTable').prop("checked", false);
-                        for(var i = 0; i<items.length; i++){
-                            if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
-                                $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
-                                    $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
-                                )
-                            }else{
-                                var $tr = $('<tr>',{id:items[i].conceptId}).append(
-                                    //conceptId
-                                    $('<td>',{
-                                        class:"sctIdDetail",
-                                        text:items[i].conceptId
-                                    }),
-                                    //term
-                                    $('<td>',{
-                                       // text:items[i]['fsn']['term']
-                                        html:StringMatch_func(items[i]['fsn']['term'], $('#mediTerm').val())
-                                    }),
-                                    $('<td>',{
-                                        class:'autoRuleCol',
-                                        id:items[i].conceptId + "_ruleCode",
-                                        text:data[q].ruleCode
-                                    }),
-                                    //checkBox
-                                    $('<td>').append(
-                                        $('<input>',{
-                                            type:'checkbox',
-                                            name:'searchResultSaveCheckbox',
-                                            value:items[i].conceptId
-                                        })
-                                    )
-                                );
-                                $('#mediSearchResultTable tbody').append($tr);
-                            }
-                        }
-                        $('#saveBtnDiv').removeClass('displayNone');
-                        $('.autoRuleCol').removeClass('displayNone');
-                        medi_detail_dynamic_func();
-                  }else{
-                        //status false;
-                        console.log(data[q].status);
-                    }
-                }
-            }
-        }
-    });
-}
-*/
 
 /**
  * 유사도기준 검색 ajax
