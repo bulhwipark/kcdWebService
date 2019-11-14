@@ -16,6 +16,7 @@ public class MapKcdSctVo {
     private String rvStatCd;
     private String dispOdr;
     private String udtDt;
+    private String mapMemo;
 
     private String sctTerm;
     private String mapStatNm;

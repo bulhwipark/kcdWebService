@@ -128,11 +128,9 @@
         FROM CM_MEDICINE K
         WHERE KD_CD IN (
                 SELECT ORI_CD FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
-            <where>
                 <if test="mapStatCd != null and mapStatCd != ''">
-                    MAP_STAT_CD = #{mapStatCd}
+                   AND MAP_STAT_CD = #{mapStatCd}
                 </if>
-            </where>
         )
     </select>
 
@@ -148,17 +146,6 @@
     </select>
 
     <select id="medi_totalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
-        /*
-        SELECT count(1)
-        FROM CM_MEDICINE K LEFT JOIN (
-                SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
-        ) M ON K.KD_CD = M.ORI_CD
-        LEFT OUTER JOIN CM_SNOMEDCT S ON M.SCT_ID=S.SCT_ID
-        LEFT OUTER JOIN EMR.MCODE CD
-        ON left(M.MAP_STAT_CD,1)=CD.CD_ID
-        AND CD.CD_GRP='MAP_STAT_CD'
-        AND CD.CD_STAT_CD='0';
-        */
         SELECT COUNT(1)
         FROM MAP_KCD_SCT2 MAP2
                  LEFT OUTER JOIN (
@@ -167,7 +154,46 @@
         ) CM ON MAP2.ORI_CD = CM.KD_CD
                  LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
                  LEFT OUTER JOIN MCODE CD
-                                 ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0';
+                                 ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
+            </if>
+        </where>
+        ;
+    </select>
+
+    <select id="medi_mappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
+        SELECT count(1)
+            FROM CM_MEDICINE CM
+            INNER JOIN (
+                SELECT * FROM MAP_KCD_SCT2 WHERE MAP_VER = 0 AND ORI_TP_CD = 'MEDI'
+            ) MAP2 ON CM.KD_CD = MAP2.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S ON MAP2.SCT_ID = S.SCT_ID
+        LEFT OUTER JOIN MCODE CD ON LEFT(MAP2.MAP_STAT_CD, 1) = CD.CD_ID
+            AND CD.CD_GRP = 'MAP_STAT_CD'
+            AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kdCd != null and kdCd != '' ">
+                CM.KD_CD = #{kdCd}
+            </if>
+        </where>
+        ;
+    </select>
+
+    <select id="medi_noMappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="String">
+        SELECT count(1)
+        FROM CM_MEDICINE CM
+        WHERE KD_CD NOT IN (
+            SELECT DISTINCT ORI_CD
+                FROM MAP_KCD_SCT2
+                WHERE MAP_VER = 0
+            AND ORI_TP_CD = 'MEDI'
+        )
+        <if test="kdCd != null and kdCd != '' ">
+            CM.KD_CD = #{kdCd}
+        </if>
+        ;
     </select>
 
     <select id="getMediInfo" parameterType="String" resultType="com.example.kcdwebservice.vo.CmMedicineVo">

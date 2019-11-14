@@ -367,23 +367,29 @@ function medi_search_req(){
 function medi_saveBtn_req(){
     var currentSelected = $('input[name="mediSearchResultSaveCheckbox"]:checked');
     var sctIdArr = [];
-
+    var ruleCodeArr = [];
     //기존 검색된 리스트에서 선택된(currentSelected) sctId로 검색.
     for(var i  = 0; i<currentSelected.length; i++){
         if(medi.searchList){
             for(var j = 0; j<medi.searchList.length; j++){
                 if(medi.searchList[j].conceptId == currentSelected[i].value){
                     sctIdArr.push(medi.searchList[j].conceptId);
+                    ruleCodeArr.push(
+                        $('#' + medi.searchList[j].conceptId + '_ruleCode').text()
+                    )
                 }
             }
         }else{
             sctIdArr.push(currentSelected[i].value);
+            ruleCodeArr.push(
+                $('#' + currentSelected[i] + '_ruleCode').text()
+            )
         }
     }
 
     sctIdArr = sctIdArr.filter(function(item, idx, arr){
         return arr.indexOf(item) == idx;
-    })
+    });
 
     $.ajax({
         url:'/mediInsertSearchList',
@@ -393,7 +399,8 @@ function medi_saveBtn_req(){
             mapVer : medi.mapVer,
             mapStatCd:5,
             oriTpCd:'medi',
-            sctId:sctIdArr.join(",")
+            sctId:sctIdArr.join(","),
+            mapMemo:ruleCodeArr.join("_")
         },
         success:function(){
             get_mediDetail_list();
@@ -430,8 +437,7 @@ function deleteMediList_req(){
         },
         success:function(){
             get_mediDetail_list();
-            //search_req();
-            button_medi_autoRuleSet();
+            medi_autoRuleSet();
             $('#mediRemoveBtn').attr('disabled', true);
         }
     });
