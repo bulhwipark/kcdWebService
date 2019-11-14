@@ -444,6 +444,12 @@ public class AutoRules {
                         cmMedicineVo.getAmount1() * 1000
                 );
                 cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
+            }else if(cmMedicineVo.getUnit1().equals("KI.U") && cmMedicineVo.getAmount1() < 1){
+                cmMedicineVo.setUnit1("I.U");
+                cmMedicineVo.setAmount1(
+                        cmMedicineVo.getAmount1() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount1()));
             }
             searchVo.setEcl(cmMedicineVo.getEcl());
             searchVo.setTerm(
@@ -535,6 +541,8 @@ public class AutoRules {
                 cmMedicineVo.setUnit3("milimeter");
             }else if(cmMedicineVo.getUnit3().equals("mg/mL")){
                 cmMedicineVo.setUnit3("milligram/1 milliliter");
+            }else if(cmMedicineVo.getUnit3().equals("KI.U")){
+                cmMedicineVo.setUnit3("I.U");
             }
             searchVo.setEcl(cmMedicineVo.getEcl());
             searchVo.setTerm(
@@ -621,6 +629,12 @@ public class AutoRules {
                         cmMedicineVo.getAmount2() * 1000
                 );
                 cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount2()));
+            }else if(cmMedicineVo.getUnit2().equals("KI.U") && cmMedicineVo.getAmount2() < 1){
+                cmMedicineVo.setUnit2("I.U");
+                cmMedicineVo.setAmount2(
+                        cmMedicineVo.getAmount2() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount2()));
             }
             searchVo.setEcl(cmMedicineVo.getEcl());
             searchVo.setTerm(
@@ -702,6 +716,12 @@ public class AutoRules {
                 cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount3()));
             }else if(cmMedicineVo.getUnit3().equals("mcg") && cmMedicineVo.getAmount3() < 1){
                 cmMedicineVo.setUnit3("nanogram");
+                cmMedicineVo.setAmount3(
+                        cmMedicineVo.getAmount3() * 1000
+                );
+                cmMedicineVo.setStrAmount(String.format("%.0f", cmMedicineVo.getAmount3()));
+            }else if(cmMedicineVo.getUnit3().equals("KI.U") && cmMedicineVo.getAmount3() < 1){
+                cmMedicineVo.setUnit3("I.U");
                 cmMedicineVo.setAmount3(
                         cmMedicineVo.getAmount3() * 1000
                 );
