@@ -234,11 +234,10 @@ public class MainController {
     @ResponseBody
     public String autoMapMediRule2() {
        //ruleMapService.selectMediList(ruleTp);
-
         // ruleMapService.selectMediList("10");
         // ruleMapService.selectMediList("11");
         // ruleMapService.selectMediList("12");
-        //  ruleMapService.selectMediList("13");
+        // ruleMapService.selectMediList("13");
         // ruleMapService.selectMediList("20");
         // ruleMapService.selectMediList("21");
         // ruleMapService.selectMediList("22");
@@ -252,15 +251,20 @@ public class MainController {
         // ruleMapService.selectMediList("42");
         // ruleMapService.selectMediList("43");
         // ruleMapService.selectMediList("50");
-        // ruleMapService.selectMediList("60");
+        ruleMapService.selectMediList("60");
         ruleMapService.selectMediList("73");
         ruleMapService.selectMediList("83");
         ruleMapService.selectMediList("93");
         ruleMapService.selectMediList("A3");
-         
+       return "자동룰매핑종료"+System.currentTimeMillis();
+    }
 
     
-       return "자동룰매핑종료"+System.currentTimeMillis();
+    @GetMapping(value="/mediRuleC")
+    @ResponseBody
+    public String autoMapMediRuleC() {
+        ruleMapService.selectMediListC("10");
+        return "자동룰매핑종료"+System.currentTimeMillis();
     }
 
     @RequestMapping(value="/search")
