@@ -29,6 +29,34 @@
                SUB_ALT_KEY       subAltKey
         from CM_MEDICINE
         where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2 where ORI_TP_CD='MEDI')
+        and JOB_CD='S';
+       
+    </select>
+    <!--#  where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2); where KD_CD ='679400231'; where KD_CD ='679400231'  ;-->
+    <select id="selectCAll" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+        SELECT KD_CD             kdCd,
+               PRINCIPAL_COMP_CD prinipalCompCd,
+               DRUG_NM_KOR       drugNmKor,
+               DRUG_MANUF        drugManuf,
+               HIRA_ATC_CD       hiraAtcCd,
+               HIRA_ATC_NM       hiraAtcNm,
+               STD_CD            stdCd,
+               DRUG_NM_ENG       drugNmEng,
+               SUBSTANCE_NM      substanceNm,
+               AMOUNT1           amount1,
+               UNIT1             unit1,
+               EFT_SUBST_NM      eftSubstNm,
+               AMOUNT2           amount2,
+               UNIT2             unit2,
+               AMOUNT3           amount3,
+               UNIT3             unit3,
+               MED_DOSE_FRM      medDoseFrm,
+               MED_DOSE_FRM2      medDoseFrm2,
+               MED_DOSE_FRM3      medDoseFrm3,
+               RT_OF_ADMIN       rtOfAdmin,
+               SUB_ALT_KEY       subAltKey
+        from CM_MEDICINE
+        where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2 where ORI_TP_CD='MEDI')
         and JOB_CD='C';
        
     </select>

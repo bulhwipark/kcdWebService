@@ -110,7 +110,27 @@ public class RuleMapService {
     return list;
 
   }
+  public void serarchSnowAndInsert(String kmCd, String strQuery, String ruleTp) {
 
+   
+    strQuery = strQuery.replace(",", "");
+    strQuery = strQuery.replace("/", " ");
+
+    System.out.println("Term query : " +kmCd+" :" + strQuery);
+   
+    String ecl = "<763158003";
+    List<String> lsctcd = searchTerm(strQuery, ecl);
+    MapKcdSctVo mvo = new MapKcdSctVo();
+    for (String sctcd : lsctcd) {
+      mvo = new MapKcdSctVo();
+      mvo.setOriCd(kmCd);
+      mvo.setSctId(sctcd);
+      mvo.setMapVer("0");
+      mvo.setMapStatCd(ruleTp);
+      cmMediDao.insertAutoMap2(mvo);
+    }
+    return;
+  }
  
   public void serarchAndInsert2(String kmCd, String strQuery) {
 
@@ -135,7 +155,7 @@ public class RuleMapService {
         mvo.setMapVer("0");
         mvo.setMapStatCd("A1");
 
-        //cmMediDao.insertAutoMap2(mvo);
+        cmMediDao.insertAutoMap2(mvo);
       }
 
     } catch (JSONException e) {
@@ -348,13 +368,28 @@ public class RuleMapService {
       if (!chkFlag.equals(cm.getKdCd()) && !chkFlag.equals("")){
 
         System.out.println("test:"+ qryStr);
-        serarchAndInsert2(chkFlag,qryStr);
+        //serarchAndInsert2(chkFlag,qryStr);
+        serarchSnowAndInsert(chkFlag,qryStr,ruleTp);
+        
         qryStr="";
         
       }
 
       //list2.add(cm);
-      qryStr+=cm.getSubstanceNm()+ " " + cm.getRtOfAdmin() + " " + cm.getAmount1() + " " + cm.getUnit1() + " "+ cm.getMedDoseFrm() + " " ;
+      if ( ruleTp.equals("A5")&& cm.getSubstanceNm().length()>2){
+        
+        qryStr+=cm.getSubstanceNm()+ " " + cm.getRtOfAdmin() + " ";
+      }else if ( ruleTp.equals("A6")&& cm.getEftSubstNm().length()>2){
+        qryStr+=cm.getEftSubstNm()+ " " + cm.getRtOfAdmin() + " " ;
+
+      }else if ( ruleTp.equals("A7") && cm.getSubstanceNm().length()>2){
+        qryStr+=cm.getSubstanceNm()+ " " ;
+
+      }else if ( ruleTp.equals("A8") && cm.getEftSubstNm().length()>2){
+        qryStr+=cm.getEftSubstNm()+ " " ;
+
+      }
+
       chkFlag=cm.getKdCd();
     }
 
