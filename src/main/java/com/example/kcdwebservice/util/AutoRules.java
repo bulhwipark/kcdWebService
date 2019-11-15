@@ -1032,18 +1032,27 @@ public class AutoRules {
      * @throws JSONException
      */
     public JSONObject medi_autoRule_5_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
         SearchVo searchVo = new SearchVo();
         String term = "";
         for(int i = 0; i<mediInfoList.size(); i++){
             term += (" "+mediInfoList.get(i).getSubstanceNm());
         }
+
+        if(term.trim().equals("") || term.trim().length() == 0){
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", term);
+            returnJSON.put("ruleCode", "25-1");
+            return returnJSON;
+        }
+
         searchVo.setTerm(term + " " + mediInfoList.get(0).getRtOfAdmin());
         searchVo.setEcl(cmMedicineVo.getEcl());
 
         String result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
+
         if(checkJSON.getJSONArray("items").length() > 0){
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
@@ -1071,18 +1080,27 @@ public class AutoRules {
      * @throws JSONException
      */
     public JSONObject medi_autoRule_6_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
         SearchVo searchVo = new SearchVo();
         String term = "";
         for(int i = 0; i<mediInfoList.size(); i++){
             term += (" "+mediInfoList.get(i).getEftSubstNm());
         }
+
+        if(term.trim().equals("") || term.trim().length() == 0){
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", term);
+            returnJSON.put("ruleCode", "26-1");
+            return returnJSON;
+        }
+
         searchVo.setTerm(term + " " + mediInfoList.get(0).getRtOfAdmin());
         searchVo.setEcl(cmMedicineVo.getEcl());
 
         String result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
+
         if(checkJSON.getJSONArray("items").length() > 0){
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
@@ -1109,18 +1127,27 @@ public class AutoRules {
      * @return
      */
     public JSONObject medi_autoRule_7_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
         SearchVo searchVo = new SearchVo();
         String term = "";
         for(int i = 0; i<mediInfoList.size(); i++){
             term += (" "+mediInfoList.get(i).getSubstanceNm());
         }
+
+        if(term.trim().equals("") || term.trim().length() == 0){
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", term);
+            returnJSON.put("ruleCode", "27-1");
+            return returnJSON;
+        }
+
         searchVo.setTerm(term);
         searchVo.setEcl(cmMedicineVo.getEcl());
 
         String result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
+
         if(checkJSON.getJSONArray("items").length() > 0){
             returnJSON.put("status", "true");
             returnJSON.put("result", result);
@@ -1147,18 +1174,27 @@ public class AutoRules {
      * @return
      */
     public JSONObject medi_autoRule_8_1(CmMedicineVo cmMedicineVo, List<CmMedicineVo> mediInfoList) throws JSONException {
+        JSONObject returnJSON = new JSONObject();
         SearchVo searchVo = new SearchVo();
         String term = "";
         for(int i = 0; i<mediInfoList.size(); i++){
             term += (" "+mediInfoList.get(i).getEftSubstNm());
         }
+
+        if(term.trim().equals("") || term.trim().length() == 0){
+            returnJSON.put("status", "false");
+            returnJSON.put("searchTerm", term);
+            returnJSON.put("ruleCode", "28-1");
+            return returnJSON;
+        }
+
         searchVo.setTerm(term);
         searchVo.setEcl(cmMedicineVo.getEcl());
 
         String result = medi_autoRuleRequest(searchVo);
 
         JSONObject checkJSON = new JSONObject(result);
-        JSONObject returnJSON = new JSONObject();
+
         if(checkJSON.getJSONArray("items").length() > 0){
             returnJSON.put("status", "true");
             returnJSON.put("result", result);

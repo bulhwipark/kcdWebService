@@ -109,6 +109,7 @@ function medi_detail_static_func(){
            }
        }
        sessionStorage.setItem("medi_kdCd", result.kdCd);
+       sessionStorage.setItem("medi_subAltKey", result.subAltKey);
        sessionStorage.setItem("medi_index", checkIdx);
        location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
    });

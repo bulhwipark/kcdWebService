@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="alert alert-primary" role="alert">
-        <h4 style="display: inline-block; margin-bottom: 20px;">search menu</h4> <button class="btn btn-warning" onclick="button_medi_autoRuleSet();">약제 룰 기반 검색</button>
+        <h4 style="display: inline-block; margin-bottom: 20px;">search menu</h4> <button class="btn btn-warning" onclick="medi_autoRuleSet();">약제 룰 기반 검색</button>
         <div>
             <div>
                 <span>
