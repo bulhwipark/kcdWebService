@@ -85,7 +85,13 @@ function medi_detail_static_func(){
      * sessionStorage 정보를 이용하여 medi리스트에서 kdcd코드로 다음것을 찾음.
      */
    $('#mediList_next').on('click', function(){
-       if(parseInt(sessionStorage.getItem("medi_index")) === 49){
+
+       if(parseInt(sessionStorage.getItem("medi_index")) === sessionStorage.getItem("medi_totalCnt")){
+           $(this).attr('disabled', true);
+            return;
+       }
+
+       if(parseInt(sessionStorage.getItem("medi_index")) === medi.mainMedList.length){
           sessionStorage.setItem(
               'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) + parseInt(sessionStorage.getItem("medi_limit"))
           );
