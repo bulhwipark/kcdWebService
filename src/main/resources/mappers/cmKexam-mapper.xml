@@ -6,13 +6,22 @@
 <mapper namespace="com.example.kcdwebservice.dao.CmKexamDao">
 
     <select id="kexam_selectAll" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
-        select KEX_CD     kexCd,
-               KEX_TP_CD  kexTpCd,
-               KEX_GRP kexGrp,
-               KEX_KOR    kexKor,
-               KEX_ENG    kexEng,
-               KEX_PRICE  kexPrice
-        from CM_KEXAM
+        SELECT KE.KEX_CD    kexCd,
+               KE.KEX_ENG   kexEng,
+               KE.KEX_KOR   kexKor,
+               MAP4.UDT_DT  udtDt,
+               MAP4.SCT_ID  sctId,
+               CS.SCT_TERM  sctTerm,
+               MAP4.MAP_STAT_CD mapStatCd,
+               CD.CD_DSCRT  cdDscrt
+        FROM CM_KEXAM KE
+            LEFT OUTER JOIN (
+                SELECT *
+                FROM MAP_KCD_SCT4
+            ) MAP4 ON KE.KEX_CD = MAP4.ORI_CD
+            LEFT OUTER JOIN CM_SNOMEDCT CS ON MAP4.SCT_ID = CS.SCT_ID
+            LEFT OUTER JOIN MCODE CD
+            ON LEFT(MAP4.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
         <where>
             <if test="kexCd != '' and kexCd != null ">
                 KEX_CD like concat('%', #{kexCd}, '%')
