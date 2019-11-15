@@ -89,8 +89,7 @@ public class MedicineController {
 
     /**
      * 약제 정보 조회.
-     *
-     * @param kdCd
+     * @param cmMedicineVo
      * @return
      */
     @RequestMapping(value = "/getMediInfo")
@@ -147,6 +146,12 @@ public class MedicineController {
         return new ResponseEntity<>(list.toString(), HttpStatus.OK);
     }
 
+    /**
+     * Excel Download
+     * @param cmMedicineVo
+     * @param model
+     * @return
+     */
     @PostMapping(value="/mediExcelDownload.xlsx")
     public String mediExcelDownload(CmMedicineVo cmMedicineVo, Model model){
         List<CmMedicineVo> list = null;

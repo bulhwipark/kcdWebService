@@ -88,7 +88,7 @@ function medicineTotalCnt_req() {
         data: {
             mappingStatus: $('#medListOption option:selected').val(),
             mapVer: $('#version').val(),
-            mapStatCd: $('#mapStatCd').val()
+            //mapStatCd: $('#mapStatCd').val()
         },
         dataType: 'json',
         async:false,

@@ -22,7 +22,7 @@
                     <select class="form-control medicalCheckSearchOption" name="listOption" id="mediCheck_listOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
-                        <option value="NotMapping">비매핑</option>
+                        <option value="NoMapping">비매핑</option>
                         <%--<option value="IcdNotMapping">ICD 비매핑</option>--%>
                     </select>
                     <input type="hidden" name="mapStatCd" id="mediCheck_mapStatCd" value="All">

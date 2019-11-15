@@ -608,7 +608,6 @@ function similaritySearch() {
                             )
                         );
                     }
-
                     $('#searchResultTable tbody').append($tr);
                 }
                 kcd_detail_dynamic_func();
@@ -623,7 +622,7 @@ function similaritySearch() {
 
 /**
  * 속성추가 모달 세팅하는 펑션.
- * 추가되어있는 속성/값 리스트를 조회 >>> 조회된 리스트가 잇으면 수정버튼 show 없으면 저장버튼 show
+ * 저장되어있는 속성/값 리스트를 조회 >>> 조회된 리스트가 잇으면 수정버튼 show, 없으면 저장버튼 show
  *
  * @param sctId
  */
@@ -696,6 +695,10 @@ function attr_val_modalSetting(sctId) {
 
 }
 
+/**
+ * 후조합 속성 조회
+ * @param currentNum
+ */
 function getValueList(currentNum) {
     $.ajax({
         url: '/getKcdValList',
@@ -756,7 +759,6 @@ function textSearchForm_setting(currentNum) {
             $('#attrSaveBtn').attr('disabled', false);
         }
     });
-
 }
 
 function attrValTextSearch_request(currentNum) {
@@ -787,6 +789,9 @@ function attrValTextSearch_request(currentNum) {
     })
 }
 
+/**
+ * 후조합 속성 추가.
+ */
 function attr_val_save() {
     var attrOptList = $('.attrSelect option:selected');
     var attrParam = [];
@@ -821,6 +826,7 @@ function attr_val_save() {
         }
     })
 }
+
 
 function attr_val_update() {
     var attrOptList = $('.attrSelect option:selected');
@@ -875,13 +881,14 @@ function getMapAttrValList_ajax() {
         },
         dataType: 'json',
         async: false
-        /*success:function(data){
-            console.log(data)
-        }*/
     });
     return ajax;
 }
 
+/**
+ * 후조합 속성 삭제.
+ * @param num
+ */
 function deleteAttrVal(num) {
     $.ajax({
         url: '/deleteAttrVal',

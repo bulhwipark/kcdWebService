@@ -14,7 +14,7 @@
                     <select class="form-control medSearchOption" name="medListOption" id="medListOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
-                        <option value="NotMapping">비매핑</option>
+                        <option value="NoMapping">비매핑</option>
                     </select>
                     <input type="hidden" name="medMapStatCd" id="medMapStatCd" value="All">
                     <div class="form-inline" style="padding-left: 15px;">

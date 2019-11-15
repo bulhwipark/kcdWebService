@@ -163,9 +163,11 @@
         FROM CM_MEDICINE K
         WHERE KD_CD IN (
                 SELECT ORI_CD FROM MAP_KCD_SCT2 WHERE MAP_VER = 0
+                <!--
                 <if test="mapStatCd != null and mapStatCd != ''">
                    AND MAP_STAT_CD = #{mapStatCd}
                 </if>
+                -->
         )
     </select>
 
@@ -174,9 +176,11 @@
         FROM CM_MEDICINE K
         WHERE KD_CD NOT IN (
         SELECT ORI_CD FROM MAP_KCD_SCT2 WHERE MAP_VER = #{mapVer}
+                <!--
                 <if test="mapStatCd != 'All'">
                     and MAP_STAT_CD = #{mapStatCd}
                 </if>
+                -->
         )
     </select>
 

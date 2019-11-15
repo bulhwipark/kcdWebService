@@ -71,16 +71,19 @@
                 </span>
 
                 <span class="margin-left-20">
-                    <label for="mediDisorder">Medical : </label>
-                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<763158003" checked>
+                    <label for="medi_medicalProduct">Medical Product : </label>
+                    <input type="radio" name="mediDefaultRule" id="medi_medicalProduct" value="<763158003" checked>
                 </span>
 
-                <%--
                 <span class="margin-left-20">
-                    <label for="mediClinicalFinding">clinical finding : </label>
-                    <input type="radio" name="mediDefaultRule" id="mediClinicalFinding" value="<404684003" checked>
+                    <label for="medi_productBase">Product base : </label>
+                    <input type="radio" name="mediDefaultRule" id="medi_productBase" value="<350101008" >
                 </span>
-                --%>
+
+                <span class="margin-left-20">
+                    <label for="medi_substance">Substance : </label>
+                    <input type="radio" name="mediDefaultRule" id="medi_substance" value="<105590001" >
+                </span>
             </div>
             <div>
                 <label for="mediTerm"><b>term : </b></label>
