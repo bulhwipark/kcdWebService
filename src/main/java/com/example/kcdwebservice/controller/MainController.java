@@ -226,7 +226,7 @@ public class MainController {
     //    ruleMapService.selectMediList("5");
     //    ruleMapService.selectMediList("6");
 
-    during=System.currentTimeMillis()-during;
+    during=(System.currentTimeMillis()-during)/1000/60;
        return "자동룰매핑종료 매핑시간:"+during;
     }
 
@@ -263,7 +263,10 @@ public class MainController {
     @GetMapping(value="/mediRuleC")
     @ResponseBody
     public String autoMapMediRuleC() {
-        ruleMapService.selectMediListC("10");
+        ruleMapService.selectMediListC("A5");
+        ruleMapService.selectMediListC("A6");
+        ruleMapService.selectMediListC("A7");
+        ruleMapService.selectMediListC("A8");
         return "자동룰매핑종료"+System.currentTimeMillis();
     }
 
