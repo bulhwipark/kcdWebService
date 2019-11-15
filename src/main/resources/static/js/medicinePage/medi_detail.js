@@ -487,10 +487,12 @@ function mediSearchTerm_setting(){
     for(var i = 0; i<medi.autoRuleLog.length; i++){
         var logInfo = medi.autoRuleLog[i];
         if(logInfo.status == 'true' || logInfo.status == 'false'){
-            var $option = $('<option>',{
-                text:logInfo.searchTerm
-            });
-            $('#mediSearchTermSelect').append($option);
+            if(logInfo.searchTerm.trim().length > 0){
+                var $option = $('<option>',{
+                    text:logInfo.searchTerm
+                });
+                $('#mediSearchTermSelect').append($option);
+            }
         }
     }
 }
