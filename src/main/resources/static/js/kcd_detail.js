@@ -79,7 +79,11 @@ function kcd_detail_static_func() {
      * sessionStorage 정보를 이용하여 kcd리스트에서 KCD코드로 다음것을 찾음.
      */
     $('#kcdList_next').on('click', function () {
-        if (parseInt(sessionStorage.getItem("index")) === 49) {
+        if(parseInt(sessionStorage.getItem("index")) === (sessionStorage.getItem("totalCnt")-1)){
+            $(this).attr('disabled', true);
+            return;
+        }
+        if (parseInt(sessionStorage.getItem("index")) === kcd.mainKcdList.length) {
             sessionStorage.setItem(
                 'offset', parseInt(sessionStorage.getItem("offset")) + parseInt(sessionStorage.getItem("limit"))
             );
