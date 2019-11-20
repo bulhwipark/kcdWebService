@@ -110,7 +110,7 @@ public class RuleMapService {
     return list;
 
   }
-  public void serarchSnowAndInsert(String kmCd, String strQuery, String ruleTp) {
+  public void serarchSnowAndInsert(String kmCd, String strQuery, String ruleTp,String ecl) {
 
    
     strQuery = strQuery.replace(",", "");
@@ -118,7 +118,6 @@ public class RuleMapService {
 
     System.out.println("Term query : " +kmCd+" :" + strQuery);
    
-    String ecl = "<763158003";
     List<String> lsctcd = searchTerm(strQuery, ecl);
     MapKcdSctVo mvo = new MapKcdSctVo();
     for (String sctcd : lsctcd) {
@@ -126,10 +125,10 @@ public class RuleMapService {
       mvo.setOriCd(kmCd);
       mvo.setSctId(sctcd);
       mvo.setMapVer("0");
-      mvo.setMapStatCd(ruleTp);
+      mvo.setMapStatCd("X"+ruleTp);
       cmMediDao.insertAutoMap2(mvo);
     }
-    return;
+    return ;
   }
  
   public void serarchAndInsert2(String kmCd, String strQuery) {
@@ -163,7 +162,7 @@ public class RuleMapService {
       e.printStackTrace();
     }
 
-    return;
+    return ;
   }
 
   public JSONObject searchElastic(String term) throws JSONException {
@@ -197,17 +196,17 @@ public class RuleMapService {
 
     if (ruleTp.substring(0, 1).equals("2")) {
       if (cm.getAmount3() == 0)
-        return;
+        return ;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
     }else  if (ruleTp.substring(0, 1).equals("3") ) {
       if (cm.getAmount2() == 0|| cm.getUnit2().equals(""))
-        return;
+        return ;
       strUnit = cm.getUnit2();
       dblAmount = cm.getAmount2();
     } else if (ruleTp.substring(0, 1).equals("4")) {
       if (cm.getAmount3() == 0 || cm.getUnit3().equals(""))
-        return;
+        return ;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
     } else {
@@ -311,63 +310,63 @@ public class RuleMapService {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     } else if (ruleTp.substring(0, 1).equals("3") ) {
       if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return;
+        return ;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     } else if ( ruleTp.substring(0, 1).equals("4")) {
       if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return;
+        return ;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     } else if (ruleTp.substring(0, 1).equals("5") ) {
       if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
-        return;
+        return ;
       strQuery = "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
     }else if (ruleTp.substring(0, 1).equals("B") ) {
       
       if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-        return;
+        return ;
       strQuery = "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
     } else if (ruleTp.substring(0, 1).equals("6") ) {
       if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
-          return;
+          return ;
       strQuery =  cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
     } else if (ruleTp.substring(0, 1).equals("C")) {
       if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-        return;
+        return ;
       strQuery = "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin();
     } else if (ruleTp.substring(0, 1).equals("7")) {
       if (cm.getSubstanceNm().length()<2)
-        return;
+        return ;
       strQuery = "only " + cm.getSubstanceNm()+" " ;
     }  else if (ruleTp.substring(0, 1).equals("D") ) {
       if (cm.getSubstanceNm2().length()<2)
-        return;
+        return ;
       strQuery =  cm.getSubstanceNm2();
     }else if ( ruleTp.substring(0, 1).equals("8")) {
       if (cm.getEftSubstNm().length()<2)
-        return;
+        return ;
       strQuery =  cm.getEftSubstNm();
     } else if ( ruleTp.substring(0, 1).equals("E")) {
       if (cm.getEftSubstNm2().length()<2)
-        return;
+        return ;
       strQuery =  cm.getEftSubstNm2();
     } else if (ruleTp.substring(0, 1).equals("9")) {
       if (cm.getSubstanceNm().length()<2)
-        return;
+        return ;
       strQuery = cm.getSubstanceNm();
       ecl = "<105590001";
     }else if (ruleTp.substring(0, 1).equals("F")) {
       if (cm.getSubstanceNm2().length()<2)
-        return;
+        return ;
       strQuery = cm.getSubstanceNm2();
       ecl = "<105590001";
     } else if (ruleTp.substring(0, 1).equals("A") ) {
       if (cm.getEftSubstNm().length()<2)
-        return;
+        return ;
       strQuery =  cm.getEftSubstNm();
       ecl = "<105590001";
     } else if (ruleTp.substring(0, 1).equals("G") ) {
       if (cm.getEftSubstNm2().length()<2)
-        return;
+        return ;
       strQuery =  cm.getEftSubstNm2();
       ecl = "<105590001";
     }   else {
@@ -377,7 +376,7 @@ public class RuleMapService {
     
     // if (!ruleTp.substring(1, 2).equals("3")) {
     //   if ( cm.getRtOfAdmin().equals(""))
-    //     return;
+    //     return ;
     //   strQuery += " " + cm.getRtOfAdmin();
     // }
 
@@ -397,7 +396,7 @@ public class RuleMapService {
       cmMediDao.insertAutoMap2(mvo);
     }
 
-    return;
+    return ;
 
   }
 
@@ -408,41 +407,221 @@ public class RuleMapService {
     String chkFlag="";
     List<CmMedicineVo> list2 = new ArrayList<CmMedicineVo>();
     String qryStr="";
+    String strUnit = "";
+    double dblAmount = 0.0;
+    String strAmount = "";
+    
+    String ecl = "<763158003";
 
+    int nullFlag=0;
     for (CmMedicineVo cm : list) {
+
+      
       System.out.println("cm:"+ cm.getKdCd());
       
       if (!chkFlag.equals(cm.getKdCd()) && !chkFlag.equals("")){
 
         System.out.println("test:"+ qryStr);
         //serarchAndInsert2(chkFlag,qryStr);
-        serarchSnowAndInsert(chkFlag,qryStr,ruleTp);
+        if(nullFlag==0)
+          serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
         
         qryStr="";
+        nullFlag=0;
         
       }
 
+  
+  
       //list2.add(cm);
-      if ( ruleTp.equals("A5")&& cm.getSubstanceNm().length()>2){
-        
-        qryStr+=cm.getSubstanceNm()+ " " + cm.getRtOfAdmin() + " ";
-      }else if ( ruleTp.equals("A6")&& cm.getEftSubstNm().length()>2){
-        qryStr+=cm.getEftSubstNm()+ " " + cm.getRtOfAdmin() + " " ;
-
-      }else if ( ruleTp.equals("A7") && cm.getSubstanceNm().length()>2){
-        qryStr+=cm.getSubstanceNm()+ " " ;
-
-      }else if ( ruleTp.equals("A8") && cm.getEftSubstNm().length()>2){
-        qryStr+=cm.getEftSubstNm()+ " " ;
-
+      if (ruleTp.substring(0, 1).equals("2")) {
+        if (cm.getAmount3() == 0)
+          nullFlag=1;
+        strUnit = cm.getUnit3();
+        dblAmount = cm.getAmount3();
+      }else  if (ruleTp.substring(0, 1).equals("3") ) {
+        if (cm.getAmount2() == 0|| cm.getUnit2().equals(""))
+          nullFlag=1;
+        strUnit = cm.getUnit2();
+        dblAmount = cm.getAmount2();
+      } else if (ruleTp.substring(0, 1).equals("4")) {
+        if (cm.getAmount3() == 0 || cm.getUnit3().equals(""))
+          nullFlag=1;
+        strUnit = cm.getUnit3();
+        dblAmount = cm.getAmount3();
+      } else {
+        strUnit = cm.getUnit1();
+        dblAmount = cm.getAmount1();
       }
-
+  
+      if (ruleTp.substring(1, 2).equals("1") || ruleTp.substring(1, 2).equals("2")) {
+        if (strUnit.equals("g") && cm.getAmount1() < 1) {
+          strUnit = "mg";
+          dblAmount = dblAmount * 1000;
+          strAmount = String.format("%.0f", dblAmount);
+        } else if (strUnit.equals("mg") && cm.getAmount1() < 1) {
+          strUnit = "microgram";
+          dblAmount = dblAmount * 1000;
+          strAmount = String.format("%.0f", dblAmount);
+        } else if (strUnit.equals("μg") && cm.getAmount1() < 1) {
+          strUnit = "nanogram";
+          dblAmount = dblAmount * 1000;
+          strAmount = String.format("%.0f", dblAmount);
+        } if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
+          strUnit = "I.U";
+          dblAmount = dblAmount * 1000;
+          strAmount = String.format("%.0f", dblAmount);
+        } else {
+  
+          strAmount = dblAmount + "";
+        }
+      } else {
+        strAmount = dblAmount + "";
+      }
+  
+      if (ruleTp.substring(1, 2).equals("2")) {
+        if (strUnit.equals("mg")) {
+          strUnit = "milligram";
+        } else if (strUnit.equals("g")) {
+          strUnit = "gram";
+        } else if (strUnit.equals("μg")) {
+          strUnit = "microgram";
+        } else if (strUnit.equals("KI.U")) {
+          strUnit = "KIU";
+        } else if (strUnit.equals("MI.U")) {
+          strUnit = "MIU";
+        } else if (strUnit.equals("L")) {
+          strUnit = "liter";
+        } else if (strUnit.equals("cm2")) {
+          strUnit = "square centimeter";
+        } else if (strUnit.equals("mm")) {
+          strUnit = "milimeter";
+        } else if (strUnit.equals("mL/g")) {
+          strUnit = "milliliter/gram";
+        } else if (strUnit.equals("mL/mL")) {
+          strUnit = "milliliter/milliliter";
+        } else if (strUnit.equals("mL")) {
+          strUnit = "milimeter";
+        } else if (strUnit.equals("mg/mL")) {
+          strUnit = "milligram/1 milliliter";
+        } else if (strUnit.equals("I.U")) {
+          strUnit = "unit";
+        }else if (strUnit.equals("mg/정")) {
+          strUnit = "milligram/1 each";
+        }
+      }
+  
+  
+  
+      if (dblAmount * 10 % 10 == 0) {
+        strAmount = String.format("%.0f", dblAmount);
+      }
+  
+        
+      String strMedDoseFrm = cm.getMedDoseFrm();
+      
+      if ( cm.getMedDoseFrm3().length()>2){
+        strMedDoseFrm=cm.getMedDoseFrm3();
+      } else if(cm.getMedDoseFrm2().length()>2){
+        strMedDoseFrm=cm.getMedDoseFrm2();
+      } else {
+        strMedDoseFrm=cm.getMedDoseFrm();
+      }
+      
+      if (ruleTp.substring(0, 1).equals("1") ) {
+        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+          nullFlag=1;
+        ecl = "<763158003";
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+      } else if ( ruleTp.substring(0, 1).equals("2")) {
+        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+          nullFlag=1;
+        ecl = "<763158003";
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+      } else if (ruleTp.substring(0, 1).equals("3") ) {
+        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+          nullFlag=1;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        ecl = "<763158003";
+      } else if ( ruleTp.substring(0, 1).equals("4")) {
+        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+          nullFlag=1;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        ecl = "<763158003";
+      } else if (ruleTp.substring(0, 1).equals("5") ) {
+        if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
+          nullFlag=1;
+        qryStr += "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
+        ecl = "<763158003";
+      }else if (ruleTp.substring(0, 1).equals("B") ) {
+        
+        if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
+          nullFlag=1;
+        qryStr += "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
+        ecl = "<763158003";
+      } else if (ruleTp.substring(0, 1).equals("6") ) {
+        if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
+            nullFlag=1;
+        qryStr +=  cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
+        ecl = "<763158003";
+      } else if (ruleTp.substring(0, 1).equals("C")) {
+        if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
+          nullFlag=1;
+        qryStr += "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin();
+        ecl = "<763158003";
+      } else if (ruleTp.substring(0, 1).equals("7")) {
+        if (cm.getSubstanceNm().length()<2)
+          nullFlag=1;
+        qryStr += "only " + cm.getSubstanceNm()+" " ;
+        ecl = "<763158003";
+      }  else if (ruleTp.substring(0, 1).equals("D") ) {
+        if (cm.getSubstanceNm2().length()<2)
+          nullFlag=1;
+        qryStr +=  cm.getSubstanceNm2();
+        ecl = "<763158003";
+      }else if ( ruleTp.substring(0, 1).equals("8")) {
+        if (cm.getEftSubstNm().length()<2)
+          nullFlag=1;
+        qryStr +=  cm.getEftSubstNm();
+        ecl = "<763158003";
+      } else if ( ruleTp.substring(0, 1).equals("E")) {
+        if (cm.getEftSubstNm2().length()<2)
+          nullFlag=1;
+        qryStr +=  cm.getEftSubstNm2();
+        ecl = "<763158003";
+      } else if (ruleTp.substring(0, 1).equals("9")) {
+        if (cm.getSubstanceNm().length()<2)
+          nullFlag=1;
+        qryStr += cm.getSubstanceNm();
+        ecl = "<105590001";
+      }else if (ruleTp.substring(0, 1).equals("F")) {
+        if (cm.getSubstanceNm2().length()<2)
+          nullFlag=1;
+        qryStr += cm.getSubstanceNm2();
+        ecl = "<105590001";
+      } else if (ruleTp.substring(0, 1).equals("A") ) {
+        if (cm.getEftSubstNm().length()<2)
+          nullFlag=1;
+        qryStr +=  cm.getEftSubstNm();
+        ecl = "<105590001";
+      } else if (ruleTp.substring(0, 1).equals("G") ) {
+        if (cm.getEftSubstNm2().length()<2)
+          nullFlag=1;
+        qryStr +=  cm.getEftSubstNm2();
+        ecl = "<105590001";
+      }   else {
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+      }
+  
       chkFlag=cm.getKdCd();
     }
-
+    
     System.out.println("test:"+ qryStr);
+    if(nullFlag==0)
+      serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
+    
 
-    return;
+    return ;
 
   }
 
@@ -453,7 +632,7 @@ public class RuleMapService {
     for (CmMedicineVo cm : list) {
       serarchAndInsert(cm, ruleTp);
     }
-    return;
+    return ;
 
   }
 

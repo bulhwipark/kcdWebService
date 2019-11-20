@@ -234,33 +234,33 @@ public class MainController {
     @GetMapping(value="/mediRule2")
     @ResponseBody
     public String autoMapMediRule2() {
-       //ruleMapService.selectMediList(ruleTp);
-        // System.out.println("rule 10 ");
-        // ruleMapService.selectMediList("10");
-        // System.out.println("rule 11 ");
-        // ruleMapService.selectMediList("11");
-        // System.out.println("rule 12 ");
-        // ruleMapService.selectMediList("12");
-        // System.out.println("rule 20 ");
-        // ruleMapService.selectMediList("20");
-        // System.out.println("rule 21 ");
-        // ruleMapService.selectMediList("21");
-        // System.out.println("rule 22 ");
-        // ruleMapService.selectMediList("22");
-        // System.out.println("rule 30 ");
-        // ruleMapService.selectMediList("30");
-        // System.out.println("rule 31 ");
-        // ruleMapService.selectMediList("31");
-        // System.out.println("rule 32 ");
-        // ruleMapService.selectMediList("32");
-        // System.out.println("rule 40 ");
-        // ruleMapService.selectMediList("40");
-        // System.out.println("rule 41 ");
-        // ruleMapService.selectMediList("41");
-        // System.out.println("rule 42 ");
-        // ruleMapService.selectMediList("42");
-        // System.out.println("rule 50 ");
-        // ruleMapService.selectMediList("50");
+      // ruleMapService.selectMediList(ruleTp);
+        System.out.println("rule 10 ");
+        ruleMapService.selectMediList("10");
+        System.out.println("rule 11 ");
+        ruleMapService.selectMediList("11");
+        System.out.println("rule 12 ");
+        ruleMapService.selectMediList("12");
+        System.out.println("rule 20 ");
+        ruleMapService.selectMediList("20");
+        System.out.println("rule 21 ");
+        ruleMapService.selectMediList("21");
+        System.out.println("rule 22 ");
+        ruleMapService.selectMediList("22");
+        System.out.println("rule 30 ");
+        ruleMapService.selectMediList("30");
+        System.out.println("rule 31 ");
+        ruleMapService.selectMediList("31");
+        System.out.println("rule 32 ");
+        ruleMapService.selectMediList("32");
+        System.out.println("rule 40 ");
+        ruleMapService.selectMediList("40");
+        System.out.println("rule 41 ");
+        ruleMapService.selectMediList("41");
+        System.out.println("rule 42 ");
+        ruleMapService.selectMediList("42");
+        System.out.println("rule 50 ");
+        ruleMapService.selectMediList("50");
         System.out.println("rule B0 ");
         ruleMapService.selectMediList("B0");
         System.out.println("rule 60 ");
@@ -291,10 +291,31 @@ public class MainController {
     @GetMapping(value="/mediRuleC")
     @ResponseBody
     public String autoMapMediRuleC() {
-        ruleMapService.selectMediListC("A5");
-        ruleMapService.selectMediListC("A6");
-        ruleMapService.selectMediListC("A7");
-        ruleMapService.selectMediListC("A8");
+        System.out.println("rule X10 ");
+        ruleMapService.selectMediListC("10");
+        ruleMapService.selectMediListC("11");
+        ruleMapService.selectMediListC("12");
+        System.out.println("rule X20 ");
+        ruleMapService.selectMediListC("20");
+        ruleMapService.selectMediListC("21");
+        ruleMapService.selectMediListC("22");
+        System.out.println("rule X30 ");
+        ruleMapService.selectMediListC("30");
+        ruleMapService.selectMediListC("31");
+        ruleMapService.selectMediListC("32");
+        System.out.println("rule X40 ");
+        ruleMapService.selectMediListC("40");
+        ruleMapService.selectMediListC("41");
+        ruleMapService.selectMediListC("42");
+        System.out.println("rule X50 ");
+        ruleMapService.selectMediListC("50");
+        System.out.println("rule X60 ");
+        ruleMapService.selectMediListC("60");
+        System.out.println("rule X70 ");
+        ruleMapService.selectMediListC("70");
+        System.out.println("rule X80 ");
+        ruleMapService.selectMediListC("80");
+        
         return "자동룰매핑종료"+System.currentTimeMillis();
     }
 
