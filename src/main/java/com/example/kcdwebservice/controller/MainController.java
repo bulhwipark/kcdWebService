@@ -75,6 +75,7 @@ public class MainController {
     @RequestMapping(value="/selectAll")
     @ResponseBody
     public ResponseEntity<List<CmKcdVo>> kcdSelectAll(CmKcdVo cmKcdVo){
+        System.out.println("cmKcdVo"+ cmKcdVo);
         List<CmKcdVo> list = cmKcdService.selectAll(cmKcdVo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

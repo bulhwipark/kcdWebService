@@ -300,30 +300,76 @@ public class RuleMapService {
     // } else if (strMedDoseFrm.indexOf("prolonged-release capsule") >= 0) {
     //   strMedDoseFrm = "prolonged-release capsule";
     // }
-
-    if (ruleTp.substring(0, 1).equals("1") || ruleTp.substring(0, 1).equals("2")) {
+    String ecl = "<763158003";
+    if (ruleTp.substring(0, 1).equals("1") ) {
+      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+        return ;
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if (ruleTp.substring(0, 1).equals("3") || ruleTp.substring(0, 1).equals("4")) {
+    } else if ( ruleTp.substring(0, 1).equals("2")) {
+      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+        return ;
+      strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+    } else if (ruleTp.substring(0, 1).equals("3") ) {
       if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
         return;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if (ruleTp.substring(0, 1).equals("5") ||ruleTp.substring(0, 1).equals("7")) {
+    } else if ( ruleTp.substring(0, 1).equals("4")) {
+      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+        return;
+      strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+    } else if (ruleTp.substring(0, 1).equals("5") ) {
+      if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
+        return;
+      strQuery = "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
+    }else if (ruleTp.substring(0, 1).equals("B") ) {
+      if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
+        return;
+      strQuery = "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
+    } else if (ruleTp.substring(0, 1).equals("6") ) {
+      if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
+          return;
+      strQuery =  cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
+    } else if (ruleTp.substring(0, 1).equals("C")) {
+      if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
+        return;
+      strQuery = "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin();
+    } else if (ruleTp.substring(0, 1).equals("7")) {
       if (cm.getSubstanceNm().length()<2)
         return;
-      strQuery = "only " + cm.getSubstanceNm();
-    } else if (ruleTp.substring(0, 1).equals("6") || ruleTp.substring(0, 1).equals("8")) {
+      strQuery = "only " + cm.getSubstanceNm()+" " ;
+    }  else if (ruleTp.substring(0, 1).equals("D") ) {
+      if (cm.getSubstanceNm2().length()<2)
+        return;
+      strQuery =  cm.getSubstanceNm2();
+    }else if ( ruleTp.substring(0, 1).equals("8")) {
       if (cm.getEftSubstNm().length()<2)
         return;
       strQuery =  cm.getEftSubstNm();
+    } else if ( ruleTp.substring(0, 1).equals("E")) {
+      if (cm.getEftSubstNm2().length()<2)
+        return;
+      strQuery =  cm.getEftSubstNm2();
     } else if (ruleTp.substring(0, 1).equals("9")) {
       if (cm.getSubstanceNm().length()<2)
         return;
       strQuery = cm.getSubstanceNm();
+      ecl = "<105590001";
+    }else if (ruleTp.substring(0, 1).equals("F")) {
+      if (cm.getSubstanceNm2().length()<2)
+        return;
+      strQuery = cm.getSubstanceNm2();
+      ecl = "<105590001";
     } else if (ruleTp.substring(0, 1).equals("A") ) {
       if (cm.getEftSubstNm().length()<2)
         return;
       strQuery =  cm.getEftSubstNm();
-    } else {
+      ecl = "<105590001";
+    } else if (ruleTp.substring(0, 1).equals("G") ) {
+      if (cm.getEftSubstNm2().length()<2)
+        return;
+      strQuery =  cm.getEftSubstNm2();
+      ecl = "<105590001";
+    }   else {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     }
 
@@ -338,7 +384,7 @@ public class RuleMapService {
     strQuery = strQuery.replace("/", " ");
 
     System.out.println("Term query : " + strQuery);
-    String ecl = "<763158003";
+    
     List<String> lsctcd = searchTerm(strQuery, ecl);
     MapKcdSctVo mvo = new MapKcdSctVo();
     for (String sctcd : lsctcd) {

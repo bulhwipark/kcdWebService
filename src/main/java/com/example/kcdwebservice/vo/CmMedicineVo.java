@@ -44,5 +44,7 @@ public class CmMedicineVo {
     private String ecl;
     private String limit;
     private String offset;
+    private String substanceNm2;
+    private String eftSubstNm2;
     
 }
