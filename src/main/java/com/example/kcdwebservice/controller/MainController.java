@@ -235,30 +235,55 @@ public class MainController {
     @ResponseBody
     public String autoMapMediRule2() {
        //ruleMapService.selectMediList(ruleTp);
-        ruleMapService.selectMediList("10");
-        ruleMapService.selectMediList("11");
-        ruleMapService.selectMediList("12");
-        ruleMapService.selectMediList("20");
-        ruleMapService.selectMediList("21");
-        ruleMapService.selectMediList("22");
-        ruleMapService.selectMediList("30");
-        ruleMapService.selectMediList("31");
-        ruleMapService.selectMediList("32");
-        ruleMapService.selectMediList("40");
-        ruleMapService.selectMediList("41");
-        ruleMapService.selectMediList("42");
-        ruleMapService.selectMediList("50");
+        // System.out.println("rule 10 ");
+        // ruleMapService.selectMediList("10");
+        // System.out.println("rule 11 ");
+        // ruleMapService.selectMediList("11");
+        // System.out.println("rule 12 ");
+        // ruleMapService.selectMediList("12");
+        // System.out.println("rule 20 ");
+        // ruleMapService.selectMediList("20");
+        // System.out.println("rule 21 ");
+        // ruleMapService.selectMediList("21");
+        // System.out.println("rule 22 ");
+        // ruleMapService.selectMediList("22");
+        // System.out.println("rule 30 ");
+        // ruleMapService.selectMediList("30");
+        // System.out.println("rule 31 ");
+        // ruleMapService.selectMediList("31");
+        // System.out.println("rule 32 ");
+        // ruleMapService.selectMediList("32");
+        // System.out.println("rule 40 ");
+        // ruleMapService.selectMediList("40");
+        // System.out.println("rule 41 ");
+        // ruleMapService.selectMediList("41");
+        // System.out.println("rule 42 ");
+        // ruleMapService.selectMediList("42");
+        // System.out.println("rule 50 ");
+        // ruleMapService.selectMediList("50");
+        System.out.println("rule B0 ");
         ruleMapService.selectMediList("B0");
+        System.out.println("rule 60 ");
         ruleMapService.selectMediList("60");
+        System.out.println("rule C0 ");
         ruleMapService.selectMediList("C0");
+        System.out.println("rule 70 ");
         ruleMapService.selectMediList("70");
+        System.out.println("rule D0 ");
         ruleMapService.selectMediList("D0");
+        System.out.println("rule 80 ");
         ruleMapService.selectMediList("80");
+        System.out.println("rule E0 ");
         ruleMapService.selectMediList("E0");
+        System.out.println("rule 90 ");
         ruleMapService.selectMediList("90");
+        System.out.println("rule F0 ");
         ruleMapService.selectMediList("F0");
+        System.out.println("rule A0 ");
         ruleMapService.selectMediList("A0");
+        System.out.println("rule G0 ");
         ruleMapService.selectMediList("G0");
+
        return "자동룰매핑종료"+System.currentTimeMillis();
     }
 

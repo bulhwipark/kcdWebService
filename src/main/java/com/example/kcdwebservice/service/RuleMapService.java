@@ -322,6 +322,7 @@ public class RuleMapService {
         return;
       strQuery = "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
     }else if (ruleTp.substring(0, 1).equals("B") ) {
+      
       if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
         return;
       strQuery = "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
