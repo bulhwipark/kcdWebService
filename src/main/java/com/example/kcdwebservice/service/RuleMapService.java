@@ -392,13 +392,31 @@ public class RuleMapService {
       mvo.setOriCd(cm.getKdCd());
       mvo.setSctId(sctcd);
       mvo.setMapVer("0");
-      mvo.setMapStatCd(ruleTp);
+      if (ruleTp.length()==3) 
+        mvo.setMapStatCd("X" + ruleTp);
+        else
+        mvo.setMapStatCd(ruleTp);
+      mvo.setSubAltKey(cm.getSubAltKey());
       cmMediDao.insertAutoMap2(mvo);
     }
 
     return ;
 
   }
+
+
+  
+  public void selectMediListC2(String ruleTp) {
+
+    List<CmMedicineVo> list = cmMediDao.selectCAll();
+
+    for (CmMedicineVo cm : list) {
+      serarchAndInsert(cm, ruleTp);
+    }
+    return ;
+
+  }
+
 
   public void selectMediListC(String ruleTp) {
 
@@ -532,85 +550,85 @@ public class RuleMapService {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
         ecl = "<763158003";
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
       } else if ( ruleTp.substring(0, 1).equals("2")) {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
         ecl = "<763158003";
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
       } else if (ruleTp.substring(0, 1).equals("3") ) {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
-        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
         ecl = "<763158003";
       } else if ( ruleTp.substring(0, 1).equals("4")) {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
-        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("5") ) {
         if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
           nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
+        qryStr += "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin()+ " ";
         ecl = "<763158003";
       }else if (ruleTp.substring(0, 1).equals("B") ) {
         
         if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
           nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
+        qryStr += "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin()+ " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("6") ) {
         if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
             nullFlag=1;
-        qryStr +=  cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
+        qryStr +=  cm.getEftSubstNm() + " " + cm.getRtOfAdmin()+ " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("C")) {
         if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
           nullFlag=1;
-        qryStr += "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin();
+        qryStr += "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin()+ " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("7")) {
         if (cm.getSubstanceNm().length()<2)
           nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm()+" " ;
+        qryStr += "only " + cm.getSubstanceNm() + " " ;
         ecl = "<763158003";
       }  else if (ruleTp.substring(0, 1).equals("D") ) {
         if (cm.getSubstanceNm2().length()<2)
           nullFlag=1;
-        qryStr +=  cm.getSubstanceNm2();
+        qryStr +=  cm.getSubstanceNm2()+ " ";
         ecl = "<763158003";
       }else if ( ruleTp.substring(0, 1).equals("8")) {
         if (cm.getEftSubstNm().length()<2)
           nullFlag=1;
-        qryStr +=  cm.getEftSubstNm();
+        qryStr +=  cm.getEftSubstNm()+ " ";
         ecl = "<763158003";
       } else if ( ruleTp.substring(0, 1).equals("E")) {
         if (cm.getEftSubstNm2().length()<2)
           nullFlag=1;
-        qryStr +=  cm.getEftSubstNm2();
+        qryStr +=  cm.getEftSubstNm2()+ " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("9")) {
         if (cm.getSubstanceNm().length()<2)
           nullFlag=1;
-        qryStr += cm.getSubstanceNm();
+        qryStr += cm.getSubstanceNm()+ " ";
         ecl = "<105590001";
       }else if (ruleTp.substring(0, 1).equals("F")) {
         if (cm.getSubstanceNm2().length()<2)
           nullFlag=1;
-        qryStr += cm.getSubstanceNm2();
+        qryStr += cm.getSubstanceNm2()+ " ";
         ecl = "<105590001";
       } else if (ruleTp.substring(0, 1).equals("A") ) {
         if (cm.getEftSubstNm().length()<2)
           nullFlag=1;
-        qryStr +=  cm.getEftSubstNm();
+        qryStr +=  cm.getEftSubstNm()+ " ";
         ecl = "<105590001";
       } else if (ruleTp.substring(0, 1).equals("G") ) {
         if (cm.getEftSubstNm2().length()<2)
           nullFlag=1;
-        qryStr +=  cm.getEftSubstNm2();
+        qryStr +=  cm.getEftSubstNm2()+ " ";
         ecl = "<105590001";
       }   else {
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
       }
   
       chkFlag=cm.getKdCd();
@@ -618,7 +636,7 @@ public class RuleMapService {
     
     System.out.println("test:"+ qryStr);
     if(nullFlag==0)
-      serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
+    serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
     
 
     return ;

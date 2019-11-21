@@ -35,7 +35,7 @@
        
     </select>
     <!--#  where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2); where KD_CD ='679400231'; where KD_CD ='679400231'  ;-->
-    <select id="selectCAll" resultType="com.example.kcdwebservice.vo.CmMedicineVo">
+    <select id="selectCAll"  resultType="com.example.kcdwebservice.vo.CmMedicineVo">
         SELECT KD_CD             kdCd,
                PRINCIPAL_COMP_CD prinipalCompCd,
                DRUG_NM_KOR       drugNmKor,
@@ -57,16 +57,17 @@
                MED_DOSE_FRM3      medDoseFrm3,
                RT_OF_ADMIN       rtOfAdmin,
                SUB_ALT_KEY       subAltKey
+               
         from CM_MEDICINE
         where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2 where ORI_TP_CD='MEDI')
-        and JOB_CD='C';
+        and JOB_CD='O';
        
     </select>
     <!--#  where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2); where KD_CD ='679400231'; where KD_CD ='679400231'  ;-->
 
     <insert id="insertAutoMap2" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
-        INSERT into MAP_KCD_SCT2(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
-        values('MEDI',#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
+        INSERT into MAP_KCD_SCT2(ORI_TP_CD,ORI_CD,SUB_ALT_KEY,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values('MEDI',#{oriCd},#{subAltKey},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
     </insert>
 
     <select id="medi_selectAll" parameterType="com.example.kcdwebservice.vo.CmMedicineVo" resultType="com.example.kcdwebservice.vo.CmMedicineVo">

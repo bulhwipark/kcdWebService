@@ -236,6 +236,7 @@ public class MainController {
     public String autoMapMediRule2() {
       // ruleMapService.selectMediList(ruleTp);
         System.out.println("rule 10 ");
+        
         ruleMapService.selectMediList("10");
         System.out.println("rule 11 ");
         ruleMapService.selectMediList("11");
@@ -316,6 +317,16 @@ public class MainController {
         System.out.println("rule X80 ");
         ruleMapService.selectMediListC("80");
         
+        return "자동룰매핑종료"+System.currentTimeMillis();
+    }
+
+    @GetMapping(value="/mediRuleC2")
+    @ResponseBody
+    public String autoMapMediRuleC2() {
+        System.out.println("rule 90X ");
+        ruleMapService.selectMediListC2("90X");
+        System.out.println("rule A0X ");
+        ruleMapService.selectMediListC2("A0X");
         return "자동룰매핑종료"+System.currentTimeMillis();
     }
 

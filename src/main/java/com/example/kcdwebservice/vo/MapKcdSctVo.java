@@ -22,5 +22,5 @@ public class MapKcdSctVo {
     private String mapStatNm;
 
     private String afterMap;
-
+    private String subAltKey="0";
 }
