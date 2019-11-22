@@ -547,7 +547,7 @@ public class RuleMapService {
       }
       
       if (ruleTp.substring(0, 1).equals("1") ) {
-        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
+        if (cm.getSubstanceNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
         ecl = "<763158003";
         qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
@@ -555,7 +555,7 @@ public class RuleMapService {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
         ecl = "<763158003";
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
       } else if (ruleTp.substring(0, 1).equals("3") ) {
         if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;
