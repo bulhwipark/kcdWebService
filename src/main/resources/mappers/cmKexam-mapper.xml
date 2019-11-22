@@ -5,23 +5,35 @@
 
 <mapper namespace="com.example.kcdwebservice.dao.CmKexamDao">
 
+	<select id="selectAll" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+        SELECT KEX_CD             kexCd,
+               KEX_TP_CD		kexTpCd,
+               KEX_GRP			kexGrp,
+               KEX_KOR			kexKor,
+               KEX_ENG			kexEng,
+               KEX_PRICE		kexPrice
+        from CM_KEXAM
+        where KEX_CD not in (select distinct ORI_CD from MAP_KCD_SCT3 where ORI_TP_CD='KEXAM')
+			  AND KEX_ENG != '' ;
+    </select>
+
     <select id="kexam_selectAll" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
         SELECT KE.KEX_CD    kexCd,
                KE.KEX_ENG   kexEng,
                KE.KEX_KOR   kexKor,
-               MAP4.UDT_DT  udtDt,
-               MAP4.SCT_ID  sctId,
+               MAP3.UDT_DT  udtDt,
+               MAP3.SCT_ID  sctId,
                CS.SCT_TERM  sctTerm,
-               MAP4.MAP_STAT_CD mapStatCd,
+               MAP3.MAP_STAT_CD mapStatCd,
                CD.CD_DSCRT  cdDscrt
         FROM CM_KEXAM KE
             LEFT OUTER JOIN (
                 SELECT *
-                FROM MAP_KCD_SCT4
-            ) MAP4 ON KE.KEX_CD = MAP4.ORI_CD
-            LEFT OUTER JOIN CM_SNOMEDCT CS ON MAP4.SCT_ID = CS.SCT_ID
+                FROM MAP_KCD_SCT3
+            ) MAP3 ON KE.KEX_CD = MAP3.ORI_CD
+            LEFT OUTER JOIN CM_SNOMEDCT CS ON MAP3.SCT_ID = CS.SCT_ID
             LEFT OUTER JOIN MCODE CD
-            ON LEFT(MAP4.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+            ON LEFT(MAP3.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
         <where>
             <if test="kexCd != '' and kexCd != null ">
                 KEX_CD like concat('%', #{kexCd}, '%')
@@ -51,6 +63,91 @@
     <select id="kexam_totalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
         SELECT COUNT(*) FROM CM_KEXAM
     </select>
+    
+    <select id="kexam_mappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+        SELECT count(1)
+            FROM CM_KEXAM CM
+            INNER JOIN (
+                SELECT * FROM MAP_KCD_SCT3 WHERE MAP_VER = 0 AND ORI_TP_CD = 'KEXAM'
+            ) MAP3 ON CM.KEX_CD = MAP3.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S ON MAP3.SCT_ID = S.SCT_ID
+        LEFT OUTER JOIN MCODE CD ON LEFT(MAP3.MAP_STAT_CD, 1) = CD.CD_ID
+            AND CD.CD_GRP = 'MAP_STAT_CD'
+            AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kexCd != null and kexCd != '' ">
+                CM.KEX_CD = #{kexCd}
+            </if>
+        </where>
+        ;
+    </select>
 
+	<select id="kexam_selectMapping" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+        SELECT CM.KEX_CD kexCd,
+               CM.KEX_ENG kexEng,
+               CM.KEX_KOR kexKor,
+               MAP3.UDT_DT udtDt,
+               MAP3.SCT_ID sctId,
+               S.SCT_TERM sctTerm,
+               MAP3.MAP_STAT_CD mapStatCd,
+               CD.CD_DSCRT cdDscrt
+        FROM CM_KEXAM CM
+        INNER JOIN (
+            SELECT * FROM MAP_KCD_SCT3 WHERE MAP_VER = 0 AND ORI_TP_CD = 'KEXAM'
+        ) MAP3 ON CM.KEX_CD = MAP3.ORI_CD
+        LEFT OUTER JOIN CM_SNOMEDCT S ON MAP3.SCT_ID = S.SCT_ID
+        LEFT OUTER JOIN MCODE CD ON LEFT(MAP3.MAP_STAT_CD, 1) = CD.CD_ID
+        AND CD.CD_GRP = 'MAP_STAT_CD'
+        AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kexCd != null and kexCd != '' ">
+                CM.KEX_CD = #{kexCd}
+            </if>
+        </where>
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset}
+        </if>
+        ;
+   	</select>
+   	
+   	<select id="kexam_selectNoMapping" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+        SELECT CM.KEX_CD kexCd,
+               CM.KEX_ENG kexEng,
+               CM.KEX_KOR kexKor
+        FROM CM_KEXAM CM
+        WHERE KEX_CD NOT IN (
+            SELECT DISTINCT ORI_CD
+                FROM MAP_KCD_SCT3
+                WHERE MAP_VER = 0
+            AND ORI_TP_CD = 'KEXAM'
+        )
+        <if test="kexCd != '' and kexCd != null ">
+            and CM.KEX_CD = #{kexCd}
+        </if>
+        <if test="limit != '' and limit != null and offset != '' and offset != null">
+            limit ${limit} offset ${offset}
+        </if>
+        ;
+    </select>
+    
+    <select id="kexam_noMappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+        SELECT count(1)
+        FROM CM_KEXAM CM
+        WHERE KEX_CD NOT IN (
+            SELECT DISTINCT ORI_CD
+                FROM MAP_KCD_SCT3
+                WHERE MAP_VER = 0
+            AND ORI_TP_CD = 'KEXAM'
+        )
+        <if test="kexCd != null and kexCd != '' ">
+            CM.KEX_CD = #{kexCd}
+        </if>
+        ;
+    </select>
+    
+    <insert id="insertAutoMap3" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
+        INSERT into MAP_KCD_SCT3(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values('KEXAM',#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
+    </insert>
 
 </mapper>

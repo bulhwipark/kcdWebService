@@ -20,30 +20,6 @@ public class MedicalCheckController {
     @Autowired
     private CmKexamService kexamService;
 
-    /**
-     * 리스트 조회.
-     * 전체 :  All
-     * 매핑 : Mapping
-     * 비매핑 : NoMapping
-     *
-     * @param option
-     * @param cmKexamVo
-     * @return
-     */
-    @RequestMapping(value = "/kexam/select/{option}")
-    @ResponseBody
-    public ResponseEntity<List<CmKexamVo>> mediSelect(@PathVariable("option") String option, CmKexamVo cmKexamVo) {
-        List<CmKexamVo> list = null;
-        if (option.equals("All")) {
-            list = kexamService.kexam_selectAll(cmKexamVo);
-        } else if (option.equals("Mapping")) {
-            list = kexamService.kexam_selectMapping(cmKexamVo);
-        } else {
-            list = kexamService.medi_selectNoMapping(cmKexamVo);
-        }
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
     @RequestMapping(value="/mediCheckDetailPage")
     public ModelAndView mediCheckDetailPage(
             @RequestParam("kexCd")String kexCd,
