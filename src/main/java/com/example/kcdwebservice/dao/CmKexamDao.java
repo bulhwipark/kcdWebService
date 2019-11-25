@@ -15,6 +15,8 @@ public interface CmKexamDao {
 	List<CmKexamVo> selectAll();
     List<CmKexamVo> kexam_selectAll(CmKexamVo cmKexamVo);
 
+    List<String> selectSynonym(String sctId);
+
     CmKexamVo selectKexCdInfo(String kexCd);
     //미구현
     List<CmKexamVo> kexam_selectMapping(CmKexamVo cmKexamVo);

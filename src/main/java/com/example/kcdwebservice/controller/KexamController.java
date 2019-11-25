@@ -42,6 +42,7 @@ public class KexamController {
 	public void domapping () {
 		List<CmKexamVo> list = cmKexamService.selectAll();
 		for(CmKexamVo kexam : list) {
+            
 			//service 호출 (지금은 이렇게 만들어 놓고 추후에 service.domapping 추가해서 정규화 로직 따라가게 만들기)
 			cmKexamService.domapping(kexam);
 		}

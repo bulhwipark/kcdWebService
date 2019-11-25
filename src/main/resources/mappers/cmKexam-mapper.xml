@@ -10,13 +10,22 @@
                KEX_TP_CD		kexTpCd,
                KEX_GRP			kexGrp,
                KEX_KOR			kexKor,
-               KEX_ENG			kexEng,
-               KEX_PRICE		kexPrice
+               KEX_ENG			kexEng
+               #,               KEX_PRICE		kexPrice
         from CM_KEXAM
         where KEX_CD not in (select distinct ORI_CD from MAP_KCD_SCT3 where ORI_TP_CD='KEXAM')
 			  AND KEX_ENG != '' ;
     </select>
 
+
+    <select id="selectSynonym" parameterType="String" resultType="String">
+        SELECT SCT_SYNON_TERM FROM DIC_SNOMEDCT_SYNON  
+        WHERE SCT_ID = #{sctId};
+
+    </select>
+
+
+    
     <select id="kexam_selectAll" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="com.example.kcdwebservice.vo.CmKexamVo">
         SELECT KE.KEX_CD    kexCd,
                KE.KEX_ENG   kexEng,

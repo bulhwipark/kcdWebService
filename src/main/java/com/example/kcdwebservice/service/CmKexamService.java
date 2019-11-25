@@ -70,7 +70,7 @@ public class CmKexamService {
     }
     
     public String searchTerm(String term, String ecl) {
-    	String arrSctid = "";
+    	String strSctid = "";
         String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
         
         Map<String, String> hm = new HashMap<String, String>();
@@ -90,17 +90,25 @@ public class CmKexamService {
         	  //나중엔 id 리스트로 가져다가 jo.getString("conceptId")
         	  //db에서 conceptid에 해당하는 모든 동의어를 lowercase로 변경하여 term 과 일치하는지 확인
             JSONObject jo = ja.getJSONObject(x);
-            String pt_term = jo.getJSONObject("pt").getString("term").toLowerCase();
-            if(pt_term.equals(term.toLowerCase())) {
-            	 arrSctid = jo.getString("conceptId");
-            	 return arrSctid;
-            }
+			//String pt_term = jo.getJSONObject("pt").getString("term").toLowerCase();
+			String sctId = jo.getString("id");
+
+			// 유사어도 모두 확인해야함. gun
+			List <String> lstSCTSynon=cmKexamDao.selectSynonym(sctId);
+
+			for ( String strTerm : lstSCTSynon){
+
+				if(term.toLowerCase().equals(strTerm.toLowerCase())) {
+					return sctId;
+				}
+				
+			}
 
           }
         } catch (Exception e) {
           e.printStackTrace();
         }
-        return arrSctid;
+        return strSctid;
     }
     
     public Map<Integer, String> getPatternMap() {
