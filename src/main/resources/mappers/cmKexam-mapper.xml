@@ -10,7 +10,13 @@
                KEX_TP_CD		kexTpCd,
                KEX_GRP			kexGrp,
                KEX_KOR			kexKor,
-               KEX_ENG			kexEng
+               KEX_ENG			kexEng,
+               concat(PRE_COMPONENT,' ',
+                PRE_PROPERTY,' ',
+                PRE_TIME,' ',
+                PRE_SYSTEM,' ',
+                PRE_SCALE,' ',
+                PRE_METHOD) preTerm
                #,               KEX_PRICE		kexPrice
         from CM_KEXAM
         where KEX_CD not in (select distinct ORI_CD from MAP_KCD_SCT3 where ORI_TP_CD='KEXAM')
@@ -21,7 +27,6 @@
     <select id="selectSynonym" parameterType="String" resultType="String">
         SELECT SCT_SYNON_TERM FROM DIC_SNOMEDCT_SYNON  
         WHERE SCT_ID = #{sctId};
-
     </select>
 
 

@@ -19,4 +19,5 @@ public class CmKexamVo {
     private String listOption;
     private String limit;
     private String offset;
+    private String preTerm;
 }
