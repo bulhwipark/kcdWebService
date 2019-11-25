@@ -153,7 +153,7 @@ public class CmKexamService {
 		hm.put(79, "{} method");
 		hm.put(710, "{} study");
 		//
-		hm.put(80, "candidate");
+		hm.put(80, "");
 
 		return hm;
 	}
@@ -267,21 +267,22 @@ public class CmKexamService {
 						}
 					}
 				}
-			} else if (key == 80) {
-				targetSentence = kexam.getPreTerm();
-				List<String> searchResult = ruleMapService.searchTerm(targetSentence, "<71388002");
-				for (String sctId : searchResult) {
-					System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-					// insert db
-					MapKcdSctVo kcdSct = new MapKcdSctVo();
-					kcdSct.setOriCd(kexam.getKexCd());
-					kcdSct.setSctId(sctId);
-					kcdSct.setMapVer("0");
-					kcdSct.setMapStatCd(Integer.toString(key));
-					if (cmKexamDao.insertAutoMap3(kcdSct) > 0) {
-						// flag true로 설정
-						isMatched = true;
-						break;
+			} else if (key == 80) {   //80 룰 추가
+				targetSentence = kexam.getPreTerm().trim();
+				if(!targetSentence.isEmpty()){
+					List<String> searchResult = ruleMapService.searchTerm(targetSentence, "<71388002");
+					for (String sctId : searchResult) {
+						System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+						// insert db
+						MapKcdSctVo kcdSct = new MapKcdSctVo();
+						kcdSct.setOriCd(kexam.getKexCd());
+						kcdSct.setSctId(sctId);
+						kcdSct.setMapVer("0");
+						kcdSct.setMapStatCd(Integer.toString(key));
+						
+						//후보 모두 저장
+						cmKexamDao.insertAutoMap3(kcdSct);
+						
 					}
 				}
 
