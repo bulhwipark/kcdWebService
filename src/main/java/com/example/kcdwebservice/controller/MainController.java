@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 public class MainController {
 
@@ -60,24 +59,42 @@ public class MainController {
 
     /**
      * 메인화면.
+     * 
      * @return
      */
-    @RequestMapping(value="/")
-    public String main(@RequestParam(value = "limit", required = false)String limit, @RequestParam(value="offset", required = false)String offset){
+    @RequestMapping(value = "/")
+    public String main(@RequestParam(value = "limit", required = false) String limit,
+            @RequestParam(value = "offset", required = false) String offset) {
         return "/index";
     }
 
     /**
      * KCD 전체 목록
+     * 
      * @param cmKcdVo
      * @return
      */
-    @RequestMapping(value="/selectAll")
+    @RequestMapping(value = "/selectAll")
     @ResponseBody
-    public ResponseEntity<List<CmKcdVo>> kcdSelectAll(CmKcdVo cmKcdVo){
-        System.out.println("cmKcdVo"+ cmKcdVo);
+    public ResponseEntity<List<CmKcdVo>> kcdSelectAll(CmKcdVo cmKcdVo) {
+        System.out.println("cmKcdVo" + cmKcdVo);
         List<CmKcdVo> list = cmKcdService.selectAll(cmKcdVo);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public String kcdSelectAll() {
+        for (int i = 1; i < 1000; i++) {
+            System.out.println("test:" + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return "test all";
     }
 
     /**
