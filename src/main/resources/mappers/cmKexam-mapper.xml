@@ -181,10 +181,23 @@
 	        FROM CM_KEXAM K
 	        <where>
 	            <if test="kexCd != '' and kexCd != null">
-	                KD_CD = #{kdCd}
+	                KEX_CD = #{kexCd}
 	            </if>
 	        </where>
 	         ;
+    </select>
+    
+    <select id="kexam_kexCdNoMappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+	    SELECT count(1)
+	        FROM CM_KEXAM K
+	        WHERE KEX_CD NOT IN (
+	        SELECT ORI_CD FROM MAP_KCD_SCT3 WHERE MAP_VER = #{mapVer}
+	                <!--
+	                <if test="mapStatCd != 'All'">
+	                    and MAP_STAT_CD = #{mapStatCd}
+	                </if>
+	                -->
+	        )
     </select>
 
 </mapper>

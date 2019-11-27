@@ -73,16 +73,61 @@ public class CmKexamService {
 		}
 		return totalCnt;
 	}
+	
+	public String convertRomanToChar(String term, String roman) {
+		if(roman.equals("\u2160")) term = term.replace(roman, "I");
+		else if(roman.equals("\u2161")) term = term.replace(roman, "II");
+		else if(roman.equals("\u2162")) term = term.replace(roman, "III");
+		else if(roman.equals("\u2163")) term = term.replace(roman, "IV");
+		else if(roman.equals("\u2164")) term = term.replace(roman, "V");
+		else if(roman.equals("\u2165")) term = term.replace(roman, "VI");
+		else if(roman.equals("\u2166")) term = term.replace(roman, "VII");
+		else if(roman.equals("\u2167")) term = term.replace(roman, "VIII");
+		else if(roman.equals("\u2168")) term = term.replace(roman, "IX");
+		else if(roman.equals("\u2169")) term = term.replace(roman, "X");
+		else if(roman.equals("\u216A")) term = term.replace(roman, "XI");
+		else if(roman.equals("\u216B")) term = term.replace(roman, "XII");
+		else if(roman.equals("\u216C")) term = term.replace(roman, "L");
+		else if(roman.equals("\u216D")) term = term.replace(roman, "C");
+		else if(roman.equals("\u216E")) term = term.replace(roman, "D");
+		else if(roman.equals("\u216F")) term = term.replace(roman, "M");
+		else if(roman.equals("\u2170")) term = term.replace(roman, "I");
+		else if(roman.equals("\u2171")) term = term.replace(roman, "II");
+		else if(roman.equals("\u2172")) term = term.replace(roman, "III");
+		else if(roman.equals("\u2173")) term = term.replace(roman, "IV");
+		else if(roman.equals("\u2174")) term = term.replace(roman, "V");
+		else if(roman.equals("\u2175")) term = term.replace(roman, "VI");
+		else if(roman.equals("\u2176")) term = term.replace(roman, "VII");
+		else if(roman.equals("\u2177")) term = term.replace(roman, "VIII");
+		else if(roman.equals("\u2178")) term = term.replace(roman, "IX");
+		else if(roman.equals("\u2179")) term = term.replace(roman, "X");
+		else if(roman.equals("\u217A")) term = term.replace(roman, "XI");
+		else if(roman.equals("\u217B")) term = term.replace(roman, "XII");
+		else if(roman.equals("\u217C")) term = term.replace(roman, "L");
+		else if(roman.equals("\u217D")) term = term.replace(roman, "C");
+		else if(roman.equals("\u217E")) term = term.replace(roman, "D");
+		else if(roman.equals("\u217F")) term = term.replace(roman, "M");
+		
+		return term;
+	}
 
 	public String searchTerm(String term, String ecl) {
 		String strSctid = "";
 		String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
+		
+		Pattern pat = Pattern.compile("[\\u2160-\\u217B]");
+		Matcher match = pat.matcher(term);
+		while(match.find()) {
+			String roman = match.group();
+			term = convertRomanToChar(term, roman);
+			match = pat.matcher(term);
+		}
 
 		Map<String, String> hm = new HashMap<String, String>();
 		hm.put("activeFilter", "true");
 		hm.put("termActive", "true");
 		hm.put("statedEcl", ecl);
-		hm.put("term", term);
+		hm.put("term", term.replaceAll("[\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]", " "));
 
 		try {
 			JSONObject jobj = new JSONObject(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl, hm));
@@ -178,8 +223,11 @@ public class CmKexamService {
 						continue;
 					if (key == 21)
 						normalizeWord = normalizeWord.replace("(", "").replace(")", "");
-					else if (key == 22)
-						normalizeWord = normalizeWord.substring(1);
+					else if (key == 22) {
+//						normalizeWord = normalizeWord.substring(1);
+						normalizeWord = normalizeWord.split("-")[normalizeWord.split("-").length-1];
+					}
+						
 
 					String searchResult = searchTerm(normalizeWord, "<71388002");
 					if (!searchResult.isEmpty()) {
@@ -269,7 +317,7 @@ public class CmKexamService {
 					}
 					
 				}else {
-					String normalizeWord = hm.get(key).replace("{}", match.group().substring(1));
+					String normalizeWord = hm.get(key).replace("{}", match.group().split("-")[match.group().split("-").length-1]);
 					String searchResult = searchTerm(normalizeWord, "<71388002");
 					if (!searchResult.isEmpty()) {
 						System.out.println(normalizeWord + "-" + kexam.getKexCd() + " : " + searchResult);
