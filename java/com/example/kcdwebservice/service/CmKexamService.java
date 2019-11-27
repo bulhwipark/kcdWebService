@@ -49,6 +49,7 @@ public class CmKexamService {
 	}
 
 	public String kexam_totalCnt(String mappingStatus, CmKexamVo cmKexamVo) {
+		//검사 총 건수 리턴
 		String totalCnt = null;
 		if (mappingStatus.equals("All")) {
 			totalCnt = cmKexamDao.kexam_totalCnt(cmKexamVo);
