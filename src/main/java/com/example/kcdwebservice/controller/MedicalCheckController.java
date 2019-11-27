@@ -43,9 +43,11 @@ public class MedicalCheckController {
     @ResponseBody
     public ResponseEntity<String> getMedicalCheckTotalCnt(@RequestParam("mappingStatus")String mappingStatus, CmKexamVo cmKexamVo){
         String kexTotalCnt = kexamService.kexam_totalCnt(mappingStatus, cmKexamVo);
+        String totalCnt = kexamService.kexam_mappingStatusTotalCnt(mappingStatus, cmKexamVo);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("kexTotalCnt", kexTotalCnt);
+            jsonObject.put("totalCnt", totalCnt);
         } catch (JSONException e) {
             e.printStackTrace();
         }

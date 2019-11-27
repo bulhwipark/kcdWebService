@@ -74,7 +74,7 @@
     </select>
 
     <select id="kexam_totalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
-        SELECT COUNT(*) FROM CM_KEXAM
+        SELECT COUNT(*) FROM CM_KEXAM;
     </select>
     
     <select id="kexam_mappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
@@ -162,5 +162,29 @@
         INSERT into MAP_KCD_SCT3(ORI_TP_CD,ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD,DISP_ODR,UDT_DT)
         values('KEXAM',#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0','1',sysdate())
     </insert>
+    
+    <select id="kexam_kexCdMappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+	    SELECT count(1)
+	        FROM CM_KEXAM K
+	        WHERE KEX_CD IN (
+	                SELECT ORI_CD FROM MAP_KCD_SCT3 WHERE MAP_VER = 0
+	                <!--
+	                <if test="mapStatCd != null and mapStatCd != ''">
+	                   AND MAP_STAT_CD = #{mapStatCd}
+	                </if>
+	                -->
+	        )
+    </select>
+    
+    <select id="kexam_kexCdTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
+	    SELECT count(1)
+	        FROM CM_KEXAM K
+	        <where>
+	            <if test="kexCd != '' and kexCd != null">
+	                KD_CD = #{kdCd}
+	            </if>
+	        </where>
+	         ;
+    </select>
 
 </mapper>
