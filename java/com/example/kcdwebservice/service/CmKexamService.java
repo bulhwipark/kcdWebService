@@ -118,7 +118,7 @@ public class CmKexamService {
 		Map<Integer, String> hm = new LinkedHashMap<Integer, String>();
 		hm.put(1, ".*");
 		hm.put(21, "\\(.*?\\)");
-		hm.put(22, "-\\b.+");
+		hm.put(22, "-.+");
 		hm.put(31, "\\'s");
 		hm.put(32, "\\,");
 		hm.put(33, "\\-");
@@ -139,7 +139,7 @@ public class CmKexamService {
 		hm.put(65, "{} analysis");
 		hm.put(66, "{} culture");
 		hm.put(67, "{} count");
-		hm.put(68, "{} essay");
+		hm.put(68, "{} assay");
 		hm.put(69, "{} method");
 		hm.put(610, "{} study");
 		hm.put(71, "{} level");
@@ -149,7 +149,7 @@ public class CmKexamService {
 		hm.put(75, "{} analysis");
 		hm.put(76, "{} culture");
 		hm.put(77, "{} count");
-		hm.put(78, "{} essay");
+		hm.put(78, "{} assay");
 		hm.put(79, "{} method");
 		hm.put(710, "{} study");
 		//
@@ -166,7 +166,7 @@ public class CmKexamService {
 		boolean isMatched = false;
 		while (itr.hasNext()) {
 			int key = itr.next();
-			if (key == 21 || key == 22) {
+			if (key == 1 || key == 21 || key == 22) {
 				Pattern pat = Pattern.compile(hm.get(key));
 				Matcher match = pat.matcher(targetSentence);
 				while (match.find()) {
@@ -241,15 +241,32 @@ public class CmKexamService {
 
 			} else if (key == 71 || key == 72 || key == 73 || key == 74 || key == 75 || key == 76 || key == 77
 					|| key == 78 || key == 79 || key == 710) {
-				Pattern pat = Pattern.compile("-\\b.+");
+				Pattern pat = Pattern.compile("-.+");
 				Matcher match = pat.matcher(targetSentence);
-
+				
 				if (!match.find()) {
-					pat = Pattern.compile("_\\b.+"); // 추가
+					pat = Pattern.compile("_.+"); // 추가
 					match = pat.matcher(targetSentence);
-				}
-
-				if (match.find()) {
+					if(match.find()) {
+						String normalizeWord = hm.get(key).replace("{}", match.group().substring(1));
+						String searchResult = searchTerm(normalizeWord, "<71388002");
+						if (!searchResult.isEmpty()) {
+							System.out.println(normalizeWord + "-" + kexam.getKexCd() + " : " + searchResult);
+							// insert db
+							MapKcdSctVo kcdSct = new MapKcdSctVo();
+							kcdSct.setOriCd(kexam.getKexCd());
+							kcdSct.setSctId(searchResult);
+							kcdSct.setMapVer("0");
+							kcdSct.setMapStatCd(Integer.toString(key));
+							if (cmKexamDao.insertAutoMap3(kcdSct) > 0) {
+								// flag true로 설정
+								isMatched = true;
+								break;
+							}
+						}
+					}
+					
+				}else {
 					String normalizeWord = hm.get(key).replace("{}", match.group().substring(1));
 					String searchResult = searchTerm(normalizeWord, "<71388002");
 					if (!searchResult.isEmpty()) {
@@ -267,6 +284,7 @@ public class CmKexamService {
 						}
 					}
 				}
+				
 			} else if (key == 80) {   //80 룰 추가
 				targetSentence = kexam.getPreTerm().trim();
 				if(!targetSentence.isEmpty()){
@@ -279,15 +297,11 @@ public class CmKexamService {
 						kcdSct.setSctId(sctId);
 						kcdSct.setMapVer("0");
 						kcdSct.setMapStatCd(Integer.toString(key));
-						
 						//후보 모두 저장
 						cmKexamDao.insertAutoMap3(kcdSct);
-						
 					}
 				}
-
 			}
-
 			if (isMatched)
 				break;
 		}

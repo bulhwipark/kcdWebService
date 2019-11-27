@@ -15,6 +15,9 @@ public class CmKexamVo {
     private String kexEng;
     private String kexPrice;
     private String mapVer;
+    private String udtDt;
+    private String sctId;
+    private String sctTerm;
     private String mapStatCd;
     private String listOption;
     private String limit;

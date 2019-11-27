@@ -10,10 +10,10 @@
         
         <!--li class="nav-item menuLi">
             <a class="nav-link headerMenu" data-menu="medicalProcedurePage" id="medicalProcedurePage_a"> 처치 및 시술 </a>
-        </li>
+        </li-->
         <li class="nav-item menuLi">
             <a class="nav-link headerMenu" data-menu="medicalCheckPage" id="medicalCheckPage_a"> 검사 </a>
-        </li-->
+        </li>
         
     </ul>
 </nav>
