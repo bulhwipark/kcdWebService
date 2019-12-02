@@ -1,7 +1,17 @@
 function menu_medicalCheckList_staticFunc(){
+	//초기 실행
+    if(sessionStorage.getItem("mediCheck_storageCheck")){
+        $('#medListOption').val(sessionStorage.getItem("mediCheck_listOption"));
+        $('#searchToKdCd').val(sessionStorage.getItem("mediCheck_searchToKdCd"));
+        medi_check.limit = parseInt(sessionStorage.getItem("mediCheck_limit"));
+        medi_check.currentOffset = parseInt(sessionStorage.getItem("mediCheck_offset"));
+        sessionStorage.clear();
+        sessionStorage.setItem('mainPage', 'medicalCheckPage');
+    }
+    
     medicalCheck_totalCnt_req();
     medicalCheckList_req();
-
+    
     //매핑상태 이벤트.
     $('#mediCheck_listOption').on('change', function(){
         medi_check.limit = 50;
@@ -17,6 +27,28 @@ function menu_medicalCheckList_staticFunc(){
     .on('keyup', function(){
         medi_check.limit = 50;
         medi_check.currentOffset = 0;
+        medicalCheckList_req();
+    });
+    
+    //다음 버튼
+    $('#mediCheck_next').on('click', function (e) {
+        e.preventDefault();
+        if ((medi_check.currentOffset + medi_check.limit) >= medi_check.totalCnt) {
+        	medi_check.currentOffset = (medi_check.totalCnt - 1);
+        } else {
+        	medi_check.currentOffset = medi_check.currentOffset + medi_check.limit;
+        }
+        medicalCheckList_req();
+    });
+
+    //이전 버튼
+    $('#mediCheck_prev').on('click', function (e) {
+        e.preventDefault();
+        if ((medi_check.currentOffset - medi_check.limit) <= 0) {
+        	medi_check.currentOffset = 0
+        } else {
+        	medi_check.currentOffset = medi_check.currentOffset - medi_check.limit
+        }
         medicalCheckList_req();
     });
 
@@ -55,8 +87,12 @@ function medicalCheck_totalCnt_req(){
             mapStatCd: $('#mediCheck_mapStatCd').val()
         },
         dataType:'json',
+        async:false,
         success:function(data){
+        	medi_check.mediTotalCnt = data.kexTotalCnt;
+        	medi_check.totalCnt = data.totalCnt;
             $('#kexTotalCnt').text(data.kexTotalCnt?data.kexTotalCnt:'-');
+            $('#mediCheck_totalCnt').text(data.totalCnt?data.totalCnt:'-');
         }
     })
 }
@@ -125,6 +161,7 @@ function medicalCheckList_req(){
 
                 $('#medi_currentPage').text((medi.currentOffset+1) + '/' + medi.totalCnt);
                 */
+                $('#mediCheck_currentPage').text((medi_check.currentOffset+1) + '/' + medi_check.totalCnt);
             }
         }
     })
