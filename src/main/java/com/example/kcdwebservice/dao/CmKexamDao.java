@@ -19,10 +19,11 @@ public interface CmKexamDao {
     List<String> selectSynonym(String sctId);
 
     CmKexamVo selectKexCdInfo(String kexCd);
-    //미구현
     List<CmKexamVo> kexam_selectMapping(CmKexamVo cmKexamVo);
-    //미구현
     List<CmKexamVo> kexam_selectNoMapping(CmKexamVo cmKexamVo);
+    
+    List<CmKexamVo> getMediCheckInfoList(String kexCd);
+    List<CmKexamVo> mediCheckDetailList(String kexCd);
     
     ////////////////////////////////////////////////////////////
     String kexam_mappingTotalCnt(CmKexamVo cmKexamVo);
