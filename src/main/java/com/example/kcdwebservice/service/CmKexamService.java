@@ -292,8 +292,8 @@ public class CmKexamService {
 		hm.put(78, "{} assay");
 		hm.put(79, "{} method");
 		hm.put(710, "{} study");
-		//
 		hm.put(80, "");
+		hm.put(81, "");
 
 		return hm;
 	}
