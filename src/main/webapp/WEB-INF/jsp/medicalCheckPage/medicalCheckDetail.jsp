@@ -72,7 +72,7 @@
 
                 <span class="margin-left-20">
                     <label for="mediDisorder">Medical : </label>
-                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<763158003" >
+                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<763158003" checked>
                 </span>
 
                 <%--
