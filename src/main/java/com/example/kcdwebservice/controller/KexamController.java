@@ -83,7 +83,7 @@ public class KexamController {
     @ResponseBody
     public ResponseEntity<String> getKexamTotalCount(@RequestParam("mappingStatus") String mappingStatus, CmKexamVo cmKexamVo) {
         String kexamTotalCnt = cmKexamService.kexam_totalCnt(mappingStatus, cmKexamVo);
-        String totalCnt = cmKexamService.kexam_mappingStatusTotalCnt(mappingStatus, cmKexamVo);
+        String totalCnt = cmKexamService.kexam_totalCnt("Mapping", cmKexamVo);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mediTotalCnt", kexamTotalCnt);
