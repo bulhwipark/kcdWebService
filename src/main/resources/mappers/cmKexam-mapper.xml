@@ -72,9 +72,56 @@
             </if>
         </where>
     </select>
+    
+    <select id="getMediCheckInfoList" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+    select KEX_CD     kexCd,
+               KEX_TP_CD  kexTpCd,
+               KEX_GRP kexGrp,
+               KEX_KOR    kexKor,
+               KEX_ENG    kexEng,
+               concat(PRE_COMPONENT,' ',
+                PRE_PROPERTY,' ',
+                PRE_TIME,' ',
+                PRE_SYSTEM,' ',
+                PRE_SCALE,' ',
+                PRE_METHOD) preTerm
+        FROM CM_KEXAM
+        WHERE KEX_CD = #{kexCd};
+    </select>
+    
+    <select id="mediCheckDetailList" parameterType="String" resultType="com.example.kcdwebservice.vo.CmKexamVo">
+    	SELECT M.ORI_CD      oriCd,
+               M.SCT_ID      sctId,
+               M.MAP_VER     mapVer,
+               M.MAP_STAT_CD mapStatCd,
+               M.RV_STAT_CD  rvStatCd,
+               M.DISP_ODR    dispOdr,
+               M.UDT_DT      udtDt,
+               S.SCT_TERM    sctTerm,
+               CD.CD_DSCRT   mapStatNm
+        FROM MAP_KCD_SCT3 M
+                 LEFT OUTER JOIN CM_SNOMEDCT S ON M.SCT_ID = S.SCT_ID
+                 LEFT OUTER JOIN MCODE CD
+                                 ON LEFT(M.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        WHERE M.ORI_CD = #{value}
+    </select>
 
     <select id="kexam_totalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
-        SELECT COUNT(*) FROM CM_KEXAM;
+        SELECT COUNT(DISTINCT(KEX_CD))
+        FROM MAP_KCD_SCT3 MAP3
+                 LEFT OUTER JOIN (
+            SELECT *
+            FROM CM_KEXAM
+        ) CM ON MAP3.ORI_CD = CM.KEX_CD
+                 LEFT OUTER JOIN CM_SNOMEDCT S ON MAP3.SCT_ID = S.SCT_ID
+                 LEFT OUTER JOIN MCODE CD
+                                 ON LEFT(MAP3.MAP_STAT_CD, 1) = CD.CD_ID AND CD.CD_GRP = 'MAP_STAT_CD' AND CD.CD_STAT_CD = '0'
+        <where>
+            <if test="kexCd != null and kexCd != '' ">
+                CM.KEX_CD = #{kexCd}
+            </if>
+        </where>
+        ;
     </select>
     
     <select id="kexam_mappingTotalCnt" parameterType="com.example.kcdwebservice.vo.CmKexamVo" resultType="String">
