@@ -16,7 +16,13 @@
                 PRE_TIME,' ',
                 PRE_SYSTEM,' ',
                 PRE_SCALE,' ',
-                PRE_METHOD) preTerm
+                PRE_METHOD) preTerm,
+                concat(PRE_COMPONENT2,' ',
+                PRE_PROPERTY2,' ',
+                PRE_TIME2,' ',
+                PRE_SYSTEM2,' ',
+                PRE_SCALE2,' ',
+                PRE_METHOD2) preTerm2
                #,               KEX_PRICE		kexPrice
         from CM_KEXAM
         where KEX_CD not in (select distinct ORI_CD from MAP_KCD_SCT3 where ORI_TP_CD='KEXAM')

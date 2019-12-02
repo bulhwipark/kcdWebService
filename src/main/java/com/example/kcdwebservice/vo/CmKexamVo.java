@@ -23,4 +23,5 @@ public class CmKexamVo {
     private String limit;
     private String offset;
     private String preTerm;
+    private String preTerm2;
 }

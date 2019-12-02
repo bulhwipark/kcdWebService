@@ -441,7 +441,25 @@ public class CmKexamService {
 						kcdSct.setMapVer("0");
 						kcdSct.setMapStatCd(Integer.toString(key));
 						//후보 모두 저장
-						cmKexamDao.insertAutoMap3(kcdSct);
+						int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+						if(insertResult > 0) isMatched = true;
+					}
+				}
+			} else if (key == 81) {   //81 룰 추가
+				targetSentence = kexam.getPreTerm2().trim();
+				if(!targetSentence.isEmpty()){
+					List<String> searchResult = ruleMapService.searchTerm(targetSentence, "<71388002");
+					for (String sctId : searchResult) {
+						System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+						// insert db
+						MapKcdSctVo kcdSct = new MapKcdSctVo();
+						kcdSct.setOriCd(kexam.getKexCd());
+						kcdSct.setSctId(sctId);
+						kcdSct.setMapVer("0");
+						kcdSct.setMapStatCd(Integer.toString(key));
+						//후보 모두 저장
+						int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+						if(insertResult > 0) isMatched = true;
 					}
 				}
 			}
@@ -547,6 +565,17 @@ public class CmKexamService {
 					for (JSONObject obj : searchResult) {
 						//후보 모두 저장
 						resultList.add(obj);
+						isMatched = true;
+					}
+				}
+			} else if (key == 81) {   //80 룰 추가
+				targetSentence = mediCheckInfoList.get(0).getPreTerm2().trim();
+				if(!targetSentence.isEmpty()){
+					List<JSONObject> searchResult = searchTermList(targetSentence, "<71388002");
+					for (JSONObject obj : searchResult) {
+						//후보 모두 저장
+						resultList.add(obj);
+						isMatched = true;
 					}
 				}
 			}
