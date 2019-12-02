@@ -56,11 +56,12 @@ public class MediCheckExcelDownloadViewResolver extends AbstractXlsxView {
             cell1.setCellStyle(cellStyle);
 
             Cell cell2 = row.createCell(2);
-            //cell2.setCellValue(stat.getSctId() == null ? "-" : stat.getSctId());
-            cell2.setCellValue("-");
+            cell2.setCellValue(stat.getSctId() == null ? "-" : stat.getSctId());
+//            cell2.setCellValue("-");
 
             Cell cell3 = row.createCell(3);
-            cell3.setCellValue("-");
+            cell3.setCellValue(stat.getSctTerm() == null ? "-" : stat.getSctTerm());
+//            cell3.setCellValue("-");
 
             Cell cell4 = row.createCell(4);
             if (stat.getMapStatCd() != null) {
@@ -71,8 +72,8 @@ public class MediCheckExcelDownloadViewResolver extends AbstractXlsxView {
             }
 
             Cell cell5 = row.createCell(5);
-            //cell5.setCellValue(stat.getUdtDt());
-            cell5.setCellValue(new Date());
+            cell5.setCellValue(stat.getUdtDt());
+//            cell5.setCellValue(new Date());
         }
         // TODO width 강제로 주기
         /*
