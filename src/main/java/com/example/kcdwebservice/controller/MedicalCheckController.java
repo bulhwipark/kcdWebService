@@ -3,6 +3,8 @@ package com.example.kcdwebservice.controller;
 import com.example.kcdwebservice.service.CmKexamService;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmKexamVo;
+import com.example.kcdwebservice.vo.CmMedicineVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -42,8 +44,8 @@ public class MedicalCheckController {
     @RequestMapping(value="/getMedicalCheckTotalCnt")
     @ResponseBody
     public ResponseEntity<String> getMedicalCheckTotalCnt(@RequestParam("mappingStatus")String mappingStatus, CmKexamVo cmKexamVo){
-        String kexTotalCnt = kexamService.kexam_totalCnt(mappingStatus, cmKexamVo);
-        String totalCnt = kexamService.kexam_mappingStatusTotalCnt(mappingStatus, cmKexamVo);
+        String kexTotalCnt = kexamService.kexam_mappingStatusTotalCnt(mappingStatus, cmKexamVo);
+        String totalCnt = kexamService.kexam_totalCnt(mappingStatus, cmKexamVo);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("kexTotalCnt", kexTotalCnt);
@@ -59,12 +61,42 @@ public class MedicalCheckController {
         List<CmKexamVo> list = null;
         if(cmKexamVo.getListOption().equals("All")){
             list = kexamService.kexam_selectAll(cmKexamVo);
+        }else if(cmKexamVo.getListOption().equals("Mapping")) {
+        	list = kexamService.kexam_selectMapping(cmKexamVo);
+        }else if(cmKexamVo.getListOption().equals("NoMapping")) {
+        	list = kexamService.kexam_selectNoMapping(cmKexamVo);
         }
 
         model.addAttribute("list", list);
         model.addAttribute("sheetNm", "검사 목록");
         model.addAttribute("headerNmArr", new String[]{"KEX코드", "한글명/영문명", "SCTID", "Snomed CT Term", "매핑상태", "매핑일자" });
         return "mediCheckExcelDownload";
+    }
+    
+    /**
+     * medical check AUTO RULE
+     * @param cmMedicineVo
+     */
+    @RequestMapping(value = "/medicalCheckAutoRuleSet")
+    @ResponseBody
+    public ResponseEntity<String> medicalCheckAutoRuleSet(CmKexamVo cmKexamVo) {
+        List<CmKexamVo> mediCheckInfoList = kexamService.getMediCheckInfoList(cmKexamVo.getKexCd());
+        List<JSONObject> list = kexamService.mediCheck_autoRuleRequest(mediCheckInfoList);
+        
+        return new ResponseEntity<>(list.toString(), HttpStatus.OK);
+    }
+    
+    /**
+     * 상세화면 리스트 조회.
+     *
+     * @param kdCd
+     * @return
+     */
+    @RequestMapping(value = "/getMediCheckDetailList")
+    @ResponseBody
+    public ResponseEntity<List<CmKexamVo>> getMediCheckDetailList(@RequestParam("kexCd") String kexCd) {
+        List<CmKexamVo> list = kexamService.mediCheckDetailList(kexCd);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 }
