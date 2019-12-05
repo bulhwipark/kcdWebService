@@ -1,16 +1,5 @@
 package com.example.kcdwebservice.service;
 
-import com.example.kcdwebservice.dao.CmKexamDao;
-import com.example.kcdwebservice.vo.CmKcdVo;
-import com.example.kcdwebservice.vo.CmKexamVo;
-import com.example.kcdwebservice.vo.MapKcdSctVo;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import com.example.kcdwebservice.dao.CmKexamDao;
+import com.example.kcdwebservice.vo.CmKexamVo;
+import com.example.kcdwebservice.vo.MapKcdSctVo;
 
 @Service
 public class CmKexamService {
@@ -312,6 +310,7 @@ public class CmKexamService {
 		boolean isMatched = false;
 		
 		if (targetSentence.isEmpty()) {
+			//80번 룰
 			if(kexam.getPreTerm()!=null){
 				targetSentence = kexam.getPreTerm().trim();
 				List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
@@ -325,25 +324,23 @@ public class CmKexamService {
 					kcdSct.setMapStatCd(Integer.toString(80));
 					//후보 모두 저장
 					int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-					if(insertResult > 0) isMatched = true;
 				}
 			}
-			if (!isMatched) {   //81 룰 추가
-				if(kexam.getPreTerm2()!=null){
-					targetSentence = kexam.getPreTerm2().trim();
-					List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
-					for (String sctId : searchResult) {
-						System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-						// insert db
-						MapKcdSctVo kcdSct = new MapKcdSctVo();
-						kcdSct.setOriCd(kexam.getKexCd());
-						kcdSct.setSctId(sctId);
-						kcdSct.setMapVer("0");
-						kcdSct.setMapStatCd(Integer.toString(81));
-						//후보 모두 저장
-						int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-						if(insertResult > 0) isMatched = true;
-					}
+			//81번 룰
+			if(kexam.getPreTerm2()!=null){
+				targetSentence = kexam.getPreTerm2().trim();
+				List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
+				for (String sctId : searchResult) {
+					System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+					// insert db
+					MapKcdSctVo kcdSct = new MapKcdSctVo();
+					kcdSct.setOriCd(kexam.getKexCd());
+					kcdSct.setSctId(sctId);
+					kcdSct.setMapVer("0");
+					kcdSct.setMapStatCd(Integer.toString(81));
+					//후보 모두 저장
+					int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+					if(insertResult > 0) isMatched = true;
 				}
 			}
 		}else {
@@ -363,7 +360,6 @@ public class CmKexamService {
 							normalizeWord = normalizeWord.substring(1);
 //							normalizeWord = normalizeWord.substring(normalizeWord.indexOf("-")+1);
 						}
-							
 
 						String searchResult = searchTerm(replaceSpecialChar(normalizeWord), "<71388002");
 						if (!searchResult.isEmpty()) {
@@ -463,7 +459,6 @@ public class CmKexamService {
 							kcdSct.setMapStatCd(Integer.toString(key));
 							//후보 모두 저장
 							int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-							if(insertResult > 0) isMatched = true;
 						}
 					}
 				} else if (key == 81) {   //81 룰 추가
@@ -479,8 +474,14 @@ public class CmKexamService {
 							kcdSct.setMapVer("0");
 							kcdSct.setMapStatCd(Integer.toString(key));
 							//후보 모두 저장
-							int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-							if(insertResult > 0) isMatched = true;
+							//duplication 나올수 있음. 예외로 지나가기
+							try {
+								int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+							}catch(Exception e) {
+								System.out.println("Exception :" + kcdSct.toString());
+								e.printStackTrace();
+								
+							}
 						}
 					}
 				}
@@ -573,7 +574,6 @@ public class CmKexamService {
 					for (JSONObject obj : searchResult) {
 						//후보 모두 저장
 						resultList.add(obj);
-						isMatched = true;
 					}
 				}
 			} else if (key == 81) {   //80 룰 추가
