@@ -11,5 +11,5 @@ import java.util.List;
 public interface DicSnomedctAttValDao {
     List<DicSnomedctAttValVo> getAttrList(String oriTpCd);
 
-    List<DicSnomedctAttValVo> getValList(String sctId);
+    List<DicSnomedctAttValVo> getValList(DicSnomedctAttValVo sctId);
 }

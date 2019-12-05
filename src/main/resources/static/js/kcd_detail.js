@@ -709,6 +709,7 @@ function getValueList(currentNum) {
         type: 'post',
         data: {
             sctId: $('#attr_select' + currentNum + ' option:selected').val()
+            , oriTpCd: 'KCD',
         },
         dataType: 'json',
         async: false,

@@ -13,12 +13,13 @@
         WHERE ORI_TP_CD = #{value};
     </select>
 
-    <select id="getValList" parameterType="String" resultType="com.example.kcdwebservice.vo.DicSnomedctAttValVo">
+    <select id="getValList" parameterType="com.example.kcdwebservice.vo.DicSnomedctAttValVo" resultType="com.example.kcdwebservice.vo.DicSnomedctAttValVo">
         SELECT
         A.VAL_SCT_ID attSctId,
          S.SCT_TERM cmSctTerm
         FROM EMR.DIC_SNOMEDCT_ATT_VAL A
                  inner join EMR.CM_SNOMEDCT S on A.VAL_SCT_ID = S.SCT_ID
-        where ATT_SCT_ID = #{value};
+        where ATT_SCT_ID = #{attSctId}
+        and ORI_TP_CD = #{sctTpCd};
     </select>
 </mapper>

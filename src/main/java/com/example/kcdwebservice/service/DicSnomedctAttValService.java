@@ -17,7 +17,7 @@ public class DicSnomedctAttValService {
         return dicSnomedctAttValDao.getAttrList(oriTpCd);
     }
 
-    public List<DicSnomedctAttValVo> getValList(String sctId) {
-        return dicSnomedctAttValDao.getValList(sctId);
+    public List<DicSnomedctAttValVo> getValList(DicSnomedctAttValVo av) {
+        return dicSnomedctAttValDao.getValList(av);
     }
 }

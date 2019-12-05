@@ -469,8 +469,11 @@ public class MainController {
      * @return
      */
     @RequestMapping(value="/getKcdValList")
-    public ResponseEntity<List<DicSnomedctAttValVo>> getKcdValList(@RequestParam("sctId") String sctId){
-        List<DicSnomedctAttValVo> list = dicSnomedctAttValService.getValList(sctId);
+    public ResponseEntity<List<DicSnomedctAttValVo>> getKcdValList(@RequestParam("sctId") String sctId, @RequestParam("oriTpCd")String oriTpCd){
+        DicSnomedctAttValVo dsav = new DicSnomedctAttValVo();
+        dsav.setAttSctId(sctId);
+        dsav.setSctTpCd(oriTpCd);
+        List<DicSnomedctAttValVo> list = dicSnomedctAttValService.getValList(dsav);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
