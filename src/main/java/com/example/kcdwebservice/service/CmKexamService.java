@@ -55,7 +55,7 @@ public class CmKexamService {
 	public List<CmKexamVo> mediCheckDetailList(String kexCd){
 		return cmKexamDao.mediCheckDetailList(kexCd);
 	}
-
+	
 	public String kexam_totalCnt(String mappingStatus, CmKexamVo cmKexamVo) {
 		//검사 총 건수 리턴
 		String totalCnt = null;

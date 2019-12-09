@@ -72,7 +72,7 @@
 
                 <span class="margin-left-20">
                     <label for="mediDisorder">Medical : </label>
-                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<763158003" checked>
+                    <input type="radio" name="mediDefaultRule" id="mediDisorder" value="<71388002" checked>
                 </span>
 
                 <%--
@@ -106,7 +106,7 @@
             </div>
             --%>
             <button class="btn btn-lg btn-primary" onclick="medi_search_req()">Search</button> &nbsp;&nbsp;|&nbsp;&nbsp;
-            <button class="btn btn-lg btn-primary" onclick="button_medi_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button class="btn btn-lg btn-primary" onclick="medicalDetail_autoRuleSet()">룰 기반 검색</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button class="btn btn-lg btn-primary" onclick="medi_similaritySearch()">유사도 기반조회</button> |
             <button id="mediSaveBtn" class="btn btn-lg btn-info pull-right" disabled onclick="medi_saveBtn_req()">저장</button>
            <%-- <button class="btn btn-lg btn-warning">Clean</button>--%>
