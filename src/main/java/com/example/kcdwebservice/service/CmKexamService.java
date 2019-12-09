@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -191,17 +192,12 @@ public class CmKexamService {
 	      JSONArray ja = jobj.getJSONArray("items");
 
 	      for (int x = 0; x < ja.length(); x++) {
-	        JSONObject jo = ja.getJSONObject(x);
-	        String sctId = jo.getString("id");
-	        // 유사어도 모두 확인해야함. gun
-			List<String> lstSCTSynon = cmKexamDao.selectSynonym(sctId);
+	          JSONObject jo = ja.getJSONObject(x);
+	          System.out.println("idx:" + x + " body: " + jo.toString());
+	          arrSctid.add(jo);
 
-			for (String strTerm : lstSCTSynon) {
-				if (term.replace(" ", "").toLowerCase().equals(strTerm.replace(" ", "").toLowerCase())) {
-					arrSctid.add(jo);
-				}
-			}
-	      }
+	        }
+
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
@@ -313,34 +309,38 @@ public class CmKexamService {
 			//80번 룰
 			if(kexam.getPreTerm()!=null){
 				targetSentence = kexam.getPreTerm().trim();
-				List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
-				for (String sctId : searchResult) {
-					System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-					// insert db
-					MapKcdSctVo kcdSct = new MapKcdSctVo();
-					kcdSct.setOriCd(kexam.getKexCd());
-					kcdSct.setSctId(sctId);
-					kcdSct.setMapVer("0");
-					kcdSct.setMapStatCd(Integer.toString(80));
-					//후보 모두 저장
-					int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+				if(!replaceSpecialChar(targetSentence).isEmpty()) {
+					List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
+					for (String sctId : searchResult) {
+						System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+						// insert db
+						MapKcdSctVo kcdSct = new MapKcdSctVo();
+						kcdSct.setOriCd(kexam.getKexCd());
+						kcdSct.setSctId(sctId);
+						kcdSct.setMapVer("0");
+						kcdSct.setMapStatCd(Integer.toString(80));
+						//후보 모두 저장
+						int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+					}
 				}
 			}
 			//81번 룰
-			if(kexam.getPreTerm2()!=null){
+			if(kexam.getPreTerm2()!=null && kexam.getComTpCd().equals("C")){
 				targetSentence = kexam.getPreTerm2().trim();
-				List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
-				for (String sctId : searchResult) {
-					System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-					// insert db
-					MapKcdSctVo kcdSct = new MapKcdSctVo();
-					kcdSct.setOriCd(kexam.getKexCd());
-					kcdSct.setSctId(sctId);
-					kcdSct.setMapVer("0");
-					kcdSct.setMapStatCd(Integer.toString(81));
-					//후보 모두 저장
-					int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-					if(insertResult > 0) isMatched = true;
+				if(!replaceSpecialChar(targetSentence).isEmpty()) {
+					List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
+					for (String sctId : searchResult) {
+						System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+						// insert db
+						MapKcdSctVo kcdSct = new MapKcdSctVo();
+						kcdSct.setOriCd(kexam.getKexCd());
+						kcdSct.setSctId(sctId);
+						kcdSct.setMapVer("0");
+						kcdSct.setMapStatCd(Integer.toString(81));
+						//후보 모두 저장
+						int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+						if(insertResult > 0) isMatched = true;
+					}
 				}
 			}
 		}else {
@@ -421,8 +421,7 @@ public class CmKexamService {
 						}
 					}
 
-				} else if (key == 71 || key == 72 || key == 73 || key == 74 || key == 75 || key == 76 || key == 77
-						|| key == 78 || key == 79 || key == 710) {
+				} else if (key == 71 || key == 72 || key == 73 || key == 75 || key == 77 || key == 79 || key == 710) {
 					Pattern pat = Pattern.compile("-.+|_.+");
 					Matcher match = pat.matcher(targetSentence);
 					
@@ -448,39 +447,43 @@ public class CmKexamService {
 				} else if (key == 80) {   //80 룰 추가
 					if(kexam.getPreTerm()!=null){
 						targetSentence = kexam.getPreTerm().trim();
-						List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
-						for (String sctId : searchResult) {
-							System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-							// insert db
-							MapKcdSctVo kcdSct = new MapKcdSctVo();
-							kcdSct.setOriCd(kexam.getKexCd());
-							kcdSct.setSctId(sctId);
-							kcdSct.setMapVer("0");
-							kcdSct.setMapStatCd(Integer.toString(key));
-							//후보 모두 저장
-							int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+						if(!replaceSpecialChar(targetSentence).isEmpty()) {
+							List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
+							for (String sctId : searchResult) {
+								System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+								// insert db
+								MapKcdSctVo kcdSct = new MapKcdSctVo();
+								kcdSct.setOriCd(kexam.getKexCd());
+								kcdSct.setSctId(sctId);
+								kcdSct.setMapVer("0");
+								kcdSct.setMapStatCd(Integer.toString(key));
+								//후보 모두 저장
+								int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+							}
 						}
 					}
-				} else if (key == 81) {   //81 룰 추가
+				} else if (key == 81 && kexam.getComTpCd().equals("C")) {   //81 룰 추가
 					if(kexam.getPreTerm2()!=null){
 						targetSentence = kexam.getPreTerm2().trim();
-						List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
-						for (String sctId : searchResult) {
-							System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
-							// insert db
-							MapKcdSctVo kcdSct = new MapKcdSctVo();
-							kcdSct.setOriCd(kexam.getKexCd());
-							kcdSct.setSctId(sctId);
-							kcdSct.setMapVer("0");
-							kcdSct.setMapStatCd(Integer.toString(key));
-							//후보 모두 저장
-							//duplication 나올수 있음. 예외로 지나가기
-							try {
-								int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
-							}catch(Exception e) {
-								System.out.println("Exception :" + kcdSct.toString());
-								e.printStackTrace();
-								
+						if(!replaceSpecialChar(targetSentence).isEmpty()) {
+							List<String> searchResult = ruleMapService.searchTerm(replaceSpecialChar(targetSentence), "<71388002");
+							for (String sctId : searchResult) {
+								System.out.println(targetSentence + "-" + kexam.getKexCd() + " : " + sctId);
+								// insert db
+								MapKcdSctVo kcdSct = new MapKcdSctVo();
+								kcdSct.setOriCd(kexam.getKexCd());
+								kcdSct.setSctId(sctId);
+								kcdSct.setMapVer("0");
+								kcdSct.setMapStatCd(Integer.toString(key));
+								//후보 모두 저장
+								//duplication 나올수 있음. 예외로 지나가기
+								try {
+									int insertResult = cmKexamDao.insertAutoMap3(kcdSct);
+								}catch(Exception e) {
+									System.out.println("Exception :" + kcdSct.toString());
+									e.printStackTrace();
+									
+								}
 							}
 						}
 					}
@@ -498,98 +501,167 @@ public class CmKexamService {
 		Collection<Integer> keySet = hm.keySet();
 		Iterator<Integer> itr = keySet.iterator();
 		boolean isMatched = false;
-		while (itr.hasNext()) {
-			int key = itr.next();
-			if (key == 1 || key == 21 || key == 22) {
-				Pattern pat = Pattern.compile(hm.get(key));
-				Matcher match = pat.matcher(targetSentence);
-				while (match.find()) {
-					// 정규식 적용했으니까 key 값에 따라 결과 정제하고 term 찾기
-					String normalizeWord = match.group();
-					if (normalizeWord.isEmpty())
-						continue;
-					if (key == 21)
-						normalizeWord = normalizeWord.replace("(", "").replace(")", "");
-					else if (key == 22) {
-						normalizeWord = normalizeWord.substring(1);
-//						normalizeWord = normalizeWord.split("-")[normalizeWord.split("-").length-1];
-					}
-						
-					JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
-					if (searchResult!=null) {
-						// flag true로 설정
-						isMatched = true;
-						resultList.add(searchResult);
-						break;
-					}
-				}
-			} else if (key == 31 || key == 32 || key == 33 || key == 34 || key == 35 || key == 36 || key == 41
-					|| key == 42 || key == 43 || key == 44 || key == 45 || key == 46 || key == 5) {
-				Pattern pat = Pattern.compile(hm.get(key));
-				Matcher match = pat.matcher(targetSentence);
-				if (match.find()) {
-					String normalizeWord = targetSentence.replaceAll(hm.get(key), "");
-
-					JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
-					if (searchResult != null) {
-						// flag true로 설정
-						isMatched = true;
-						resultList.add(searchResult);
-						break;
-					}
-				}
-
-			} else if (key == 61 || key == 62 || key == 63 || key == 64 || key == 65 || key == 66 || key == 67
-					|| key == 68 || key == 69 || key == 610) {
-				String normalizeWord = hm.get(key).replace("{}", targetSentence);
-
-				JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
-				if (searchResult != null) {
-					// flag true로 설정
-					isMatched = true;
-					resultList.add(searchResult);
-					break;
-				}
-
-			} else if (key == 71 || key == 72 || key == 73 || key == 74 || key == 75 || key == 76 || key == 77
-					|| key == 78 || key == 79 || key == 710) {
-				Pattern pat = Pattern.compile("-.+|_.+");
-				Matcher match = pat.matcher(targetSentence);
-				
-				if (match.find()) {
-					String normalizeWord = hm.get(key).replace("{}", match.group().substring(1));
-					JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
-					if (searchResult != null) {
-						// flag true로 설정
-						isMatched = true;
-						resultList.add(searchResult);
-						break;
-					}
-				}
-				
-			} else if (key == 80) {   //80 룰 추가
+		
+		if (targetSentence.isEmpty()) {
+			//80번 룰
+			if(mediCheckInfoList.get(0).getPreTerm()!=null){
 				targetSentence = mediCheckInfoList.get(0).getPreTerm().trim();
-				if(!targetSentence.isEmpty()){
-					List<JSONObject> searchResult = searchTermList(targetSentence, "<71388002");
+				if(!replaceSpecialChar(targetSentence).isEmpty()) {
+					List<JSONObject> searchResult = searchTermList(replaceSpecialChar(targetSentence), "<71388002");
 					for (JSONObject obj : searchResult) {
 						//후보 모두 저장
+						try {
+							obj.put("ruleCode", 80);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 						resultList.add(obj);
 					}
 				}
-			} else if (key == 81) {   //80 룰 추가
+			}
+			//81번 룰
+			if(mediCheckInfoList.get(0).getPreTerm2()!=null && mediCheckInfoList.get(0).getComTpCd().equals("C")){
 				targetSentence = mediCheckInfoList.get(0).getPreTerm2().trim();
-				if(!targetSentence.isEmpty()){
-					List<JSONObject> searchResult = searchTermList(targetSentence, "<71388002");
+				if(!replaceSpecialChar(targetSentence).isEmpty()) {
+					List<JSONObject> searchResult = searchTermList(replaceSpecialChar(targetSentence), "<71388002");
 					for (JSONObject obj : searchResult) {
 						//후보 모두 저장
+						resultList.add(obj);
+						try {
+							obj.put("ruleCode", 81);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 						resultList.add(obj);
 						isMatched = true;
 					}
 				}
 			}
-			if (isMatched)
-				break;
+		}else {
+			while (itr.hasNext()) {
+				int key = itr.next();
+				if (key == 1 || key == 21 || key == 22) {
+					Pattern pat = Pattern.compile(hm.get(key));
+					Matcher match = pat.matcher(targetSentence);
+					while (match.find()) {
+						// 정규식 적용했으니까 key 값에 따라 결과 정제하고 term 찾기
+						String normalizeWord = match.group();
+						if (normalizeWord.isEmpty())
+							continue;
+						if (key == 21)
+							normalizeWord = normalizeWord.replace("(", "").replace(")", "");
+						else if (key == 22) {
+							normalizeWord = normalizeWord.substring(1);
+//							normalizeWord = normalizeWord.split("-")[normalizeWord.split("-").length-1];
+						}
+							
+						JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
+						if (searchResult!=null) {
+							// flag true로 설정
+							isMatched = true;
+							try {
+								searchResult.put("ruleCode", key);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							resultList.add(searchResult);
+							break;
+						}
+					}
+				} else if (key == 31 || key == 32 || key == 33 || key == 34 || key == 35 || key == 36 || key == 41
+						|| key == 42 || key == 43 || key == 44 || key == 45 || key == 46 || key == 5) {
+					Pattern pat = Pattern.compile(hm.get(key));
+					Matcher match = pat.matcher(targetSentence);
+					if (match.find()) {
+						String normalizeWord = targetSentence.replaceAll(hm.get(key), "");
+
+						JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
+						if (searchResult != null) {
+							// flag true로 설정
+							isMatched = true;
+							try {
+								searchResult.put("ruleCode", key);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							resultList.add(searchResult);
+							break;
+						}
+					}
+
+				} else if (key == 61 || key == 62 || key == 63 || key == 64 || key == 65 || key == 66 || key == 67
+						|| key == 68 || key == 69 || key == 610) {
+					String normalizeWord = hm.get(key).replace("{}", targetSentence);
+
+					JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
+					if (searchResult != null) {
+						// flag true로 설정
+						isMatched = true;
+						try {
+							searchResult.put("ruleCode", key);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						resultList.add(searchResult);
+						break;
+					}
+
+				} else if (key == 71 || key == 72 || key == 73 || key == 75 || key == 77
+						|| key == 79 || key == 710) {
+					Pattern pat = Pattern.compile("-.+|_.+");
+					Matcher match = pat.matcher(targetSentence);
+					
+					if (match.find()) {
+						String normalizeWord = hm.get(key).replace("{}", match.group().substring(1));
+						JSONObject searchResult = searchTermObject(replaceSpecialChar(normalizeWord), "<71388002");
+						if (searchResult != null) {
+							// flag true로 설정
+							isMatched = true;
+							try {
+								searchResult.put("ruleCode", key);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							resultList.add(searchResult);
+							break;
+						}
+					}
+					
+				} else if (key == 80) {   //80 룰 추가
+					targetSentence = mediCheckInfoList.get(0).getPreTerm().trim();
+					if(!replaceSpecialChar(targetSentence).isEmpty()){
+						List<JSONObject> searchResult = searchTermList(replaceSpecialChar(targetSentence), "<71388002");
+						for (JSONObject obj : searchResult) {
+							//후보 모두 저장
+							try {
+								obj.put("ruleCode", key);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							resultList.add(obj);
+						}
+					}
+				} else if (key == 81 && mediCheckInfoList.get(0).getComTpCd().equals("C")) {   //80 룰 추가
+					targetSentence = mediCheckInfoList.get(0).getPreTerm2().trim();
+					if(!replaceSpecialChar(targetSentence).isEmpty()){
+						List<JSONObject> searchResult = searchTermList(replaceSpecialChar(targetSentence), "<71388002");
+						for (JSONObject obj : searchResult) {
+							//후보 모두 저장
+							try {
+								obj.put("ruleCode", key);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							resultList.add(obj);
+							isMatched = true;
+						}
+					}
+				}
+				if (isMatched)
+					break;
+			}
 		}
+		
 		return resultList;
 	}
 	
