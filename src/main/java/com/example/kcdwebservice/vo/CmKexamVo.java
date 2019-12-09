@@ -24,4 +24,5 @@ public class CmKexamVo {
     private String offset;
     private String preTerm;
     private String preTerm2;
+    private String comTpCd;
 }

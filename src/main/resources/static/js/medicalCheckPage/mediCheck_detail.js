@@ -1,10 +1,10 @@
 function mediCheck_detail_static_func() {
     get_mediCheckObject_req();
     get_mediCheckDetail_list();
-    //termSynonym();
-    medicalDetail_autoRuleSet();
-    mediDetail_prevBtn_ajaxReq();
-    mediSearchTerm_setting();
+    termSynonym();
+//    medicalDetail_autoRuleSet();
+    mediCheckDetail_prevBtn_ajaxReq();
+    mediCheckSearchTerm_setting();
     
     $('#mediEcl').on('click',function(){
         $('#mediDisorder').prop('checked', false);
@@ -15,6 +15,147 @@ function mediCheck_detail_static_func() {
     $('input[name="mediDefaultRule"]').on('click', function(){
         $('#mediEcl').val('');
     });
+    
+  //medi 상세리스트 쪽 전체 선택.
+    $('#mediAllSelect').on('click',function(){
+        if($(this).prop('checked')){
+            for(var i = 0; i<$('input[name="medi_sctListCheck"]').length; i++){
+                if(!$('input[name="medi_sctListCheck"]')[i].disabled){
+                    $($('input[name="medi_sctListCheck"]')[i]).prop("checked", true);
+                }
+            }
+        }else{
+            $('input[name="medi_sctListCheck"]').prop("checked", false);
+        }
+
+        if($('input[name="medi_sctListCheck"]:checked').length > 0){
+            $('#mediRemoveBtn').prop('disabled', false);
+        }else{
+            $('#mediRemoveBtn').prop('disabled', true);
+        }
+    });
+
+    //검색목록 쪽 전체선택
+    $('#mediSearchResultAllSelect').on('click', function(){
+        if($(this).prop('checked')){
+            $('input[name="mediSearchResultSaveCheckbox"]').prop('checked', true);
+        }else{
+            $('input[name="mediSearchResultSaveCheckbox"]').prop('checked', false);
+        }
+
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').prop('disabled', false);
+        }else{
+            $('#mediSaveBtn').prop('disabled', true);
+        }
+    });
+
+    //동의어 이벤트
+    $('#synonym').on('change', function () {
+        $('#term').val($('#synonym option:selected').val());
+    })
+    .on('click', function () {
+        $('#term').val($('#synonym option:selected').val());
+    });
+
+    //serach Term 이벤트.
+    $('#mediSearchTermSelect').on('change', function () {
+        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+    })
+    .on('click', function () {
+        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+    });
+
+   $('.attrSelect').on('change', function(){
+       getValueList($(this).data('num'));
+   });
+
+   $('.attrRemove').on('click', function(){
+       deleteAttrVal($(this).data('num'));
+   });
+
+   $('.valSelect').on('change', function(){
+       textSearchForm_setting($(this).data('num'));
+   });
+
+    /**
+     * medi 상세화면 다음버튼 이벤트
+     * sessionStorage 정보를 이용하여 medi리스트에서 kdcd코드로 다음것을 찾음.
+     */
+   $('#mediList_next').on('click', function(){
+
+       if(parseInt(sessionStorage.getItem("medi_index")) === sessionStorage.getItem("medi_totalCnt")){
+           $(this).attr('disabled', true);
+            return;
+       }
+
+       if(parseInt(sessionStorage.getItem("medi_index")) === medi.mainMedList.length){
+          sessionStorage.setItem(
+              'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) + parseInt(sessionStorage.getItem("medi_limit"))
+          );
+           mediDetail_prevBtn_ajaxReq();
+           sessionStorage.setItem("medi_index", 0);
+       }
+       var index = parseInt(sessionStorage.getItem("medi_index"));
+       var result = null;
+       var checkIdx = null;
+       for(var i = index ; i<medi.mainMedList.length; i++){
+           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
+               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
+               checkIdx = i;
+               break;
+           }else{
+               if(i == 49){
+                   result = JSON.parse(JSON.stringify(medi.mainMedList[49]));
+                   checkIdx = 49;
+                   break;
+               }
+           }
+       }
+       sessionStorage.setItem("medi_kdCd", result.kdCd);
+       sessionStorage.setItem("medi_subAltKey", result.subAltKey);
+       sessionStorage.setItem("medi_index", checkIdx);
+       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
+   });
+
+    /**
+     * kcd 상세화면 이전버튼 이벤트
+     * sessionStorage 정보를 이용하여 medi리스트에서 MEDI코드로 다음것을 찾음.
+     */
+   $('#mediList_prev').on('click', function(){
+       if(parseInt(sessionStorage.getItem("medi_index")) === 0){
+           if(sessionStorage.getItem("medi_offset") > 0){
+               sessionStorage.setItem(
+                   'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) - parseInt(sessionStorage.getItem("medi_limit"))
+               );
+               mediDetail_prevBtn_ajaxReq();
+               sessionStorage.setItem("medi_index", medi.mainMedList.length-1);
+           }else{
+              //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
+               $(this).attr('disabled', true);
+               return;
+           }
+       }
+       var index = parseInt(sessionStorage.getItem("medi_index"));
+       var result = null;
+       var checkIdx = null;
+       for(var i = index ; i>=0; i--){
+           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
+               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
+               checkIdx = i;
+               break;
+           }else{
+               if(i == 0){
+                   result = JSON.parse(JSON.stringify(medi.mainMedList[0]));
+                   checkIdx = 0;
+                   break;
+               }
+           }
+       }
+       sessionStorage.setItem("medi_kdCd", result.kdCd);
+       sessionStorage.setItem("medi_index", checkIdx);
+       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
+   });
 }
 
 /**
@@ -34,7 +175,7 @@ function get_mediCheckObject_req() {
         	   medi_check.currentMediInfo = JSON.parse(JSON.stringify(data));
                $('#mediCheck_kor').text(data.kexKor?data.kexKor:"-");
                $('#mediCheck_eng').text(data.kexEng?data.kexEng:"-");
-               $('#mediCheck_term').val(data.kexEng);
+               $('#mediCheck_term').val(data.kexEng?data.kexEng:"");
            }
         }
     });
@@ -45,10 +186,13 @@ function get_mediCheckDetail_list() {
     $.ajax({
         url:'/getMediCheckDetailList',
         type:'post',
-        data:{},
+        data:{
+        	kexCd:$('#kexCd').text()
+        },
         dataType:'json',
         success:function(data){
-        	medi_check.mediDetailList = JSON.parse(JSON.stringify(data));
+        	medi_check.mediCheckDetailList = JSON.parse(JSON.stringify(data));
+        	medicalDetail_autoRuleSet();
             $('#mediDetailTable tbody').empty();
             $('#mediAllSelect').prop("checked", false);
             for(var i = 0; i<data.length; i++){
@@ -92,7 +236,37 @@ function get_mediCheckDetail_list() {
                 );
                 $('#mediDetailTable tbody').append($tr);
             }
-            medi_detail_dynamic_func();
+//            medi_check_detail_dynamic_func();
+        }
+    })
+}
+
+/**
+ * 유사동의어리스트 req
+ */
+function termSynonym(){
+    $.ajax({
+        url:'/getTermSynonymList',
+        type:'post',
+        data:{
+            kcdCd: $('#kexCd').text()
+        },
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            if(data.length > 0){
+                $('#mediSearchTermSelect').empty();
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                       text:data[i].kcdEngSyn,
+                       title:data[i].kcdKorSyn
+                    });
+                    $('#synonym').append($option);
+                }
+            }else{
+                $('#synonym').empty();
+                console.log('데이터 없음 처리.');
+            }
         }
     })
 }
@@ -119,60 +293,255 @@ function medicalDetail_autoRuleSet(){
             medi_check.autoRuleLog = JSON.parse(JSON.stringify(data));
             var items = JSON.parse(JSON.stringify(data));
             $('#mediSearchResultTable tbody').empty();
-            for(var q = 0; q<items.length; q++){
+            //for(var q = 0; q<items.length; q++){
 
-            	//중복제거.
-            	if(medi_check.mediDetailList){
-                    for(var i = 0; i<medi_check.mediCheckDetailList.length; i++){
-                        items = items.filter(function(item, idx, arr){
-                            if(item.conceptId != medi_check.mediDetailList[i].sctId){
-                                return item;
-                            }
-                        });
-                    }
+        	//중복제거.
+        	if(medi_check.mediCheckDetailList){
+                for(var i = 0; i<medi_check.mediCheckDetailList.length; i++){
+                    items = items.filter(function(item, idx, arr){
+                        if(item.conceptId != medi_check.mediCheckDetailList[i].sctId){
+                            return item;
+                        }
+                    });
                 }
-                medi_check.searchList = JSON.parse(JSON.stringify(items));
-                
-                $('#mediSearchResultTable').prop("checked", false);
-                for(var i = 0; i<items.length; i++){
-                    if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
-                        $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
-                            $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
-                        )
-                    }else{
-                        var $tr = $('<tr>',{id:items[i].conceptId}).append(
-                            //conceptId
-                            $('<td>',{
-                                class:"sctIdDetail",
-                                text:items[i].conceptId
-                            }),
-                            //term
-                            $('<td>',{
-                                // text:items[i]['fsn']['term']
-                                html:StringMatch_func(items[i]['fsn']['term'], $('#mediTerm').val())
-                            }),
-                            $('<td>',{
-                                class:'autoRuleCol',
-                                id:items[i].conceptId + "_ruleCode",
-                                text:data[q].ruleCode
-                            }),
-                            //checkBox
-                            $('<td>').append(
-                                $('<input>',{
-                                    type:'checkbox',
-                                    name:'mediSearchResultSaveCheckbox',
-                                    value:items[i].conceptId
-                                })
-                            )
-                        );
-                        $('#mediSearchResultTable tbody').append($tr);
-                    }
-                }
-                $('#saveBtnDiv').removeClass('displayNone');
-                $('.autoRuleCol').removeClass('displayNone');
-                medi_detail_dynamic_func();
             }
+            medi_check.searchList = JSON.parse(JSON.stringify(items));
+            
+            $('#mediSearchResultTable').prop("checked", false);
+            for(var i = 0; i<items.length; i++){
+                if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
+                    $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
+                        $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
+                    )
+                }else{
+                    var $tr = $('<tr>',{id:items[i].conceptId}).append(
+                        //conceptId
+                        $('<td>',{
+                            class:"sctIdDetail",
+                            text:items[i].conceptId
+                        }),
+                        //term
+                        $('<td>',{
+                            // text:items[i]['fsn']['term']
+                            html:StringMatch_func(items[i]['fsn']['term'], $('#mediCheck_term').val())
+                        }),
+                        $('<td>',{
+                            class:'autoRuleCol',
+                            id:items[i].conceptId + "_ruleCode",
+                            text:items[i].ruleCode
+                        }),
+                        //checkBox
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'mediSearchResultSaveCheckbox',
+                                value:items[i].conceptId
+                            })
+                        )
+                    );
+                    $('#mediSearchResultTable tbody').append($tr);
+                }
+            }
+            $('#saveBtnDiv').removeClass('displayNone');
+            $('.autoRuleCol').removeClass('displayNone');
+            medi_check_detail_dynamic_func();
+            //}
             alert_timeout();
         }
     });
+}
+
+//search term selectbox setting
+function mediCheckSearchTerm_setting(){
+    $('#mediSearchTermSelect').empty();
+    if(medi_check.autoRuleLog != null) {
+    	for(var i = 0; i<medi_check.autoRuleLog.length; i++){
+            var logInfo = medi_check.autoRuleLog[i];
+            if(logInfo.status == 'true' || logInfo.status == 'false'){
+                if(logInfo.searchTerm.trim().length > 0){
+                    var $option = $('<option>',{
+                        text:logInfo.searchTerm
+                    });
+                    $('#mediSearchTermSelect').append($option);
+                }
+            }
+        }
+    }
+}
+
+//MEDICHECK목록 조회.
+function mediCheckDetail_prevBtn_ajaxReq(){
+    $.ajax({
+        url: "/kexam/select/"+sessionStorage.getItem("medi_listOption"),
+        type:'get',
+        data:{
+            mapVer:sessionStorage.getItem("mediCheck_mapVer"),
+            mapStatCd:sessionStorage.getItem("mediCheck_mapStatCd"),
+            kcdCd:sessionStorage.getItem("mediCheck_searchToKdCd").toUpperCase(),
+            limit:sessionStorage.getItem("mediCheck_limit"),
+            offset:parseInt(sessionStorage.getItem("mediCheck_offset"))
+        },
+        dataType:'json',
+        async:false,
+        success:function(data){
+        	medi_check.mainMediCheckList = JSON.parse(JSON.stringify(data));
+        }
+    });
+}
+
+function medi_check_detail_dynamic_func(){
+    $('input[name="medi_sctListCheck"]').on('change', function(e){
+        if($('input[name="medi_sctListCheck"]:checked').length > 0){
+            $('#mediRemoveBtn').prop('disabled', false);
+        }else{
+            $('#mediRemoveBtn').prop('disabled', true);
+        }
+    });
+
+    $('input[name="mediSearchResultSaveCheckbox"]').on('change', function(e){
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').prop('disabled', false);
+        }else{
+            $('#mediSaveBtn').prop('disabled', true);
+        }
+    });
+
+    $('.medi-sctIdDetail').on('click', function(e){
+        e.stopPropagation();
+        window.open(
+            'https://browser.ihtsdotools.org/?perspective=full&edition=MAIN/2019-07-31&release=&languages=en&conceptId1='+$(this).text(),
+            'Detail',
+            'width=1200,height=800,left=200,'
+        );
+        $('#sctId').val($(this).text());
+    });
+
+    $('input[name="mediSearchResultSaveCheckbox"]').on('change', function(){
+        if($('input[name="mediSearchResultSaveCheckbox"]:checked').length > 0){
+            $('#mediSaveBtn').attr('disabled', false);
+        }else{
+            $('#mediSaveBtn').attr('disabled', true);
+        }
+    });
+}
+
+/**
+*
+* @param str 원본문자열
+* @param matchStr 매칭시킬 문자열
+* @returns {string|*}
+* @constructor
+*/
+function StringMatch_func(str, matchStr){
+   var matchRes = str.toUpperCase().match(matchStr.trim().toUpperCase());
+   if(matchRes){
+       return str.slice(0, matchRes.index) + "<span class='matchStrCss'>"
+                                           + str.slice(matchRes.index, matchRes.index+matchRes[0].length)
+                                           + '</span>' + str.slice(matchRes.index+matchRes[0].length);
+   }else{
+       return str;
+   }
+}
+
+/**
+ * 검색, 룰기반검색, 유사도 기반검색 완료알림 관련 함수.
+ */
+function alert_timeout() {
+    $('.searchAlert').removeClass('displayNone');
+    var timer = setTimeout(function () {
+        if (!$('.searchAlert').hasClass('displayNone')) {
+            $('.searchAlert').addClass('displayNone');
+        }
+    }, 1000);
+}
+
+/**
+ * 속성추가 모달 세팅하는 펑션.
+ * 추가되어있는 속성/값 리스트를 조회 >>> 조회된 리스트가 잇으면 수정버튼 show 없으면 저장버튼 show
+ *
+ * @param sctId
+ */
+function attr_val_modalSetting(sctId){
+    $('#modal_sctId').text(sctId);
+    $('#modal_kcdKor').text($('#mediKor').text());
+    $('#modal_kcdEng').text($('#mediEng').text());
+    $('.attrRemove').hide();
+    $('.selectPickerDiv').empty();
+    var infoList = null;
+    var ajax_res = getMapAttrValList_ajax();
+    ajax_res.done(function(attrValList){
+        console.log(attrValList);
+        infoList = JSON.parse(JSON.stringify(attrValList));
+         $.ajax({
+            url:'/getKcdAttrList',
+            type:'post',
+            data:{
+                sctId:sctId,
+                oriTpCd:'MEDI'
+            },
+            dataType:'json',
+            async:false,
+            success:function(data){
+                console.log(data);
+                $('.attrSelect, .valSelect').empty();
+                $('.valSelect').attr('disabled', true);
+
+                $('.attrSelect').append(
+                    $('<option>',{
+                        value:'',
+                        text:'속성을 선택하세요.',
+                        disabled:true,
+                        selected:true
+                    }),
+                );
+
+                if(data.length>0){
+                    for(var i = 0; i<data.length; i++){
+                        var $option = $('<option>', {
+                            text:data[i].cmSctTerm2,
+                            value:data[i].attSctId
+                        });
+                        $('.attrSelect').append($option);
+                    }
+                }else{
+                    console.log("attr 목록 없음.");
+                }
+            }
+        });
+    });
+
+    if (infoList.length > 0) {
+        $('#attrSaveBtn').hide();
+        $('#attrUpdateBtn').show();
+    } else {
+        $('#attrSaveBtn').show();
+        $('#attrUpdateBtn').hide();
+    }
+
+    for (var i = 0; i < infoList.length; i++) {
+        $('#attr_select'+(i+1)).val(infoList[i].attSctId);
+        getValueList(i+1);
+        textSearchForm_setting(i+1);
+        $('#val_select'+(i+1)).val(infoList[i].valgrpSctId);
+        $('#text_select'+(i+1)).data('conceptid', JSON.parse(infoList[i].valSctIdInfo).conceptId);
+        $('#div'+ (i+1) +' .textSelect .filter-option-inner-inner').text(JSON.parse(infoList[i].valSctIdInfo).fsn.term);
+        $('#attr_remove'+(i+1)).show();
+    }
+}
+
+function getMapAttrValList_ajax(){
+    var ajax = $.ajax({
+        url:'/getMapAttrValList',
+        type:'post',
+        data:{
+            oriCd:$('#modal_kcdCd').text(),
+            sctId:$('#modal_sctId').text(),
+        },
+        dataType:'json',
+        async:false
+        /*success:function(data){
+            console.log(data)
+        }*/
+    });
+    return ajax;
 }
