@@ -212,7 +212,7 @@ public class MainController {
     }
 
     /**
-     *
+     * 기본 snowstorm으로 전체 조회
      * @return
      */
     @GetMapping(value="/kcdRule1")
@@ -221,6 +221,20 @@ public class MainController {
         ruleMapService.automap1("<64572001"); //disease (discorder)
        return "/index";
     }
+
+
+    /**
+     * icd 코드있지만 매핑안된 소스에 대해서 일라시틱서치로 검색
+     * @return
+     */
+    @GetMapping(value="/kcdIcdAutoMap")
+    @ResponseBody
+    public String autoMapKcdRule2(){
+        ruleMapService.automap2("<64572001"); //disease (discorder)
+       return "/index";
+    }
+
+    
 
     @GetMapping(value="/mediRule/{id}")
     @ResponseBody

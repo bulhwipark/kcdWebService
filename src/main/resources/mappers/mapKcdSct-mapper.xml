@@ -41,6 +41,11 @@
         values(#{oriCd},#{sctId},#{mapVer},'1','0','1',sysdate())
     </insert>
 
+    <insert id="insertAutoMap2" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo" >
+        INSERT into MAP_KCD_SCT(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,MAP_MEMO,RV_STAT_CD,DISP_ODR,UDT_DT)
+        values(#{oriCd},#{sctId},#{mapVer},#{mapStatCd},#{mapMemo},'0',2,sysdate())
+    </insert>
+
     <insert id="insertMapKcdSctInfo" parameterType="com.example.kcdwebservice.vo.MapKcdSctVo">
         INSERT into MAP_KCD_SCT(ORI_CD,SCT_ID,MAP_VER,MAP_STAT_CD,RV_STAT_CD, MAP_MEMO, DISP_ODR,UDT_DT)
         values(#{oriCd},#{sctId},#{mapVer},#{mapStatCd},'0',#{mapMemo},'0',sysdate())

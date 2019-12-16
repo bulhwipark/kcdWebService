@@ -8,12 +8,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.example.kcdwebservice.dao.CmMediDao;
 import com.example.kcdwebservice.dao.MapKcdSctDao;
+import com.example.kcdwebservice.util.AutoRules;
+import com.example.kcdwebservice.util.ParameterStringBuilder;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmMedicineVo;
+import com.example.kcdwebservice.vo.CmSnomedCtVo;
 import com.example.kcdwebservice.vo.MapKcdSctVo;
-import com.example.kcdwebservice.vo.SearchVo;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
@@ -21,11 +25,10 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,6 +55,45 @@ public class RuleMapService {
         mvo.setSctId(sctcd);
         mvo.setMapVer("0");
         mapKcdSctDao.insertAutoMap1(mvo);
+      }
+
+    }
+
+  }
+
+  // icd 코드가 있는 것들중에 매핑 안된것들만 일라스틱서치 통한 후보군 뽑기 12/16 gun
+  public void automap2(String ecl) {
+
+    List<CmKcdVo> lck = selectKcdIcdList();
+    MapKcdSctVo mvo = null;
+    AutoRules autoRules = new AutoRules();
+
+    for (CmKcdVo ck : lck) {
+
+      try {
+
+        // autoRules.autoRule_7(ck.getKcdEng());
+        if (ck.getKcdEng().length() > 3) {
+          List<CmSnomedCtVo> lstSct = searchElasticForAuto(ck.getKcdEng());
+          String strSctIds = "";
+          // for (CmSnomedCtVo sctVo : lstSct) {
+          // strSctIds += sctVo.getSctId() + "\n";
+          // }
+          System.out.printf("sctids:" + strSctIds);
+          List<String> lsctcd = searchIds(lstSct);
+
+          for (String sctcd : lsctcd) {
+            mvo = new MapKcdSctVo();
+            mvo.setOriCd(ck.getKcdCd());
+            mvo.setSctId(sctcd);
+            mvo.setMapStatCd("77");
+            mvo.setMapMemo("icd EM");
+            mvo.setMapVer("0");
+            mapKcdSctDao.insertAutoMap2(mvo);
+          }
+        }
+      } catch (Exception e) {
+
       }
 
     }
@@ -97,6 +139,43 @@ public class RuleMapService {
     return arrSctid;
   }
 
+  public List<String> searchIds(List<CmSnomedCtVo> ids) {
+    ArrayList<String> arrSctid = new ArrayList<String>();
+
+    String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
+
+    Map<String, String> hm = new HashMap<String, String>();
+
+    strUrl += "activeFilter=true&termActive=true";
+
+    // hm.put("statedEcl", ecl);
+
+    for (CmSnomedCtVo sctvo : ids) {
+      strUrl += "&conceptIds=" + sctvo.getSctId();
+    }
+
+    System.out.println("test:" + strUrl);
+
+    try {
+      CmKcdVo ck = new CmKcdVo();
+
+      JSONObject jobj = new JSONObject(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl));
+
+      System.out.println("out:" + jobj);
+
+      JSONArray ja = jobj.getJSONArray("items");
+
+      for (int x = 0; x < ja.length(); x++) {
+        JSONObject jo = ja.getJSONObject(x);
+        System.out.println("idx:" + x + " body: " + jo.toString());
+        arrSctid.add(jo.getString("conceptId"));
+
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return arrSctid;
+  }
 
   public List<CmKcdVo> selectKcdList() {
 
@@ -110,14 +189,25 @@ public class RuleMapService {
     return list;
 
   }
-  public void serarchSnowAndInsert(String kmCd, String strQuery, String ruleTp,String ecl) {
 
-   
+  public List<CmKcdVo> selectKcdIcdList() {
+
+    CmKcdVo ck = new CmKcdVo();
+
+    List<CmKcdVo> list = cmKcdService.selectIcdNotMaped(ck);
+    System.out.println("icd count gun: "+list.size());
+
+    return list;
+
+  }
+
+  public void serarchSnowAndInsert(String kmCd, String strQuery, String ruleTp, String ecl) {
+
     strQuery = strQuery.replace(",", "");
     strQuery = strQuery.replace("/", " ");
 
-    System.out.println("Term query : " +kmCd+" :" + strQuery);
-   
+    System.out.println("Term query : " + kmCd + " :" + strQuery);
+
     List<String> lsctcd = searchTerm(strQuery, ecl);
     MapKcdSctVo mvo = new MapKcdSctVo();
     for (String sctcd : lsctcd) {
@@ -125,29 +215,28 @@ public class RuleMapService {
       mvo.setOriCd(kmCd);
       mvo.setSctId(sctcd);
       mvo.setMapVer("0");
-      mvo.setMapStatCd("X"+ruleTp);
+      mvo.setMapStatCd("X" + ruleTp);
       cmMediDao.insertAutoMap2(mvo);
     }
-    return ;
+    return;
   }
- 
+
   public void serarchAndInsert2(String kmCd, String strQuery) {
 
-   
     strQuery = strQuery.replace(",", "");
     strQuery = strQuery.replace("/", " ");
 
-    System.out.println("Term query : " +kmCd+" :" + strQuery);
-    
+    System.out.println("Term query : " + kmCd + " :" + strQuery);
+
     try {
       JSONObject jsonObject = searchElastic(strQuery);
       JSONObject hitsObj = new JSONObject(String.valueOf(jsonObject.get("hits")));
       JSONArray jsonArray = hitsObj.getJSONArray("hits");
 
-      for(int i = 0; i<jsonArray.length(); i++){
+      for (int i = 0; i < jsonArray.length(); i++) {
         JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
         obj = new JSONObject(String.valueOf(obj.get("_source")));
-        //conceptIdList.add(String.valueOf(obj.get("conceptId")));
+        // conceptIdList.add(String.valueOf(obj.get("conceptId")));
         MapKcdSctVo mvo = new MapKcdSctVo();
         mvo.setOriCd(kmCd);
         mvo.setSctId(String.valueOf(obj.get("conceptId")));
@@ -162,32 +251,77 @@ public class RuleMapService {
       e.printStackTrace();
     }
 
-    return ;
+    return;
   }
 
   public JSONObject searchElastic(String term) throws JSONException {
     Set<String> conceptIdList = new HashSet<>();
     JSONObject returnJSON = new JSONObject();
-    try{
-        String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \""+ term +"\"}},\"_source\": [\"conceptId\",\"term\"]}";
-        RestClient restClient = RestClient.builder(
-                new HttpHost("1.224.169.78", 9200, "http")
-        ).build();
+    try {
+      String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \"" + term
+          + "\"}},\"_source\": [\"conceptId\",\"term\"]}";
+      System.out.println("jsonStr:" + jsonStr);
+      RestClient restClient = RestClient.builder(new HttpHost("1.224.169.78", 9200, "http")).build();
 
-        Map<String, String> params = Collections.EMPTY_MAP;
-        HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
-        Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity );
+      Map<String, String> params = Collections.EMPTY_MAP;
+      HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
+      Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity);
 
-        String result = EntityUtils.toString(response.getEntity());
-        returnJSON = new JSONObject(result);
-        
-    }catch(IOException e){
-        e.printStackTrace();
+      String result = EntityUtils.toString(response.getEntity());
+      returnJSON = new JSONObject(result);
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-   return returnJSON;
-}
+    return returnJSON;
+  }
 
- 
+  public List<CmSnomedCtVo> searchElasticForAuto(String term) throws JSONException, IOException {
+    //Set<String> conceptIdList = new HashSet<>();
+    List<CmSnomedCtVo> lstSct = new ArrayList<CmSnomedCtVo>();
+    String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \"" + term
+          + "\"}},\"_source\": [\"conceptId\",\"term\"]}";
+      System.out.println("jsonStr:" + jsonStr);
+      RestClient restClient = RestClient.builder(new HttpHost("1.224.169.78", 9200, "http")).build();
+      HttpEntity httpEntity=null;
+    try {
+      
+      Map<String, String> params = Collections.EMPTY_MAP;
+      httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
+      Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity);
+
+      String result = EntityUtils.toString(response.getEntity());
+
+      JSONObject jsonObject = new JSONObject(result);
+      JSONObject hitsObj = new JSONObject(String.valueOf(jsonObject.get("hits")));
+      JSONArray jsonArray = hitsObj.getJSONArray("hits");
+
+      for (int i = 0; i < jsonArray.length(); i++) {
+
+        JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
+        obj = new JSONObject(String.valueOf(obj.get("_source")));
+        //conceptIdList.add(String.valueOf(obj.get("conceptId")));
+        String sct_term = String.valueOf(obj.get("term"));
+        if (sct_term.indexOf("(disorder)") > 0) {
+          CmSnomedCtVo sctVo = new CmSnomedCtVo();
+          System.out.println("conceptId:" + String.valueOf(obj.get("conceptId")));
+          System.out.println("term:" + String.valueOf(obj.get("term")));
+          sctVo.setSctId(String.valueOf(obj.get("conceptId")));
+          sctVo.setSctTerm(String.valueOf(obj.get("term")));
+          lstSct.add(sctVo);
+        }
+      }
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }finally{
+      httpEntity=null;
+      restClient.close();
+
+    }
+    return lstSct;
+  }
+
   public void serarchAndInsert(CmMedicineVo cm, String ruleTp) {
 
     String strUnit = "";
@@ -196,17 +330,17 @@ public class RuleMapService {
 
     if (ruleTp.substring(0, 1).equals("2")) {
       if (cm.getAmount3() == 0)
-        return ;
+        return;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
-    }else  if (ruleTp.substring(0, 1).equals("3") ) {
-      if (cm.getAmount2() == 0|| cm.getUnit2().equals(""))
-        return ;
+    } else if (ruleTp.substring(0, 1).equals("3")) {
+      if (cm.getAmount2() == 0 || cm.getUnit2().equals(""))
+        return;
       strUnit = cm.getUnit2();
       dblAmount = cm.getAmount2();
     } else if (ruleTp.substring(0, 1).equals("4")) {
       if (cm.getAmount3() == 0 || cm.getUnit3().equals(""))
-        return ;
+        return;
       strUnit = cm.getUnit3();
       dblAmount = cm.getAmount3();
     } else {
@@ -227,7 +361,8 @@ public class RuleMapService {
         strUnit = "nanogram";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
-      } if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
+      }
+      if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
         strUnit = "I.U";
         dblAmount = dblAmount * 1000;
         strAmount = String.format("%.0f", dblAmount);
@@ -266,12 +401,10 @@ public class RuleMapService {
         strUnit = "milligram/1 milliliter";
       } else if (strUnit.equals("I.U")) {
         strUnit = "unit";
-      }else if (strUnit.equals("mg/정")) {
+      } else if (strUnit.equals("mg/정")) {
         strUnit = "milligram/1 each";
       }
     }
-
-
 
     if (dblAmount * 10 % 10 == 0) {
       strAmount = String.format("%.0f", dblAmount);
@@ -280,111 +413,111 @@ public class RuleMapService {
     String strQuery = "";
 
     String strMedDoseFrm = cm.getMedDoseFrm();
-    
-    if ( cm.getMedDoseFrm3().length()>2){
-      strMedDoseFrm=cm.getMedDoseFrm3();
-    } else if(cm.getMedDoseFrm2().length()>2){
-      strMedDoseFrm=cm.getMedDoseFrm2();
+
+    if (cm.getMedDoseFrm3().length() > 2) {
+      strMedDoseFrm = cm.getMedDoseFrm3();
+    } else if (cm.getMedDoseFrm2().length() > 2) {
+      strMedDoseFrm = cm.getMedDoseFrm2();
     } else {
-      strMedDoseFrm=cm.getMedDoseFrm();
+      strMedDoseFrm = cm.getMedDoseFrm();
     }
     // if (strMedDoseFrm.indexOf("tablet") >= 0) {
-    //   strMedDoseFrm = "tablet";
+    // strMedDoseFrm = "tablet";
     // } else if (strMedDoseFrm.indexOf("syrup") >= 0) {
-    //   strMedDoseFrm = "oral suspension";
+    // strMedDoseFrm = "oral suspension";
     // } else if (strMedDoseFrm.indexOf("capsule") >= 0) {
-    //   strMedDoseFrm = "capsule";
+    // strMedDoseFrm = "capsule";
     // } else if (strMedDoseFrm.indexOf("gastro-resistant capsule") >= 0) {
-    //   strMedDoseFrm = "gastro-resistant capsule";
+    // strMedDoseFrm = "gastro-resistant capsule";
     // } else if (strMedDoseFrm.indexOf("prolonged-release capsule") >= 0) {
-    //   strMedDoseFrm = "prolonged-release capsule";
+    // strMedDoseFrm = "prolonged-release capsule";
     // }
     String ecl = "<763158003";
-    if (ruleTp.substring(0, 1).equals("1") ) {
-      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return ;
+    if (ruleTp.substring(0, 1).equals("1")) {
+      if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+        return;
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if ( ruleTp.substring(0, 1).equals("2")) {
-      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return ;
+    } else if (ruleTp.substring(0, 1).equals("2")) {
+      if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+        return;
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if (ruleTp.substring(0, 1).equals("3") ) {
-      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return ;
+    } else if (ruleTp.substring(0, 1).equals("3")) {
+      if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+        return;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if ( ruleTp.substring(0, 1).equals("4")) {
-      if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-        return ;
+    } else if (ruleTp.substring(0, 1).equals("4")) {
+      if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+        return;
       strQuery = cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
-    } else if (ruleTp.substring(0, 1).equals("5") ) {
-      if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
-        return ;
-      strQuery = "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin();
-    }else if (ruleTp.substring(0, 1).equals("B") ) {
-      
-      if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-        return ;
-      strQuery = "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin();;
-    } else if (ruleTp.substring(0, 1).equals("6") ) {
-      if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
-          return ;
-      strQuery =  cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
+    } else if (ruleTp.substring(0, 1).equals("5")) {
+      if (cm.getSubstanceNm().length() < 2 || cm.getRtOfAdmin().length() < 2)
+        return;
+      strQuery = "only " + cm.getSubstanceNm() + " " + cm.getRtOfAdmin();
+    } else if (ruleTp.substring(0, 1).equals("B")) {
+
+      if (cm.getSubstanceNm2().length() < 2 || cm.getRtOfAdmin().length() < 2)
+        return;
+      strQuery = "only " + cm.getSubstanceNm2() + " " + cm.getRtOfAdmin();
+      ;
+    } else if (ruleTp.substring(0, 1).equals("6")) {
+      if (cm.getEftSubstNm().length() < 2 || cm.getRtOfAdmin().length() < 2)
+        return;
+      strQuery = cm.getEftSubstNm() + " " + cm.getRtOfAdmin();
     } else if (ruleTp.substring(0, 1).equals("C")) {
-      if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-        return ;
-      strQuery = "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin();
+      if (cm.getEftSubstNm2().length() < 2 || cm.getRtOfAdmin().length() < 2)
+        return;
+      strQuery = "only " + cm.getEftSubstNm2() + " " + cm.getRtOfAdmin();
     } else if (ruleTp.substring(0, 1).equals("7")) {
-      if (cm.getSubstanceNm().length()<2)
-        return ;
-      strQuery = "only " + cm.getSubstanceNm()+" " ;
-    }  else if (ruleTp.substring(0, 1).equals("D") ) {
-      if (cm.getSubstanceNm2().length()<2)
-        return ;
-      strQuery =  cm.getSubstanceNm2();
-    }else if ( ruleTp.substring(0, 1).equals("8")) {
-      if (cm.getEftSubstNm().length()<2)
-        return ;
-      strQuery =  cm.getEftSubstNm();
-    } else if ( ruleTp.substring(0, 1).equals("E")) {
-      if (cm.getEftSubstNm2().length()<2)
-        return ;
-      strQuery =  cm.getEftSubstNm2();
+      if (cm.getSubstanceNm().length() < 2)
+        return;
+      strQuery = "only " + cm.getSubstanceNm() + " ";
+    } else if (ruleTp.substring(0, 1).equals("D")) {
+      if (cm.getSubstanceNm2().length() < 2)
+        return;
+      strQuery = cm.getSubstanceNm2();
+    } else if (ruleTp.substring(0, 1).equals("8")) {
+      if (cm.getEftSubstNm().length() < 2)
+        return;
+      strQuery = cm.getEftSubstNm();
+    } else if (ruleTp.substring(0, 1).equals("E")) {
+      if (cm.getEftSubstNm2().length() < 2)
+        return;
+      strQuery = cm.getEftSubstNm2();
     } else if (ruleTp.substring(0, 1).equals("9")) {
-      if (cm.getSubstanceNm().length()<2)
-        return ;
+      if (cm.getSubstanceNm().length() < 2)
+        return;
       strQuery = cm.getSubstanceNm();
       ecl = "<105590001";
-    }else if (ruleTp.substring(0, 1).equals("F")) {
-      if (cm.getSubstanceNm2().length()<2)
-        return ;
+    } else if (ruleTp.substring(0, 1).equals("F")) {
+      if (cm.getSubstanceNm2().length() < 2)
+        return;
       strQuery = cm.getSubstanceNm2();
       ecl = "<105590001";
-    } else if (ruleTp.substring(0, 1).equals("A") ) {
-      if (cm.getEftSubstNm().length()<2)
-        return ;
-      strQuery =  cm.getEftSubstNm();
+    } else if (ruleTp.substring(0, 1).equals("A")) {
+      if (cm.getEftSubstNm().length() < 2)
+        return;
+      strQuery = cm.getEftSubstNm();
       ecl = "<105590001";
-    } else if (ruleTp.substring(0, 1).equals("G") ) {
-      if (cm.getEftSubstNm2().length()<2)
-        return ;
-      strQuery =  cm.getEftSubstNm2();
+    } else if (ruleTp.substring(0, 1).equals("G")) {
+      if (cm.getEftSubstNm2().length() < 2)
+        return;
+      strQuery = cm.getEftSubstNm2();
       ecl = "<105590001";
-    }   else {
+    } else {
       strQuery = cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm;
     }
 
-    
     // if (!ruleTp.substring(1, 2).equals("3")) {
-    //   if ( cm.getRtOfAdmin().equals(""))
-    //     return ;
-    //   strQuery += " " + cm.getRtOfAdmin();
+    // if ( cm.getRtOfAdmin().equals(""))
+    // return ;
+    // strQuery += " " + cm.getRtOfAdmin();
     // }
 
     strQuery = strQuery.replace(",", "");
     strQuery = strQuery.replace("/", " ");
 
     System.out.println("Term query : " + strQuery);
-    
+
     List<String> lsctcd = searchTerm(strQuery, ecl);
     MapKcdSctVo mvo = new MapKcdSctVo();
     for (String sctcd : lsctcd) {
@@ -392,20 +525,18 @@ public class RuleMapService {
       mvo.setOriCd(cm.getKdCd());
       mvo.setSctId(sctcd);
       mvo.setMapVer("0");
-      if (ruleTp.length()==3) 
+      if (ruleTp.length() == 3)
         mvo.setMapStatCd("X" + ruleTp);
-        else
+      else
         mvo.setMapStatCd(ruleTp);
       mvo.setSubAltKey(cm.getSubAltKey());
       cmMediDao.insertAutoMap2(mvo);
     }
 
-    return ;
+    return;
 
   }
 
-
-  
   public void selectMediListC2(String ruleTp) {
 
     List<CmMedicineVo> list = cmMediDao.selectCAll();
@@ -413,65 +544,61 @@ public class RuleMapService {
     for (CmMedicineVo cm : list) {
       serarchAndInsert(cm, ruleTp);
     }
-    return ;
+    return;
 
   }
-
 
   public void selectMediListC(String ruleTp) {
 
     List<CmMedicineVo> list = cmMediDao.selectCAll();
-    
-    String chkFlag="";
+
+    String chkFlag = "";
     List<CmMedicineVo> list2 = new ArrayList<CmMedicineVo>();
-    String qryStr="";
+    String qryStr = "";
     String strUnit = "";
     double dblAmount = 0.0;
     String strAmount = "";
-    
+
     String ecl = "<763158003";
 
-    int nullFlag=0;
+    int nullFlag = 0;
     for (CmMedicineVo cm : list) {
 
-      
-      System.out.println("cm:"+ cm.getKdCd());
-      
-      if (!chkFlag.equals(cm.getKdCd()) && !chkFlag.equals("")){
+      System.out.println("cm:" + cm.getKdCd());
 
-        System.out.println("test:"+ qryStr);
-        //serarchAndInsert2(chkFlag,qryStr);
-        if(nullFlag==0)
-          serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
-        
-        qryStr="";
-        nullFlag=0;
-        
+      if (!chkFlag.equals(cm.getKdCd()) && !chkFlag.equals("")) {
+
+        System.out.println("test:" + qryStr);
+        // serarchAndInsert2(chkFlag,qryStr);
+        if (nullFlag == 0)
+          serarchSnowAndInsert(chkFlag, qryStr, ruleTp, ecl);
+
+        qryStr = "";
+        nullFlag = 0;
+
       }
 
-  
-  
-      //list2.add(cm);
+      // list2.add(cm);
       if (ruleTp.substring(0, 1).equals("2")) {
         if (cm.getAmount3() == 0)
-          nullFlag=1;
+          nullFlag = 1;
         strUnit = cm.getUnit3();
         dblAmount = cm.getAmount3();
-      }else  if (ruleTp.substring(0, 1).equals("3") ) {
-        if (cm.getAmount2() == 0|| cm.getUnit2().equals(""))
-          nullFlag=1;
+      } else if (ruleTp.substring(0, 1).equals("3")) {
+        if (cm.getAmount2() == 0 || cm.getUnit2().equals(""))
+          nullFlag = 1;
         strUnit = cm.getUnit2();
         dblAmount = cm.getAmount2();
       } else if (ruleTp.substring(0, 1).equals("4")) {
         if (cm.getAmount3() == 0 || cm.getUnit3().equals(""))
-          nullFlag=1;
+          nullFlag = 1;
         strUnit = cm.getUnit3();
         dblAmount = cm.getAmount3();
       } else {
         strUnit = cm.getUnit1();
         dblAmount = cm.getAmount1();
       }
-  
+
       if (ruleTp.substring(1, 2).equals("1") || ruleTp.substring(1, 2).equals("2")) {
         if (strUnit.equals("g") && cm.getAmount1() < 1) {
           strUnit = "mg";
@@ -485,18 +612,19 @@ public class RuleMapService {
           strUnit = "nanogram";
           dblAmount = dblAmount * 1000;
           strAmount = String.format("%.0f", dblAmount);
-        } if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
+        }
+        if (strUnit.equals("KI.U") && cm.getAmount1() < 1) {
           strUnit = "I.U";
           dblAmount = dblAmount * 1000;
           strAmount = String.format("%.0f", dblAmount);
         } else {
-  
+
           strAmount = dblAmount + "";
         }
       } else {
         strAmount = dblAmount + "";
       }
-  
+
       if (ruleTp.substring(1, 2).equals("2")) {
         if (strUnit.equals("mg")) {
           strUnit = "milligram";
@@ -524,128 +652,124 @@ public class RuleMapService {
           strUnit = "milligram/1 milliliter";
         } else if (strUnit.equals("I.U")) {
           strUnit = "unit";
-        }else if (strUnit.equals("mg/정")) {
+        } else if (strUnit.equals("mg/정")) {
           strUnit = "milligram/1 each";
         }
       }
-  
-  
-  
+
       if (dblAmount * 10 % 10 == 0) {
         strAmount = String.format("%.0f", dblAmount);
       }
-  
-        
+
       String strMedDoseFrm = cm.getMedDoseFrm();
-      
-      if ( cm.getMedDoseFrm3().length()>2){
-        strMedDoseFrm=cm.getMedDoseFrm3();
-      } else if(cm.getMedDoseFrm2().length()>2){
-        strMedDoseFrm=cm.getMedDoseFrm2();
+
+      if (cm.getMedDoseFrm3().length() > 2) {
+        strMedDoseFrm = cm.getMedDoseFrm3();
+      } else if (cm.getMedDoseFrm2().length() > 2) {
+        strMedDoseFrm = cm.getMedDoseFrm2();
       } else {
-        strMedDoseFrm=cm.getMedDoseFrm();
+        strMedDoseFrm = cm.getMedDoseFrm();
       }
-      
-      //복합에서 substance modi 사용
-      if( ruleTp.length()==3)
-        if ( ruleTp.substring(2, 3).equals("M"))
-          if(cm.getSubstanceModi()!=null)
+
+      // 복합에서 substance modi 사용
+      if (ruleTp.length() == 3)
+        if (ruleTp.substring(2, 3).equals("M"))
+          if (cm.getSubstanceModi() != null)
             cm.setSubstanceNm(cm.getSubstanceModi());
-            
-      if (ruleTp.substring(0, 1).equals("1") ) {
-        if (cm.getSubstanceNm().length()<2 || strMedDoseFrm.length()<2)
-          nullFlag=1;
+
+      if (ruleTp.substring(0, 1).equals("1")) {
+        if (cm.getSubstanceNm().length() < 2 || strMedDoseFrm.length() < 2)
+          nullFlag = 1;
         ecl = "<763158003";
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
-      } else if ( ruleTp.substring(0, 1).equals("2")) {
-        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-          nullFlag=1;
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm + " ";
+      } else if (ruleTp.substring(0, 1).equals("2")) {
+        if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+          nullFlag = 1;
         ecl = "<763158003";
-        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
-      } else if (ruleTp.substring(0, 1).equals("3") ) {
-        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-          nullFlag=1;
-        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm + " ";
+      } else if (ruleTp.substring(0, 1).equals("3")) {
+        if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm + " ";
         ecl = "<763158003";
-      } else if ( ruleTp.substring(0, 1).equals("4")) {
-        if (cm.getEftSubstNm().length()<2 || strMedDoseFrm.length()<2)
-          nullFlag=1;
-        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
+      } else if (ruleTp.substring(0, 1).equals("4")) {
+        if (cm.getEftSubstNm().length() < 2 || strMedDoseFrm.length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm + " ";
         ecl = "<763158003";
-      } else if (ruleTp.substring(0, 1).equals("5") ) {
-        if (cm.getSubstanceNm().length()<2 || cm.getRtOfAdmin().length()<2)
-          nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm()+" " + cm.getRtOfAdmin()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("5")) {
+        if (cm.getSubstanceNm().length() < 2 || cm.getRtOfAdmin().length() < 2)
+          nullFlag = 1;
+        qryStr += "only " + cm.getSubstanceNm() + " " + cm.getRtOfAdmin() + " ";
         ecl = "<763158003";
-      }else if (ruleTp.substring(0, 1).equals("B") ) {
-        
-        if (cm.getSubstanceNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-          nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm2()+" " + cm.getRtOfAdmin()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("B")) {
+
+        if (cm.getSubstanceNm2().length() < 2 || cm.getRtOfAdmin().length() < 2)
+          nullFlag = 1;
+        qryStr += "only " + cm.getSubstanceNm2() + " " + cm.getRtOfAdmin() + " ";
         ecl = "<763158003";
-      } else if (ruleTp.substring(0, 1).equals("6") ) {
-        if (cm.getEftSubstNm().length()<2 || cm.getRtOfAdmin().length()<2)
-            nullFlag=1;
-        qryStr +=  cm.getEftSubstNm() + " " + cm.getRtOfAdmin()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("6")) {
+        if (cm.getEftSubstNm().length() < 2 || cm.getRtOfAdmin().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm() + " " + cm.getRtOfAdmin() + " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("C")) {
-        if (cm.getEftSubstNm2().length()<2 || cm.getRtOfAdmin().length()<2)
-          nullFlag=1;
-        qryStr += "only " + cm.getEftSubstNm2()+" " + cm.getRtOfAdmin()+ " ";
+        if (cm.getEftSubstNm2().length() < 2 || cm.getRtOfAdmin().length() < 2)
+          nullFlag = 1;
+        qryStr += "only " + cm.getEftSubstNm2() + " " + cm.getRtOfAdmin() + " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("7")) {
-        if (cm.getSubstanceNm().length()<2)
-          nullFlag=1;
-        qryStr += "only " + cm.getSubstanceNm() + " " ;
+        if (cm.getSubstanceNm().length() < 2)
+          nullFlag = 1;
+        qryStr += "only " + cm.getSubstanceNm() + " ";
         ecl = "<763158003";
-      }  else if (ruleTp.substring(0, 1).equals("D") ) {
-        if (cm.getSubstanceNm2().length()<2)
-          nullFlag=1;
-        qryStr +=  cm.getSubstanceNm2()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("D")) {
+        if (cm.getSubstanceNm2().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getSubstanceNm2() + " ";
         ecl = "<763158003";
-      }else if ( ruleTp.substring(0, 1).equals("8")) {
-        if (cm.getEftSubstNm().length()<2)
-          nullFlag=1;
-        qryStr +=  cm.getEftSubstNm()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("8")) {
+        if (cm.getEftSubstNm().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm() + " ";
         ecl = "<763158003";
-      } else if ( ruleTp.substring(0, 1).equals("E")) {
-        if (cm.getEftSubstNm2().length()<2)
-          nullFlag=1;
-        qryStr +=  cm.getEftSubstNm2()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("E")) {
+        if (cm.getEftSubstNm2().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm2() + " ";
         ecl = "<763158003";
       } else if (ruleTp.substring(0, 1).equals("9")) {
-        if (cm.getSubstanceNm().length()<2)
-          nullFlag=1;
-        qryStr += cm.getSubstanceNm()+ " ";
+        if (cm.getSubstanceNm().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getSubstanceNm() + " ";
         ecl = "<105590001";
-      }else if (ruleTp.substring(0, 1).equals("F")) {
-        if (cm.getSubstanceNm2().length()<2)
-          nullFlag=1;
-        qryStr += cm.getSubstanceNm2()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("F")) {
+        if (cm.getSubstanceNm2().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getSubstanceNm2() + " ";
         ecl = "<105590001";
-      } else if (ruleTp.substring(0, 1).equals("A") ) {
-        if (cm.getEftSubstNm().length()<2)
-          nullFlag=1;
-        qryStr +=  cm.getEftSubstNm()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("A")) {
+        if (cm.getEftSubstNm().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm() + " ";
         ecl = "<105590001";
-      } else if (ruleTp.substring(0, 1).equals("G") ) {
-        if (cm.getEftSubstNm2().length()<2)
-          nullFlag=1;
-        qryStr +=  cm.getEftSubstNm2()+ " ";
+      } else if (ruleTp.substring(0, 1).equals("G")) {
+        if (cm.getEftSubstNm2().length() < 2)
+          nullFlag = 1;
+        qryStr += cm.getEftSubstNm2() + " ";
         ecl = "<105590001";
-      }   else {
-        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm+ " ";
+      } else {
+        qryStr += cm.getSubstanceNm() + " " + strAmount + " " + strUnit + " " + strMedDoseFrm + " ";
       }
-  
-      chkFlag=cm.getKdCd();
-    }
-    
-    System.out.println("test:"+ qryStr);
-    if(nullFlag==0)
-    serarchSnowAndInsert(chkFlag,qryStr,ruleTp, ecl);
-    
 
-    return ;
+      chkFlag = cm.getKdCd();
+    }
+
+    System.out.println("test:" + qryStr);
+    if (nullFlag == 0)
+      serarchSnowAndInsert(chkFlag, qryStr, ruleTp, ecl);
+
+    return;
 
   }
 
@@ -656,10 +780,8 @@ public class RuleMapService {
     for (CmMedicineVo cm : list) {
       serarchAndInsert(cm, ruleTp);
     }
-    return ;
+    return;
 
   }
-
-
 
 }

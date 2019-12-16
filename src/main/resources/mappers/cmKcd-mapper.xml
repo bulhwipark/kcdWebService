@@ -198,6 +198,17 @@
         
     </select>
 
+    <select id="select_IcdNotMaped"  resultType="com.example.kcdwebservice.vo.CmKcdVo">
+        select KCD_CD kcdCd,
+           KCD_ENG kcdEng,
+           KCD_KOR kcdKor
+           from CM_KCD
+           where icd_cd is not null
+           and kcd_cd not in (select ori_cd from MAP_KCD_SCT)
+           
+    </select>
+
+
     <select id="select_not_mapping" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="com.example.kcdwebservice.vo.CmKcdVo">
         select KCD_CD kcdCd,
            KCD_ENG kcdEng,
@@ -218,6 +229,7 @@
            limit ${limit} offset ${offset};
         </if>
     </select>
+
 
     <select id="totalIcdNotMappingCnt" parameterType="com.example.kcdwebservice.vo.CmKcdVo" resultType="String">
         SELECT count(*)

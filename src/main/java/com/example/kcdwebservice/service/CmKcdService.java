@@ -24,8 +24,13 @@ public class CmKcdService {
         return cmKcdDao.select_mapping(cmKcdVo);
     }
 
+    
     public List<CmKcdVo> selectNotMapping(CmKcdVo cmKcdVo) {
         return cmKcdDao.select_not_mapping(cmKcdVo);
+    }
+
+    public List<CmKcdVo> selectIcdNotMaped(CmKcdVo cmKcdVo) {
+        return cmKcdDao.select_IcdNotMaped(cmKcdVo);
     }
 
     public CmKcdVo selectKcdCdInfo(String kcdCd) {

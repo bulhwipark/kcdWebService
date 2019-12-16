@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface MapKcdSctDao {
     List<MapKcdSctVo> selectKcdCdList(String kcdCd);
     void  insertAutoMap1(MapKcdSctVo mvo);
+    void  insertAutoMap2(MapKcdSctVo mvo);
     
     void insertMapKcdSctInfo(MapKcdSctVo mapKcdSctVo);
 

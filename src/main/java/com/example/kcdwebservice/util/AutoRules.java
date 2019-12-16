@@ -398,6 +398,76 @@ public class AutoRules {
         }
        return returnJSON;
     }
+ /**
+     * Elasticsearch api 호출.
+     * @param searchVo
+     * @return \"Benign neoplasm of breast, unspecifiedt\"\n"
+     */
+    public JSONObject autoRule_7(String searchVo) throws JSONException {
+        Set<String> conceptIdList = new HashSet<>();
+        JSONObject returnJSON = new JSONObject();
+        try{
+            String jsonStr = "{\"query\": {\"query_string\" : {\"query\" : \""+ searchVo +"\"}},\"_source\": [\"conceptId\",\"term\"]}";
+            RestClient restClient = RestClient.builder(
+                    new HttpHost("1.224.169.78", 9200, "http")
+            ).build();
+
+            Map<String, String> params = Collections.EMPTY_MAP;
+            HttpEntity httpEntity = new NStringEntity(jsonStr, ContentType.APPLICATION_JSON);
+            Response response = restClient.performRequest("GET", "/description/_search", params, httpEntity );
+
+            String result = EntityUtils.toString(response.getEntity());
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject hitsObj = new JSONObject(String.valueOf(jsonObject.get("hits")));
+            JSONArray jsonArray = hitsObj.getJSONArray("hits");
+            for(int i = 0; i<jsonArray.length(); i++){
+                JSONObject obj = new JSONObject(String.valueOf(jsonArray.get(i)));
+                obj = new JSONObject(String.valueOf(obj.get("_source")));
+                conceptIdList.add(String.valueOf(obj.get("conceptId")));
+            }
+            System.out.println(conceptIdList.toString());
+            List<JSONObject> items = new ArrayList<>();
+            for(int i = 0; i<conceptIdList.size(); i++){
+                String res = autoRuleRequest(String.valueOf(conceptIdList.toArray()[i]));
+                JSONArray resList = new JSONObject(res).getJSONArray("classAxioms");
+
+                for(int k = 0; k<resList.length(); k++){
+                    JSONArray relationships = resList.getJSONObject(k).getJSONArray("relationships");
+
+                    for(int h = 0; h < relationships.length(); h++){
+                        JSONObject target = relationships.getJSONObject(h).getJSONObject("target");
+                        /*if(target.get("conceptId").equals(searchVo.getEcl().replace("<", ""))){
+                            items.add((JSONObject) new JSONObject(res));
+                        }*/
+                        items.add((JSONObject) new JSONObject(res));
+                    }
+                }
+            }
+            Map<String, Object> checkMap = new HashMap<>();
+            checkMap.put("items", items);
+            JSONObject checkJSON = new JSONObject(checkMap);
+
+            if(items.size() > 0){
+                returnJSON.put("status", "true");
+                returnJSON.put("result", checkJSON.toString());
+                returnJSON.put("searchTerm", searchVo);
+                returnJSON.put("ruleCode", "17");
+            }else{
+                returnJSON.put("status", "false");
+                returnJSON.put("searchTerm", searchVo);
+                returnJSON.put("ruleCode", "17");
+            }
+
+            System.out.println("-------------rule_7-------------------------");
+            System.out.println(result);
+            System.out.println(returnJSON);
+            System.out.println(returnJSON.toString());
+            System.out.println("-------------------------------------------");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+       return returnJSON;
+    }
 
     /**
      * 약제 룰 1

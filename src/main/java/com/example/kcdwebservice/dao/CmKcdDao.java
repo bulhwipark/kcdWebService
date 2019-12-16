@@ -14,6 +14,8 @@ public interface CmKcdDao {
     List<CmKcdVo> selectAll(CmKcdVo cmKcdVo);
     List<CmKcdVo> select_mapping(CmKcdVo cmKcdVo);
     List<CmKcdVo> select_not_mapping(CmKcdVo cmKcdVo);
+    List<CmKcdVo> select_IcdNotMaped(CmKcdVo cmKcdVo);
+    
     List<CmKcdVo> select_icdNotMapping(CmKcdVo cmKcdVo);
 
     CmKcdVo selectKcdCdInfo(String kcdCd);
