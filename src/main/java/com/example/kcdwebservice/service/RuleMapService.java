@@ -546,6 +546,12 @@ public class RuleMapService {
         strMedDoseFrm=cm.getMedDoseFrm();
       }
       
+      //복합에서 substance modi 사용
+      if( ruleTp.length()==3)
+        if ( ruleTp.substring(2, 3).equals("M"))
+          if(cm.getSubstanceModi()!=null)
+            cm.setSubstanceNm(cm.getSubstanceModi());
+            
       if (ruleTp.substring(0, 1).equals("1") ) {
         if (cm.getSubstanceNm().length()<2 || strMedDoseFrm.length()<2)
           nullFlag=1;

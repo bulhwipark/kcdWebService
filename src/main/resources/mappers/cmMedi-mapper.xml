@@ -56,7 +56,8 @@
                MED_DOSE_FRM2      medDoseFrm2,
                MED_DOSE_FRM3      medDoseFrm3,
                RT_OF_ADMIN       rtOfAdmin,
-               SUB_ALT_KEY       subAltKey
+               SUB_ALT_KEY       subAltKey,
+               SUBSTANCE_MODI      substanceModi
                
         from CM_MEDICINE
         where KD_CD not in (select distinct ORI_CD from MAP_KCD_SCT2 where ORI_TP_CD='MEDI')

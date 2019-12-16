@@ -17,6 +17,7 @@ public class CmMedicineVo {
     private String stdCd;
     private String drugNmEng;
     private String substanceNm;
+    private String substanceModi;   //1205추가
     private double amount1;
     private String unit1;
     private String eftSubstNm;

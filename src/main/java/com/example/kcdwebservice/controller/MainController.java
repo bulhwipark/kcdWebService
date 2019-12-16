@@ -313,10 +313,16 @@ public class MainController {
         ruleMapService.selectMediListC("10");
         ruleMapService.selectMediListC("11");
         ruleMapService.selectMediListC("12");
+         ruleMapService.selectMediListC("10M");
+        ruleMapService.selectMediListC("11M");
+        ruleMapService.selectMediListC("12M");
         System.out.println("rule X20 ");
         ruleMapService.selectMediListC("20");
         ruleMapService.selectMediListC("21");
         ruleMapService.selectMediListC("22");
+        ruleMapService.selectMediListC("20M");
+        ruleMapService.selectMediListC("21M");
+        ruleMapService.selectMediListC("22M");
         System.out.println("rule X30 ");
         ruleMapService.selectMediListC("30");
         ruleMapService.selectMediListC("31");
@@ -327,10 +333,12 @@ public class MainController {
         ruleMapService.selectMediListC("42");
         System.out.println("rule X50 ");
         ruleMapService.selectMediListC("50");
+        ruleMapService.selectMediListC("50M");
         System.out.println("rule X60 ");
         ruleMapService.selectMediListC("60");
         System.out.println("rule X70 ");
         ruleMapService.selectMediListC("70");
+        ruleMapService.selectMediListC("70M");
         System.out.println("rule X80 ");
         ruleMapService.selectMediListC("80");
         
