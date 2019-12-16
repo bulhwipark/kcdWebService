@@ -3,6 +3,7 @@ package com.example.kcdwebservice.controller;
 import java.util.List;
 
 import com.example.kcdwebservice.service.CmKcdService;
+import com.example.kcdwebservice.service.CmKexamService;
 import com.example.kcdwebservice.service.CmSnomedCtService;
 import com.example.kcdwebservice.service.DicKcdSynonymService;
 import com.example.kcdwebservice.service.DicSnomedctAttValService;
@@ -56,6 +57,8 @@ public class MainController {
     private DicSnomedctAttValService dicSnomedctAttValService;
     @Autowired
     private MapKcdSctAftCatService mapKcdSctAftCatService;
+    @Autowired
+    private CmKexamService cmKexamService;
 
     /**
      * 메인화면.
@@ -535,7 +538,7 @@ public class MainController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
+    
     /**
      * 속성, 밸류 삭제.
      * @param mapKcdSctAftCatVo

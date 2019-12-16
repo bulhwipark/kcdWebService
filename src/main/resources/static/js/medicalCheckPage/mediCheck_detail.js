@@ -1,10 +1,10 @@
 function mediCheck_detail_static_func() {
     get_mediCheckObject_req();
     get_mediCheckDetail_list();
-    termSynonym();
+//    termSynonym();
 //    medicalDetail_autoRuleSet();
     mediCheckDetail_prevBtn_ajaxReq();
-    mediCheckSearchTerm_setting();
+//    mediCheckSearchTerm_setting();
     
     $('#mediEcl').on('click',function(){
         $('#mediDisorder').prop('checked', false);
@@ -50,20 +50,12 @@ function mediCheck_detail_static_func() {
         }
     });
 
-    //동의어 이벤트
-    $('#synonym').on('change', function () {
-        $('#term').val($('#synonym option:selected').val());
-    })
-    .on('click', function () {
-        $('#term').val($('#synonym option:selected').val());
-    });
-
     //serach Term 이벤트.
     $('#mediSearchTermSelect').on('change', function () {
-        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+        $('#mediCheck_term').val($('#mediSearchTermSelect option:selected').val());
     })
     .on('click', function () {
-        $('#mediTerm').val($('#mediSearchTermSelect option:selected').val());
+        //$('#mediCheck_term').val($('#mediSearchTermSelect option:selected').val());
     });
 
    $('.attrSelect').on('change', function(){
@@ -176,6 +168,32 @@ function get_mediCheckObject_req() {
                $('#mediCheck_kor').text(data.kexKor?data.kexKor:"-");
                $('#mediCheck_eng').text(data.kexEng?data.kexEng:"-");
                $('#mediCheck_term').val(data.kexEng?data.kexEng:"");
+               $('#mediSearchTermSelect').empty();
+               
+               if(data.kexEng != null && data.kexEng.trim().length > 0){
+            	   $('#mediSearchTermSelect').append(
+                   		$('<option>',{
+                   			text:data.kexEng.trim(),
+                   			value:data.kexEng.trim()
+                   		})   
+                      );
+               }
+               if(data.preTerm != null && data.preTerm.trim().length > 0){
+            	   $('#mediSearchTermSelect').append(
+                   		$('<option>',{
+                   			text:data.preTerm.trim(),
+                   			value:data.preTerm.trim()
+                   		})   
+                      );
+               }
+               if(data.preTerm2 != null && data.preTerm2.trim().length > 0){
+            	   $('#mediSearchTermSelect').append(
+                   		$('<option>',{
+                   			text:data.preTerm2.trim(),
+                   			value:data.preTerm2.trim()
+                   		})   
+                      );
+               }
            }
         }
     });
@@ -236,7 +254,7 @@ function get_mediCheckDetail_list() {
                 );
                 $('#mediDetailTable tbody').append($tr);
             }
-//            medi_check_detail_dynamic_func();
+            medi_check_detail_dynamic_func();
         }
     })
 }
@@ -244,32 +262,32 @@ function get_mediCheckDetail_list() {
 /**
  * 유사동의어리스트 req
  */
-function termSynonym(){
-    $.ajax({
-        url:'/getTermSynonymList',
-        type:'post',
-        data:{
-            kcdCd: $('#kexCd').text()
-        },
-        dataType:'json',
-        success:function(data){
-            console.log(data);
-            if(data.length > 0){
-                $('#mediSearchTermSelect').empty();
-                for(var i = 0; i<data.length; i++){
-                    var $option = $('<option>',{
-                       text:data[i].kcdEngSyn,
-                       title:data[i].kcdKorSyn
-                    });
-                    $('#synonym').append($option);
-                }
-            }else{
-                $('#synonym').empty();
-                console.log('데이터 없음 처리.');
-            }
-        }
-    })
-}
+//function termSynonym(){
+//    $.ajax({
+//        url:'/getTermSynonymList',
+//        type:'post',
+//        data:{
+//            kcdCd: $('#kexCd').text()
+//        },
+//        dataType:'json',
+//        success:function(data){
+//            console.log(data);
+//            if(data.length > 0){
+//                $('#mediSearchTermSelect').empty();
+//                for(var i = 0; i<data.length; i++){
+//                    var $option = $('<option>',{
+//                       text:data[i].kcdEngSyn,
+//                       title:data[i].kcdKorSyn
+//                    });
+//                    $('#synonym').append($option);
+//                }
+//            }else{
+//                $('#synonym').empty();
+//                console.log('데이터 없음 처리.');
+//            }
+//        }
+//    })
+//}
 
 function medicalDetail_autoRuleSet(){
     var param = new Object();
@@ -308,40 +326,57 @@ function medicalDetail_autoRuleSet(){
             medi_check.searchList = JSON.parse(JSON.stringify(items));
             
             $('#mediSearchResultTable').prop("checked", false);
-            for(var i = 0; i<items.length; i++){
-                if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
-                    $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
-                        $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
-                    )
-                }else{
-                    var $tr = $('<tr>',{id:items[i].conceptId}).append(
+            
+            if(items.length > 0){
+            	for(var i = 0; i<items.length; i++){
+                    if($('#mediSearchResultTable tbody').children('#' + items[i].conceptId).length > 0){
+                        $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text(
+                            $('#mediSearchResultTable tbody tr').children('#'+items[i].conceptId+'_ruleCode').text()+ ', ' + data[q].ruleCode
+                        )
+                    }else{
+                        var $tr = $('<tr>',{id:items[i].conceptId}).append(
+                            //conceptId
+                            $('<td>',{
+                                class:"sctIdDetail",
+                                text:items[i].conceptId
+                            }),
+                            //term
+                            $('<td>',{
+                                // text:items[i]['fsn']['term']
+                                html:StringMatch_func(items[i]['fsn']['term'], $('#mediCheck_term').val())
+                            }),
+                            $('<td>',{
+                                class:'autoRuleCol',
+                                id:items[i].conceptId + "_ruleCode",
+                                text:items[i].ruleCode
+                            }),
+                            //checkBox
+                            $('<td>').append(
+                                $('<input>',{
+                                    type:'checkbox',
+                                    name:'mediSearchResultSaveCheckbox',
+                                    value:items[i].conceptId
+                                })
+                            )
+                        );
+                        $('#mediSearchResultTable tbody').append($tr);
+                    }
+                }
+            }else{
+            	console.log("자료 없음 처리.");
+            	$('#mediSearchResultTable tbody').empty();
+                $('#mediSearchResultAllSelect').prop("checked", false);
+                var $tr = $('<tr>').append(
                         //conceptId
                         $('<td>',{
-                            class:"sctIdDetail",
-                            text:items[i].conceptId
-                        }),
-                        //term
-                        $('<td>',{
-                            // text:items[i]['fsn']['term']
-                            html:StringMatch_func(items[i]['fsn']['term'], $('#mediCheck_term').val())
-                        }),
-                        $('<td>',{
-                            class:'autoRuleCol',
-                            id:items[i].conceptId + "_ruleCode",
-                            text:items[i].ruleCode
-                        }),
-                        //checkBox
-                        $('<td>').append(
-                            $('<input>',{
-                                type:'checkbox',
-                                name:'mediSearchResultSaveCheckbox',
-                                value:items[i].conceptId
-                            })
-                        )
+                            text:"검색 결과가 없습니다.",
+                            colspan:"4",
+                            align: "center"
+                        })
                     );
-                    $('#mediSearchResultTable tbody').append($tr);
-                }
+                $('#mediSearchResultTable tbody').append($tr);
             }
+            
             $('#saveBtnDiv').removeClass('displayNone');
             $('.autoRuleCol').removeClass('displayNone');
             medi_check_detail_dynamic_func();
@@ -352,22 +387,22 @@ function medicalDetail_autoRuleSet(){
 }
 
 //search term selectbox setting
-function mediCheckSearchTerm_setting(){
-    $('#mediSearchTermSelect').empty();
-    if(medi_check.autoRuleLog != null) {
-    	for(var i = 0; i<medi_check.autoRuleLog.length; i++){
-            var logInfo = medi_check.autoRuleLog[i];
-            if(logInfo.status == 'true' || logInfo.status == 'false'){
-                if(logInfo.searchTerm.trim().length > 0){
-                    var $option = $('<option>',{
-                        text:logInfo.searchTerm
-                    });
-                    $('#mediSearchTermSelect').append($option);
-                }
-            }
-        }
-    }
-}
+//function mediCheckSearchTerm_setting(){
+//    $('#mediSearchTermSelect').empty();
+//    if(medi_check.autoRuleLog != null) {
+//    	for(var i = 0; i<medi_check.autoRuleLog.length; i++){
+//            var logInfo = medi_check.autoRuleLog[i];
+//            if(logInfo.status == 'true' || logInfo.status == 'false'){
+//                if(logInfo.searchTerm.trim().length > 0){
+//                    var $option = $('<option>',{
+//                        text:logInfo.searchTerm
+//                    });
+//                    $('#mediSearchTermSelect').append($option);
+//                }
+//            }
+//        }
+//    }
+//}
 
 //MEDICHECK목록 조회.
 function mediCheckDetail_prevBtn_ajaxReq(){
@@ -463,8 +498,9 @@ function alert_timeout() {
  */
 function attr_val_modalSetting(sctId){
     $('#modal_sctId').text(sctId);
-    $('#modal_kcdKor').text($('#mediKor').text());
-    $('#modal_kcdEng').text($('#mediEng').text());
+    $('#modal_kcdCd').text($('#kexCd').text());
+    $('#modal_kcdKor').text($('#mediCheck_kor').text());
+    $('#modal_kcdEng').text($('#mediCheck_eng').text());
     $('.attrRemove').hide();
     $('.selectPickerDiv').empty();
     var infoList = null;
@@ -477,7 +513,7 @@ function attr_val_modalSetting(sctId){
             type:'post',
             data:{
                 sctId:sctId,
-                oriTpCd:'MEDI'
+                oriTpCd:'PROC'
             },
             dataType:'json',
             async:false,
@@ -529,6 +565,60 @@ function attr_val_modalSetting(sctId){
     }
 }
 
+function getValueList(currentNum){
+    $.ajax({
+        url:'/getKcdValList',
+        type:'post',
+        data:{
+            sctId:$('#attr_select'+ currentNum +' option:selected').val()
+        },
+        dataType:'json',
+        async:false,
+        success:function(data){
+            $('#val_select' + currentNum).empty();
+            $('#val_select' + currentNum).append(
+                $('<option>',{
+                    text:"값을 선택하세요.",
+                    value:''
+                })
+            );
+            if(data.length > 0){
+                for(var i = 0; i<data.length; i++){
+                    var $option = $('<option>',{
+                        text:data[i].cmSctTerm,
+                        value:data[i].attSctId,
+                        'data-tokens':data[i].cmSctTerm
+                    });
+                    $('#val_select' + currentNum).append($option);
+                }
+                $('#val_select' + currentNum).attr('disabled', false);
+            }else{
+                console.log("리스트 없음.")
+            }
+        }
+    })
+}
+
+function textSearchForm_setting(currentNum){
+    $('#div' + currentNum).empty().append(
+        $('<select>',{
+            class:"textSelect",
+            'data-live-search':"true",
+            id:"text_select"+currentNum
+        }).on('change', function(){
+            $('#attrSaveBtn').attr('disabled', false)
+        })
+    );
+    $('#text_select' + currentNum).selectpicker();
+
+    $('.textSelect input[type="text"].form-control').on('keydown', function(key){
+        if(key.keyCode == 13){
+            console.log('enter');
+            attrValTextSearch_request(currentNum);
+        }
+    })
+}
+
 function getMapAttrValList_ajax(){
     var ajax = $.ajax({
         url:'/getMapAttrValList',
@@ -544,4 +634,171 @@ function getMapAttrValList_ajax(){
         }*/
     });
     return ajax;
+}
+
+/**
+ * 검색 이벤트
+ */
+function medi_search_req(){
+    var param = new Object();
+    param.term = $('#mediCheck_term').val();
+
+    if($('input[name="mediDefaultRule"]:checked').val()){
+        param.ecl = $('input[name="mediDefaultRule"]:checked').val();
+    }else{
+        param.ecl = $('#mediEcl').val();
+    }
+
+    $.ajax({
+        url:'/search',
+        type:'post',
+        data:param,
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            if(data['items'].length > 0){
+                var items = data['items'];
+
+                //중복제거.
+                for(var i = 0; i<medi.mediDetailList.length; i++){
+                    items = items.filter(function(item, idx, arr){
+                        if(item.conceptId != medi.mediDetailList[i].sctId){
+                            return item;
+                        }
+                    });
+                }
+                medi.searchList = JSON.parse(JSON.stringify(items));
+                $('#mediSearchResultTable tbody').empty();
+                $('#mediSearchResultAllSelect').prop("checked", false);
+                for(var i = 0; i<items.length; i++){
+                    var $tr = $('<tr>',{id:items[i].conceptId}).append(
+                        //conceptId
+                        $('<td>',{
+                            class:'sctIdDetail',
+                            text:items[i].conceptId
+                        }),
+                       
+                        //term
+                        $('<td>',{
+                            text: items[i]['fsn']['term']
+
+                        }),
+                       
+                        //checkBox
+                        $('<td>').append(
+                            $('<input>',{
+                                type:'checkbox',
+                                name:'mediSearchResultSaveCheckbox',
+                                value:items[i].conceptId
+                            })
+                        )
+                    );
+                    $('#mediSearchResultTable tbody').append($tr);
+                }
+                $('#saveBtnDiv').removeClass('displayNone');
+                $('.autoRuleCol').addClass('displayNone');
+                medi_check_detail_dynamic_func();
+            }else{
+            	console.log("자료 없음 처리.");
+            	$('#mediSearchResultTable tbody').empty();
+                $('#mediSearchResultAllSelect').prop("checked", false);
+                var $tr = $('<tr>').append(
+                        //conceptId
+                        $('<td>',{
+                            text:"검색 결과가 없습니다.",
+                            colspan:"4",
+                            align: "center"
+                        })
+                    );
+                $('#mediSearchResultTable tbody').append($tr);
+            }
+            alert_timeout();
+        }
+    })
+}
+
+/**
+ * 유사도기준 검색 ajax
+ */
+function medi_similaritySearch(){
+    var param = new Object();
+    param.term = $('#mediCheck_term').val().replace("/", "");
+
+    if($('input[name="mediDefaultRule"]:checked').val()){
+        param.ecl = $('input[name="mediDefaultRule"]:checked').val();
+    }else{
+        param.ecl = $('#mediEcl').val();
+    }
+
+    $.ajax({
+        url:'/similaritySearch',
+        type:'post',
+        data:param,
+        dataType:'json',
+        success:function(data){
+            console.log(data);
+            if(data.status === "true"){
+                var obj = JSON.parse(data.result);
+                var items = obj['items'];
+                //중복제거.
+                if(medi.mediDetailList){
+                    for(var i = 0; i<medi.mediDetailList.length; i++){
+                        items = items.filter(function(item, idx, arr){
+                            if(item.conceptId != medi.mediDetailList[i].sctId){
+                                return item;
+                            }
+                        });
+                    }
+                }
+                medi.searchList = JSON.parse(JSON.stringify(items));
+
+                $('#mediSearchResultTable tbody').empty();
+                for(var i = 0; i<items.length; i++){
+                    var itemVal = items[i];
+                    if($('#mediSearchResultTable tbody').children('#' + itemVal.conceptId).length > 0){
+                        
+                    }else{
+                        var $tr = $('<tr>', {id:itemVal.conceptId}).append(
+                            $('<td>',{
+                                class:'sctIdDetail',
+                                text:itemVal.conceptId
+                            }),
+                            $('<td>',{
+                                text:itemVal.fsn.term
+                            }),
+                            $('<td>',{
+                                text:data.ruleCode
+                            }),
+                            //checkBox
+                            $('<td>').append(
+                                $('<input>',{
+                                    type:'checkbox',
+                                    name:'mediSearchResultSaveCheckbox',
+                                    value:itemVal.conceptId
+                                })
+                            )
+                        );
+                    }
+
+                    $('#mediSearchResultTable tbody').append($tr);
+                }
+                medi_check_detail_dynamic_func();
+            }else{
+                console.log("자료 없음 처리.");
+                console.log(data);
+                $('#mediSearchResultTable tbody').empty();
+                $('#mediSearchResultAllSelect').prop("checked", false);
+                var $tr = $('<tr>').append(
+                        //conceptId
+                        $('<td>',{
+                            text:"검색 결과가 없습니다.",
+                            colspan:"4",
+                            align: "center"
+                        })
+                    );
+                $('#mediSearchResultTable tbody').append($tr);
+            }
+            alert_timeout();
+        }
+    });
 }
