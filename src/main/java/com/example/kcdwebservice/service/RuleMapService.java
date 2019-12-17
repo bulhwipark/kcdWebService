@@ -12,7 +12,6 @@ import java.util.Set;
 import com.example.kcdwebservice.dao.CmMediDao;
 import com.example.kcdwebservice.dao.MapKcdSctDao;
 import com.example.kcdwebservice.util.AutoRules;
-import com.example.kcdwebservice.util.ParameterStringBuilder;
 import com.example.kcdwebservice.vo.CmKcdVo;
 import com.example.kcdwebservice.vo.CmMedicineVo;
 import com.example.kcdwebservice.vo.CmSnomedCtVo;
@@ -83,13 +82,15 @@ public class RuleMapService {
           List<String> lsctcd = searchIds(lstSct);
 
           for (String sctcd : lsctcd) {
-            mvo = new MapKcdSctVo();
-            mvo.setOriCd(ck.getKcdCd());
-            mvo.setSctId(sctcd);
-            mvo.setMapStatCd("77");
-            mvo.setMapMemo("icd EM");
-            mvo.setMapVer("0");
-            mapKcdSctDao.insertAutoMap2(mvo);
+            if (findAncestors(sctcd,"404684003")){
+              mvo = new MapKcdSctVo();
+              mvo.setOriCd(ck.getKcdCd());
+              mvo.setSctId(sctcd);
+              mvo.setMapStatCd("77");
+              mvo.setMapMemo("icd EM");
+              mvo.setMapVer("0");
+              mapKcdSctDao.insertAutoMap2(mvo);
+            }
           }
         }
       } catch (Exception e) {
@@ -176,6 +177,35 @@ public class RuleMapService {
     }
     return arrSctid;
   }
+
+//진단
+  public Boolean findAncestors(String id,String ancestor) {
+    ArrayList<String> arrSctid = new ArrayList<String>();
+    Boolean rtn=false;
+    String strUrl = "http://1.224.169.78:8095/browser/MAIN/concepts/"+id+"/ancestors?form=stated";
+
+    // hm.put("statedEcl", ecl);
+
+    System.out.println("test:" + strUrl);
+
+    try {
+      CmKcdVo ck = new CmKcdVo();
+
+      String jobj = new String(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl));
+
+      if(jobj.indexOf(ancestor)>0){
+        rtn= true;
+      }else{
+        rtn= false;
+      }
+      
+    
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return rtn;
+  }
+
 
   public List<CmKcdVo> selectKcdList() {
 
@@ -302,14 +332,17 @@ public class RuleMapService {
         obj = new JSONObject(String.valueOf(obj.get("_source")));
         //conceptIdList.add(String.valueOf(obj.get("conceptId")));
         String sct_term = String.valueOf(obj.get("term"));
-        if (sct_term.indexOf("(disorder)") > 0) {
-          CmSnomedCtVo sctVo = new CmSnomedCtVo();
+
+        // if (sct_term.indexOf("(disorder)") > 0) {
+         CmSnomedCtVo sctVo = new CmSnomedCtVo();
           System.out.println("conceptId:" + String.valueOf(obj.get("conceptId")));
           System.out.println("term:" + String.valueOf(obj.get("term")));
           sctVo.setSctId(String.valueOf(obj.get("conceptId")));
           sctVo.setSctTerm(String.valueOf(obj.get("term")));
           lstSct.add(sctVo);
-        }
+        // }
+
+
       }
 
     } catch (IOException e) {
