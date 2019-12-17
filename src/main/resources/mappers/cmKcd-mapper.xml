@@ -205,7 +205,7 @@
            from CM_KCD
            where icd_cd is not null
            and kcd_cd not in (select ori_cd from MAP_KCD_SCT)
-           #and kcd_cd='A06'
+           #and kcd_cd='A02'
     </select>
 
 

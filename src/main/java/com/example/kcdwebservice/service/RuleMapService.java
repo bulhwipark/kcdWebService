@@ -73,13 +73,29 @@ public class RuleMapService {
 
         // autoRules.autoRule_7(ck.getKcdEng());
         if (ck.getKcdEng().length() > 3) {
-          List<CmSnomedCtVo> lstSct = searchElasticForAuto(ck.getKcdEng());
+
+          String searchString = ck.getKcdEng().replaceAll("[\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]", " ");
+
+          List<CmSnomedCtVo> lstSct = searchElasticForAuto(searchString);
           String strSctIds = "";
           // for (CmSnomedCtVo sctVo : lstSct) {
           // strSctIds += sctVo.getSctId() + "\n";
           // }
           System.out.printf("sctids:" + strSctIds);
           List<String> lsctcd = searchIds(lstSct);
+          // List<CmSnomedCtVo> lsctcd = searchIdsIncInactive(lstSct);
+
+          // for (CmSnomedCtVo sctcd : lsctcd) {
+          //   if (findAncestors(sctcd.getSctId(),"404684003")){
+          //     mvo = new MapKcdSctVo();
+          //     mvo.setOriCd(ck.getKcdCd());
+          //     mvo.setSctId(sctcd.getSctId());
+          //     mvo.setMapStatCd("1217");
+          //     mvo.setMapMemo(sctcd.getDispOdr());
+          //     mvo.setMapVer("0");
+          //     mapKcdSctDao.insertAutoMap2(mvo);
+          //   }
+          // }
 
           for (String sctcd : lsctcd) {
             if (findAncestors(sctcd,"404684003")){
@@ -87,7 +103,7 @@ public class RuleMapService {
               mvo.setOriCd(ck.getKcdCd());
               mvo.setSctId(sctcd);
               mvo.setMapStatCd("77");
-              mvo.setMapMemo("icd EM");
+              mvo.setMapMemo("sc");
               mvo.setMapVer("0");
               mapKcdSctDao.insertAutoMap2(mvo);
             }
@@ -170,6 +186,49 @@ public class RuleMapService {
         JSONObject jo = ja.getJSONObject(x);
         System.out.println("idx:" + x + " body: " + jo.toString());
         arrSctid.add(jo.getString("conceptId"));
+
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return arrSctid;
+  }
+
+  public List<CmSnomedCtVo> searchIdsIncInactive(List<CmSnomedCtVo> ids) {
+    ArrayList<CmSnomedCtVo> arrSctid = new ArrayList<CmSnomedCtVo>();
+
+    String strUrl = "http://1.224.169.78:8095/MAIN/concepts?";
+
+    Map<String, String> hm = new HashMap<String, String>();
+
+    //strUrl += "activeFilter=true&termActive=true";
+
+    // hm.put("statedEcl", ecl);
+
+    for (CmSnomedCtVo sctvo : ids) {
+      strUrl += "&conceptIds=" + sctvo.getSctId();
+    }
+
+    System.out.println("test:" + strUrl);
+
+    try {
+      CmKcdVo ck = new CmKcdVo();
+
+      JSONObject jobj = new JSONObject(com.example.kcdwebservice.util.HttpRestCall.callGet(strUrl));
+
+      System.out.println("out:" + jobj);
+
+      JSONArray ja = jobj.getJSONArray("items");
+
+      for (int x = 0; x < ja.length(); x++) {
+        CmSnomedCtVo sctvo = new CmSnomedCtVo();
+        
+        JSONObject jo = ja.getJSONObject(x);
+        System.out.println("idx:" + x + " body: " + jo.toString());
+        sctvo.setSctId(jo.getString("conceptId"));
+        sctvo.setDispOdr(jo.getString("active"));
+
+        arrSctid.add(sctvo);
 
       }
     } catch (Exception e) {
