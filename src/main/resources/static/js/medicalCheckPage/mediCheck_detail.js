@@ -55,7 +55,7 @@ function mediCheck_detail_static_func() {
         $('#mediCheck_term').val($('#mediSearchTermSelect option:selected').val());
     })
     .on('click', function () {
-        //$('#mediCheck_term').val($('#mediSearchTermSelect option:selected').val());
+    	$('#mediCheck_term').val($('#mediSearchTermSelect option:selected').val());
     });
 
    $('.attrSelect').on('change', function(){
@@ -76,38 +76,43 @@ function mediCheck_detail_static_func() {
      */
    $('#mediList_next').on('click', function(){
 
-       if(parseInt(sessionStorage.getItem("medi_index")) === sessionStorage.getItem("medi_totalCnt")){
+       if(parseInt(sessionStorage.getItem("mediCheck_index")) === sessionStorage.getItem("mediCheck_totalCnt")){
            $(this).attr('disabled', true);
             return;
        }
 
-       if(parseInt(sessionStorage.getItem("medi_index")) === medi.mainMedList.length){
+       if(parseInt(sessionStorage.getItem("mediCheck_index")) === medi_check.mainMediCheckList.length){
           sessionStorage.setItem(
-              'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) + parseInt(sessionStorage.getItem("medi_limit"))
+              'mediCheck_offset', parseInt(sessionStorage.getItem("mediCheck_offset")) + parseInt(sessionStorage.getItem("mediCheck_limit"))
           );
            mediDetail_prevBtn_ajaxReq();
-           sessionStorage.setItem("medi_index", 0);
+           sessionStorage.setItem("mediCheck_index", 0);
        }
-       var index = parseInt(sessionStorage.getItem("medi_index"));
+       var index = parseInt(sessionStorage.getItem("mediCheck_index"));
        var result = null;
        var checkIdx = null;
-       for(var i = index ; i<medi.mainMedList.length; i++){
-           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
-               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
+       for(var i = index ; i<medi_check.mainMediCheckList.length; i++){
+           if(sessionStorage.getItem("mediCheck_kdCd") !== medi_check.mainMediCheckList[i].kexCd){
+               result = JSON.parse(JSON.stringify(medi_check.mainMediCheckList[i]));
                checkIdx = i;
                break;
            }else{
                if(i == 49){
-                   result = JSON.parse(JSON.stringify(medi.mainMedList[49]));
+                   result = JSON.parse(JSON.stringify(medi_check.mainMediCheckList[49]));
                    checkIdx = 49;
                    break;
                }
            }
        }
-       sessionStorage.setItem("medi_kdCd", result.kdCd);
-       sessionStorage.setItem("medi_subAltKey", result.subAltKey);
-       sessionStorage.setItem("medi_index", checkIdx);
-       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
+       if(result != null){
+    	   sessionStorage.setItem("mediCheck_kdCd", result.kexCd);
+//         sessionStorage.setItem("mediCheck_subAltKey", result.subAltKey);
+         sessionStorage.setItem("mediCheck_index", checkIdx);
+         location.href = "/mediCheckDetailPage?kexCd="+ result.kexCd + "&mapVer=0";
+       } else {
+    	   $(this).attr('disabled', true);
+       }
+       
    });
 
     /**
@@ -115,38 +120,38 @@ function mediCheck_detail_static_func() {
      * sessionStorage 정보를 이용하여 medi리스트에서 MEDI코드로 다음것을 찾음.
      */
    $('#mediList_prev').on('click', function(){
-       if(parseInt(sessionStorage.getItem("medi_index")) === 0){
-           if(sessionStorage.getItem("medi_offset") > 0){
+       if(parseInt(sessionStorage.getItem("mediCheck_index")) === 0){
+           if(sessionStorage.getItem("mediCheck_offset") > 0){
                sessionStorage.setItem(
-                   'medi_offset', parseInt(sessionStorage.getItem("medi_offset")) - parseInt(sessionStorage.getItem("medi_limit"))
+                   'mediCheck_offset', parseInt(sessionStorage.getItem("mediCheck_offset")) - parseInt(sessionStorage.getItem("mediCheck_limit"))
                );
                mediDetail_prevBtn_ajaxReq();
-               sessionStorage.setItem("medi_index", medi.mainMedList.length-1);
+               sessionStorage.setItem("mediCheck_index", medi_check.mainMediCheckList.length-1);
            }else{
               //인덱스가 0이고 offset이 0일때 첫번째 인덱스이므로 동작 X.
                $(this).attr('disabled', true);
                return;
            }
        }
-       var index = parseInt(sessionStorage.getItem("medi_index"));
+       var index = parseInt(sessionStorage.getItem("mediCheck_index"));
        var result = null;
        var checkIdx = null;
        for(var i = index ; i>=0; i--){
-           if(sessionStorage.getItem("medi_kdCd") !== medi.mainMedList[i].kdCd){
-               result = JSON.parse(JSON.stringify(medi.mainMedList[i]));
+           if(sessionStorage.getItem("mediCheck_kdCd") !== medi_check.mainMediCheckList[i].kexCd){
+               result = JSON.parse(JSON.stringify(medi_check.mainMediCheckList[i]));
                checkIdx = i;
                break;
            }else{
                if(i == 0){
-                   result = JSON.parse(JSON.stringify(medi.mainMedList[0]));
+                   result = JSON.parse(JSON.stringify(medi_check.mainMediCheckList[0]));
                    checkIdx = 0;
                    break;
                }
            }
        }
-       sessionStorage.setItem("medi_kdCd", result.kdCd);
-       sessionStorage.setItem("medi_index", checkIdx);
-       location.href = "/medDetailPage?kdCd="+ result.kdCd + "&mapVer=0";
+       sessionStorage.setItem("mediCheck_kdCd", result.kexCd);
+       sessionStorage.setItem("mediCheck_index", checkIdx);
+       location.href = "/mediCheckDetailPage?kexCd="+ result.kexCd + "&mapVer=0";
    });
 }
 
@@ -407,12 +412,12 @@ function medicalDetail_autoRuleSet(){
 //MEDICHECK목록 조회.
 function mediCheckDetail_prevBtn_ajaxReq(){
     $.ajax({
-        url: "/kexam/select/"+sessionStorage.getItem("medi_listOption"),
+        url: "/kexam/select/"+sessionStorage.getItem("mediCheck_listOption"),
         type:'get',
         data:{
             mapVer:sessionStorage.getItem("mediCheck_mapVer"),
             mapStatCd:sessionStorage.getItem("mediCheck_mapStatCd"),
-            kcdCd:sessionStorage.getItem("mediCheck_searchToKdCd").toUpperCase(),
+            kexCd:sessionStorage.getItem("mediCheck_searchToKexCd").toUpperCase() || "",
             limit:sessionStorage.getItem("mediCheck_limit"),
             offset:parseInt(sessionStorage.getItem("mediCheck_offset"))
         },

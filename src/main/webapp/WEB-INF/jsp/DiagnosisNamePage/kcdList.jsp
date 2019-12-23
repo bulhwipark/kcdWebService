@@ -24,13 +24,24 @@
                         <option value="1">1 : 추가임시버전</option>
                     </select>
                 </div-->
-                <div class="form-inline col-xl-3">
+                
+                <div class="totalCnt-css col-xl-12">
+                    <div>
+                        <span><b>KCD 코드기준 Total : </b></span>
+                        <span id="kcdTotalCnt"></span>
+                    </div>
+                </div>
+
+                
+            </div>
+            <div class="row">
+            	<div class="form-inline col-xl-6">
                     <label for="listOption">매핑상태 : </label>
                     <select class="form-control kcdSearchOption" name="listOption" id="listOption" style="width: 90px;">
                         <option value="All">전체</option>
                         <option value="Mapping">매핑</option>
                         <option value="NotMapping">비매핑</option>
-                        <option value="IcdNotMapping" selected>ICD 비매핑</option>
+                        <option value="IcdNotMapping" selected>ICD</option>
                     </select>
                     <input type="hidden" name="mapStatCd" id="mapStatCd" value="All">
                     <!--label for="mapStatCd" style="margin-left: 20px;">MapStatCD : </label>
@@ -40,18 +51,7 @@
                         <input name="kcdCd" id="searchToKcdCd" class="form-control" type="text" placeholder="KCD코드 검색.">
                     </div>
                 </div>
-                <div class="totalCnt-css col-xl-3">
-                    <div>
-                        <span><b>KCD 코드기준 Total : </b></span>
-                        <span id="kcdTotalCnt"></span>
-                    </div>
-                    <div>
-                        <span><b>매핑 Total : </b></span>
-                        <span id="totalCnt"></span>
-                    </div>
-                </div>
-
-                <div class="col-xl-3">
+				<div class="col-xl-6" style="text-align: right;">
                     <div style="display: inline-block; margin-top: 20px;">
                         <span style="width: 50px; display: inherit;">
                             <button class="btn btn-light" id="prev">
@@ -65,9 +65,6 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="row">
-
             </div>
             <input type="text" hidden name="limit" id="limit">
             <input type="text" hidden name="offset" id="offset">

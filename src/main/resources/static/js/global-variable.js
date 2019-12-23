@@ -13,7 +13,7 @@ var kcd = {
     mapVer: null,
     kcdTotalCnt: 0,
     totalCnt: 0,
-    limit: 50,
+    limit: 10,
     currentOffset: 0,
     autoRuleLog:null,
     rules:[1,2,3,4,5]

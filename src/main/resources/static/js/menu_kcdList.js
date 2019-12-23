@@ -179,7 +179,7 @@ function kcdList_totalCount_req(){
             kcd.kcdTotalCnt = data.kcdTotalCnt;
             kcd.totalCnt = data.totalCnt;
             $('#kcdTotalCnt').text(data.kcdTotalCnt?data.kcdTotalCnt:'-');
-            $('#totalCnt').text(data.totalCnt?data.totalCnt:'-');
+//            $('#totalCnt').text(data.totalCnt?data.totalCnt:'-');
         }
     })
 }

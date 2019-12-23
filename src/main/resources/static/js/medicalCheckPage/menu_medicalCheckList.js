@@ -2,7 +2,7 @@ function menu_medicalCheckList_staticFunc(){
 	//초기 실행
     if(sessionStorage.getItem("mediCheck_storageCheck")){
         $('#medListOption').val(sessionStorage.getItem("mediCheck_listOption"));
-        $('#searchToKdCd').val(sessionStorage.getItem("mediCheck_searchToKdCd"));
+        $('#mediCheck_searchToKexCd').val(sessionStorage.getItem("mediCheck_searchToKexCd"));
         medi_check.limit = parseInt(sessionStorage.getItem("mediCheck_limit"));
         medi_check.currentOffset = parseInt(sessionStorage.getItem("mediCheck_offset"));
         sessionStorage.clear();
@@ -70,8 +70,8 @@ function menu_mediKexamList_dynamicFunc(){
         sessionStorage.setItem("mediCheck_sctId", $(this).data('sctid'));
         sessionStorage.setItem("mediCheck_kdCd", $(this).text());
         sessionStorage.setItem("mediCheck_index", $(this).data('index'));
-        sessionStorage.setItem("mediCheck_searchToKdCd", $('#mediCheck_searchToKdCd').val());
-        sessionStorage.setItem("mediCheck_mapVer", $('#mediCheck_version').val());
+        sessionStorage.setItem("mediCheck_searchToKexCd", $('#mediCheck_searchToKexCd').val());
+        sessionStorage.setItem("mediCheck_mapVer", $('#mediCheck_mapVer').val());
         sessionStorage.setItem("mediCheck_mapStatCd", $('#mediCheck_mapStatCd').val());
         location.href = '/mediCheckDetailPage?kexCd=' + $(this).text() + '&mapVer=' + $('#mediCheck_mapVer').val();
     });
