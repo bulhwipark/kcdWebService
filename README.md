@@ -1,5 +1,6 @@
 # kcdWebService
 진단명 KCD 를 SnomedCT로 매핑지원해주는 Tool.
+Req. System.: SNOWSTORM + MariaDB + elasticsearch 
 
 * ####java 라이브러리.
   - httpclient
